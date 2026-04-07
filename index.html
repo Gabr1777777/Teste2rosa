@@ -113,7 +113,12 @@
 
         .btn:hover { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
-        .content-section { display: none; max-height: 60vh; overflow-y: auto; }
+        .content-section { display: none; max-height: 55vh; overflow-y: auto; padding-right: 5px; }
+        
+        /* Scrollbar personalizada */
+        .content-section::-webkit-scrollbar { width: 4px; }
+        .content-section::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; }
+
         .photo-grid img { width: 100%; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--neon-pink); }
 
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
@@ -123,6 +128,12 @@
             background: rgba(255, 0, 0, 0.9); color: white; padding: 12px 24px;
             border-radius: 8px; z-index: 1000; box-shadow: 0 0 15px red;
         }
+
+        .color-box {
+            width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .color-box:hover { transform: scale(1.2); z-index: 5; box-shadow: 0 0 10px white; }
     </style>
 </head>
 <body oncontextmenu="showAlert(event)">
@@ -184,7 +195,7 @@
         <div id="cores" class="content-section">
             <button class="btn" onclick="showSection('home')">Voltar</button>
             <h2 class="animated-gradient">Cores</h2>
-            <div id="color-grid" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;"></div>
+            <div id="color-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; padding: 10px; justify-items: center;"></div>
         </div>
 
         <div class="player-container">
@@ -261,11 +272,31 @@
     function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
     function updateVolume(val) { player.volume = val; }
 
-    const colors = ['#ffffff', '#ff007f', '#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff'];
-    colors.forEach(c => {
+    // Gerador de 50+ Cores
+    const colorList = [
+        '#FFFFFF','#F0F0F0','#D3D3D3','#A9A9A9','#808080','#000000',
+        '#FF007F','#FF3399','#FF66B2','#FF99CC','#FFCCE6','#33001A',
+        '#FF0000','#CC0000','#990000','#FF4D4D','#FF8080','#FFB3B3',
+        '#00FF00','#00CC00','#009900','#4DFF4D','#80FF80','#B3FFB3',
+        '#0000FF','#0000CC','#000099','#4D4DFF','#8080FF','#B3B3FF',
+        '#FFFF00','#CCCC00','#999900','#FFFF4D','#FFFF80','#FFFFB3',
+        '#00FFFF','#00CCCC','#009999','#4DFFFF','#80FFFF','#B3FFFF',
+        '#FF00FF','#CC00CC','#990099','#FF4DFF','#FF80FF','#FFB3FF',
+        '#FFA500','#FF8C00','#FF7F50','#FF6347','#FF4500','#FFD700'
+    ];
+    
+    colorList.forEach(c => {
         let b = document.createElement('div');
-        b.style.width='35px'; b.style.height='35px'; b.style.background=c; b.style.borderRadius='5px';
-        b.onclick = () => { navigator.clipboard.writeText(c); alert('Copiado: ' + c); };
+        b.className = 'color-box';
+        b.style.background = c;
+        b.onclick = () => { 
+            navigator.clipboard.writeText(c); 
+            const msg = document.createElement('div');
+            msg.innerText = 'Copiado: ' + c;
+            msg.style = 'position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--neon-pink); padding:5px 15px; border-radius:20px; font-size:12px; z-index:2000;';
+            document.body.appendChild(msg);
+            setTimeout(() => msg.remove(), 1500);
+        };
         document.getElementById('color-grid').appendChild(b);
     });
 
