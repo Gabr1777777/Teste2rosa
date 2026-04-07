@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xatSpace - Miel</title>
+    <title>xatSpace - Mnna</title>
     <style>
         /* --- Configurações Globais --- */
         :root {
             --neon-pink: #ff007f;
             --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
-            --bg-pink-main: #1a020d; /* Fundo ligeiramente mais escuro para contraste */
+            --bg-pink-main: #1a020d;
             --glass-bg: rgba(43, 3, 20, 0.85);
             --border-neon: 2px solid var(--neon-pink);
         }
@@ -21,7 +21,7 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado e Glitter (Mantido) --- */
+        /* --- Fundo Estrelado e Glitter --- */
         #stars-container {
             position: fixed; width: 100%; height: 100%; z-index: 0;
             background: radial-gradient(circle at center, #4a0626, #0a0105);
@@ -50,7 +50,6 @@
             to { background-position: 1000px 1000px; }
         }
 
-        /* --- Títulos com Gradiente Animado (Mantido) --- */
         .animated-gradient {
             background: linear-gradient(270deg, #ffffff, #ff007f, #ffffff, #ff007f);
             background-size: 400% 400%;
@@ -66,68 +65,43 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Estrutura Principal (Painel Duplo) --- */
+        /* --- Estrutura Principal --- */
         #main-wrapper {
             position: relative; z-index: 5;
-            display: flex; /* Alinha perfil e fotos lado a lado */
-            gap: 20px; /* Espaço entre os painéis */
-            align-items: flex-start; /* Alinha pelo topo */
+            display: flex; gap: 20px; align-items: flex-start;
             transition: all 0.5s ease-in-out;
         }
 
-        /* Container do Perfil (Esquerdo) */
         #profile-container {
-            display: none; /* Escondido antes do 'Entrar' */
-            width: 380px;
-            background: var(--glass-bg);
-            border: var(--border-neon);
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: var(--neon-glow);
-            text-align: center;
-            backdrop-filter: blur(8px);
-            flex-shrink: 0; /* Impede que diminua de tamanho */
+            display: none; width: 380px; background: var(--glass-bg);
+            border: var(--border-neon); border-radius: 20px; padding: 20px;
+            box-shadow: var(--neon-glow); text-align: center; backdrop-filter: blur(8px);
+            flex-shrink: 0;
         }
 
-        /* Painel de Conteúdo Expandível (Direito) */
         #content-panel {
-            width: 0; /* Começa fechado */
-            overflow: hidden;
-            background: var(--glass-bg);
-            border: none; /* Sem borda quando fechado */
-            border-radius: 20px;
-            box-shadow: none;
-            backdrop-filter: blur(8px);
-            transition: all 0.5s ease-in-out; /* Animação de abrir/fechar */
-            opacity: 0;
+            width: 0; overflow: hidden; background: var(--glass-bg);
+            border: none; border-radius: 20px; box-shadow: none;
+            backdrop-filter: blur(8px); transition: all 0.5s ease-in-out; opacity: 0;
         }
 
-        /* Estado aberto do painel direito */
         #content-panel.open {
-            width: 500px; /* Largura da galeria */
-            border: var(--border-neon);
-            box-shadow: var(--neon-glow);
-            padding: 20px;
-            opacity: 1;
+            width: 500px; border: var(--border-neon); box-shadow: var(--neon-glow);
+            padding: 20px; opacity: 1;
         }
 
-        /* --- Página de Entrada (Mantida) --- */
+        /* --- Página de Entrada --- */
         #entry-page {
             position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #5e0b32, #1a020d);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 20; transition: opacity 0.8s ease;
         }
 
-        .welcome-title {
-            font-size: 3rem; margin-bottom: 30px; text-transform: uppercase;
-            filter: drop-shadow(0 0 10px var(--neon-pink));
-        }
-
         .btn-enter {
-            padding: 15px 40px; font-size: 1.2rem; color: white; background: transparent;
+            padding: 15px 40px; font-size: 1.2rem; color: white; background: rgba(43, 3, 20, 0.4);
             border: 2px solid var(--neon-pink); border-radius: 50px; cursor: pointer;
             text-transform: uppercase; font-weight: bold; animation: pulse-glow 1.5s infinite alternate;
+            backdrop-filter: blur(5px);
         }
 
         @keyframes pulse-glow {
@@ -151,99 +125,43 @@
         .btn:hover { background: var(--neon-pink); box-shadow: var(--neon-glow); }
         .btn-active { background: rgba(255, 0, 127, 0.3); box-shadow: var(--neon-glow); }
 
-        /* --- Estilização da Galeria de Fotos (Arrumada) --- */
-        #fotos-content h2 { margin-top: 0; text-align: center; font-size: 2rem; }
-
+        /* --- Fotos --- */
         .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 colunas para ficar mais bonito */
-            gap: 15px;
-            padding: 10px 0;
-            max-height: 70vh; /* Altura máxima com scroll interno */
-            overflow-y: auto;
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; padding: 10px 0;
+            max-height: 70vh; overflow-y: auto;
         }
-
-        /* Scrollbar personalizada para a grade de fotos */
-        .photo-grid::-webkit-scrollbar { width: 5px; }
-        .photo-grid::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 5px; }
 
         .photo-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: 10px;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            aspect-ratio: 1 / 1; /* Mantém as fotos quadradas na grade */
+            position: relative; overflow: hidden; border-radius: 10px; border: 2px solid transparent;
+            transition: all 0.3s ease; cursor: pointer; aspect-ratio: 1 / 1;
         }
 
-        .photo-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Preenche o quadrado sem distorcer */
-            transition: transform 0.5s ease;
-        }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .photo-item:hover { border-color: var(--neon-pink); box-shadow: var(--neon-glow); transform: translateY(-5px); }
+        .photo-item:hover img { transform: scale(1.1); }
 
-        /* Efeito Neon e Zoom ao passar o mouse */
-        .photo-item:hover {
-            border-color: var(--neon-pink);
-            box-shadow: var(--neon-glow);
-            transform: translateY(-5px);
-        }
-
-        .photo-item:hover img {
-            transform: scale(1.1); /* Ligeiro zoom na imagem dentro do quadrado */
-        }
-
-        /* --- Overlay de Zoom (Ao clicar na foto) --- */
         #photo-zoom-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            justify-content: center; align-items: center;
-            opacity: 0; transition: opacity 0.3s ease;
-            cursor: zoom-out;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); z-index: 2000; justify-content: center; align-items: center;
+            opacity: 0; transition: opacity 0.3s ease; cursor: zoom-out;
         }
 
         #photo-zoom-overlay.open { display: flex; opacity: 1; }
-        #photo-zoom-overlay img {
-            max-width: 90%; max-height: 90%;
-            border-radius: 10px;
-            border: 3px solid #fff;
-            box-shadow: 0 0 30px rgba(255,255,255,0.5);
-            animation: zoomIn 0.3s ease;
-        }
+        #photo-zoom-overlay img { max-width: 90%; max-height: 90%; border-radius: 10px; border: 3px solid #fff; }
 
-        @keyframes zoomIn { from { transform: scale(0.7); } to { transform: scale(1); } }
-
-        /* --- Outras Seções (Mantidas dentro do perfil para economia de espaço) --- */
         .inner-content { display: none; margin-top: 15px; padding-top: 15px; border-top: 1px dashed rgba(255,255,255,0.2); animation: fadeIn 0.5s; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* --- Player de Música (Mantido) --- */
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
 
-        /* --- Segurança e Toast (Mantidos) --- */
         #custom-alert {
             display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
             background: rgba(255, 0, 0, 0.9); color: white; padding: 12px 24px;
             border-radius: 8px; z-index: 1000; box-shadow: 0 0 15px red;
         }
 
-        .color-box {
-            width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);
-            cursor: pointer; transition: transform 0.2s;
-        }
-        .color-box:hover { transform: scale(1.2); box-shadow: 0 0 10px white; }
-
-        #copy-toast {
-            visibility: hidden; min-width: 150px; background-color: var(--neon-pink);
-            color: #fff; text-align: center; border-radius: 20px; padding: 8px;
-            position: fixed; z-index: 3000; left: 50%; bottom: 30px;
-            transform: translateX(-50%); font-weight: bold; box-shadow: 0 0 10px #000;
-        }
+        .color-box { width: 32px; height: 32px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; }
+        #copy-toast { visibility: hidden; min-width: 150px; background-color: var(--neon-pink); color: #fff; text-align: center; border-radius: 20px; padding: 8px; position: fixed; z-index: 3000; left: 50%; bottom: 30px; transform: translateX(-50%); font-weight: bold; }
         #copy-toast.show { visibility: visible; animation: fadeInOutToast 1.5s; }
         @keyframes fadeInOutToast { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
     </style>
@@ -252,9 +170,7 @@
 
 <div id="custom-alert">🔒 Copyright - Acesso Proibido 🔒</div>
 <div id="copy-toast">Código Copiado!</div>
-<div id="photo-zoom-overlay" onclick="closePhotoZoom()">
-    <img src="" id="zoomed-img">
-</div>
+<div id="photo-zoom-overlay" onclick="closePhotoZoom()"><img src="" id="zoomed-img"></div>
 
 <div id="stars-container">
     <div class="stars"></div>
@@ -266,43 +182,42 @@
 </div>
 
 <div id="main-wrapper">
-    
     <div id="profile-container">
-        <div class="animated-gradient" style="font-size: 2.5rem; margin-bottom: 10px;">Miel</div>
+        <div class="animated-gradient" style="font-size: 2.5rem; margin-bottom: 10px;">Mnna</div>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
+        <button class="btn" id="btn-home" onclick="goHome()">Home</button>
         <button class="btn" id="btn-sobre" onclick="toggleInnerContent('sobre')">Sobre Mim</button>
         <button class="btn" id="btn-fotos" onclick="togglePhotoPanel()">Fotos</button>
         <button class="btn" id="btn-comunidade" onclick="toggleInnerContent('comunidade')">Xat Comunidade</button>
         <button class="btn" id="btn-cores" onclick="toggleInnerContent('cores')">Tabela de Cores</button>
         
         <div id="sobre" class="inner-content">
-            <p style="font-style: italic; font-size: 0.9rem; line-height: 1.5;">"Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida. Ela aprendeu a seguir em frente, sozinha ou acompanhada. E ela leva a vida assim, sendo quem ela é."</p>
+            <p style="font-style: italic; font-size: 0.9rem;">"Ela sabe o que quer, ela sabe quem ela é..."</p>
         </div>
 
         <div id="comunidade" class="inner-content">
             <a href="https://xat.com/tuga" target="_blank" class="btn">Xat Tuga</a>
             <a href="https://xat.com/butecopremium" target="_blank" class="btn">Xat ButecoPremium</a>
-            <a href="https://xat.com/trade" target="_blank" class="btn">Xat Trade</a>
         </div>
 
         <div id="cores" class="inner-content">
-            <div id="color-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; justify-items: center;"></div>
+            <div id="color-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px;"></div>
         </div>
         
-        <div style="margin-top:15px; color: var(--neon-pink); font-family: monospace; font-size: 0.8rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px;">
+        <div style="margin-top:15px; color: var(--neon-pink); font-family: monospace; font-size: 0.8rem;">
             VISITAS: <span id="count">00000</span>
         </div>
 
         <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 5px; color: #aaa;">Música: Mnna Player</div>
+            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 5px;">Música: Mnna Player</div>
             <audio id="audio-player"></audio>
-            <div style="display: flex; justify-content: center; gap: 5px; margin-bottom: 10px;">
+            <div style="display: flex; justify-content: center; gap: 5px;">
                 <button class="btn" style="width: 40px; margin:0; padding: 8px;" onclick="prevTrack()">⏮</button>
                 <button class="btn" style="width: 50px; margin:0; padding: 8px;" onclick="togglePlay()" id="play-btn">▶</button>
                 <button class="btn" style="width: 40px; margin:0; padding: 8px;" onclick="nextTrack()">⏭</button>
             </div>
-            <input type="range" style="width: 90%; accent-color: var(--neon-pink); cursor: pointer;" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
+            <input type="range" style="width: 90%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
         </div>
     </div>
 
@@ -316,15 +231,12 @@
                 <div class="photo-item" onclick="openPhotoZoom(this)"><img src="https://imgur.com/BGULIuI.png"></div>
                 <div class="photo-item" onclick="openPhotoZoom(this)"><img src="https://imgur.com/HCn75BA.png"></div>
                 <div class="photo-item" onclick="openPhotoZoom(this)"><img src="https://imgur.com/QvXRzEF.png"></div>
-                </div>
-            <button class="btn" style="margin-top: 15px; width: auto; padding: 10px 20px; display: inline-block;" onclick="togglePhotoPanel()">Fechar Galeria</button>
+            </div>
         </div>
     </div>
-
 </div>
 
 <script>
-    // --- Configuração Inicial ---
     window.onload = function() {
         generateGlitter();
         generate50Colors();
@@ -332,68 +244,54 @@
         updateCounter();
     };
 
-    // --- Lógica de Navegação e Painéis (Arrumada) ---
+    // Função Home: Fecha tudo e volta ao estado inicial
+    function goHome() {
+        closeAllInnerContent();
+        const panel = document.getElementById('content-panel');
+        panel.classList.remove('open');
+        document.getElementById('btn-fotos').classList.remove('btn-active');
+    }
 
-    // Fecha todas as seções internas do perfil e remove destaque dos botões
     function closeAllInnerContent() {
         document.querySelectorAll('.inner-content').forEach(div => div.style.display = 'none');
         document.querySelectorAll('#profile-container .btn').forEach(btn => btn.classList.remove('btn-active'));
     }
 
-    // Abre/Fecha o painel lateral de fotos
     function togglePhotoPanel() {
         const panel = document.getElementById('content-panel');
         const btnFotos = document.getElementById('btn-fotos');
-        
-        // Se estiver abrindo as fotos, fecha as outras abas internas
         if (!panel.classList.contains('open')) {
             closeAllInnerContent();
             panel.classList.add('open');
             btnFotos.classList.add('btn-active');
         } else {
-            // Se estiver fechando
             panel.classList.remove('open');
             btnFotos.classList.remove('btn-active');
         }
     }
 
-    // Abre/Fecha seções internas (Sobre, Cores, etc) dentro do perfil
     function toggleInnerContent(id) {
         const content = document.getElementById(id);
         const btn = document.getElementById('btn-' + id);
-        const panelCores = document.getElementById('content-panel');
-        const btnFotos = document.getElementById('btn-fotos');
-
-        // Se clicar em outra aba, fecha a galeria lateral se estiver aberta
-        if (panelCores.classList.contains('open')) {
-            panelCores.classList.remove('open');
-            btnFotos.classList.remove('btn-active');
+        if (document.getElementById('content-panel').classList.contains('open')) {
+            togglePhotoPanel();
         }
-
         if (content.style.display === 'block') {
             content.style.display = 'none';
             btn.classList.remove('btn-active');
         } else {
-            closeAllInnerContent(); // Fecha outras que possam estar abertas
+            closeAllInnerContent();
             content.style.display = 'block';
             btn.classList.add('btn-active');
         }
     }
 
-    // --- Lógica da Galeria de Fotos (Zoom) ---
     function openPhotoZoom(element) {
-        const imgSrc = element.querySelector('img').src;
-        const overlay = document.getElementById('photo-zoom-overlay');
-        const zoomedImg = document.getElementById('zoomed-img');
-        zoomedImg.src = imgSrc;
-        overlay.classList.add('open');
+        document.getElementById('zoomed-img').src = element.querySelector('img').src;
+        document.getElementById('photo-zoom-overlay').classList.add('open');
     }
 
-    function closePhotoZoom() {
-        document.getElementById('photo-zoom-overlay').classList.remove('open');
-    }
-
-    // --- Outras Funções (Mantidas e Organizadas) ---
+    function closePhotoZoom() { document.getElementById('photo-zoom-overlay').classList.remove('open'); }
 
     function enterSpace() {
         document.getElementById('entry-page').style.opacity = '0';
@@ -401,7 +299,7 @@
             document.getElementById('entry-page').style.display = 'none';
             document.getElementById('profile-container').style.display = 'block';
         }, 800);
-        player.play(); // Tenta autoplay ao entrar
+        player.play();
     }
 
     function updateCounter() {
@@ -430,62 +328,39 @@
         setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
-    // Segurança contra Ctrl+U e F12
     document.onkeydown = function(e) {
         if ((e.ctrlKey && e.keyCode === 85) || e.keyCode === 123) { showAlert(e); return false; }
     };
 
     function generate50Colors() {
         const grid = document.getElementById('color-grid');
-        const colors = [
-            '#FFFFFF','#F0F0F0','#D3D3D3','#808080','#000000','#FF007F','#FF3399','#FF66B2','#FF99CC','#FFCCE6',
-            '#FF0000','#CC0000','#990000','#FF4D4D','#FF8080','#B3FFB3','#00FF00','#00CC00','#009900','#00FFFF',
-            '#00CCCC','#4DFFFF','#0000FF','#0000CC','#8080FF','#FFFF00','#CCCC00','#FFFF80','#FF00FF','#CC00CC',
-            '#FF80FF','#FFA500','#FF8C00','#FF7F50','#A52A2A','#8B4513','#D2691E','#F4A460','#FFF8DC','#FFE4C4',
-            '#808000','#556B2F','#228B22','#7FFFD4','#4682B4','#191970','#8A2BE2','#4B0082','#708090','#2F4F4F'
-        ];
+        const colors = ['#FFFFFF','#D3D3D3','#808080','#000000','#FF007F','#FF3399','#FF66B2','#FF99CC','#FF0000','#CC0000','#00FF00','#009900','#00FFFF','#0000FF','#FFFF00','#FF00FF','#FFA500','#A52A2A'];
         colors.forEach(c => {
             let b = document.createElement('div');
             b.className = 'color-box';
             b.style.background = c;
-            b.title = 'Copiar: ' + c;
             b.onclick = () => {
                 navigator.clipboard.writeText(c);
                 const toast = document.getElementById('copy-toast');
                 toast.className = "show";
-                setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 1500);
+                setTimeout(() => { toast.className = ""; }, 1500);
             };
             grid.appendChild(b);
         });
     }
 
-    // --- Lógica do Player (Mantida) ---
     const playlist = [
-        { name: "Bon Jovi - Livin on a Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" },
-        { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=nkupjbm3&dl=1" },
-        { name: "Eminem - You Dont Know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=ptuu1xs8&dl=1" },
-        { name: "Disturbed - Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=7q6evvv9&dl=1" }
+        { name: "Bon Jovi", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" },
+        { name: "Desireless", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=nkupjbm3&dl=1" }
     ];
-
     let currentTrack = 0;
     const player = document.getElementById('audio-player');
-    const playBtn = document.getElementById('play-btn');
-
-    function loadTrack(index) {
-        player.src = playlist[index].url;
-        document.getElementById('track-name').innerText = "Música: " + playlist[index].name;
-    }
-
-    function togglePlay() {
-        if (player.paused) { player.play().then(()=> playBtn.innerText = "⏸"); }
-        else { player.pause(); playBtn.innerText = "▶"; }
-    }
-
-    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); playBtn.innerText = "⏸"; }
-    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); playBtn.innerText = "⏸"; }
+    function loadTrack(i) { player.src = playlist[i].url; document.getElementById('track-name').innerText = "Música: " + playlist[i].name; }
+    function togglePlay() { if (player.paused) player.play().then(()=> document.getElementById('play-btn').innerText = "⏸"); else { player.pause(); document.getElementById('play-btn').innerText = "▶"; } }
+    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
     function updateVolume(val) { player.volume = val; }
-    player.addEventListener('ended', nextTrack); // Toca próxima automaticamente
+    loadTrack(0);
 </script>
-
 </body>
 </html>
