@@ -9,7 +9,7 @@
             --neon-pink: #ff007f;
             --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
             --bg-dark: #1a020d;
-            --glass: rgba(43, 3, 20, 0.9);
+            --glass: rgba(43, 3, 20, 0.95);
         }
 
         body, html {
@@ -19,122 +19,94 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado (Sempre Visível) --- */
+        /* --- Fundo Estrelado --- */
         #stars-bg {
             position: fixed; width: 100%; height: 100%; z-index: 1;
             background: radial-gradient(circle at center, #4a0626, #0a0105);
         }
-
         .stars {
             position: absolute; width: 100%; height: 100%;
             background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px);
             background-size: 200px 200px; animation: moveStars 100s linear infinite;
         }
-
         @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
         /* --- Tela de Entrada --- */
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+            z-index: 100; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px);
             transition: opacity 0.5s ease;
         }
-
         .welcome-title {
             font-size: 4rem; font-weight: bold; margin-bottom: 20px;
             background: linear-gradient(to right, #fff, var(--neon-pink), #fff);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 0 10px var(--neon-pink));
         }
-
         .btn-enter {
-            padding: 15px 50px; font-size: 1.5rem; color: white;
-            background: transparent; border: 2px solid var(--neon-pink);
-            border-radius: 50px; cursor: pointer; font-weight: bold;
-            text-transform: uppercase; transition: 0.3s;
-            box-shadow: var(--neon-glow);
+            padding: 15px 50px; font-size: 1.5rem; color: white; background: transparent;
+            border: 2px solid var(--neon-pink); border-radius: 50px; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s; box-shadow: var(--neon-glow);
         }
-        .btn-enter:hover { background: var(--neon-pink); transform: scale(1.1); }
 
         /* --- Interface Principal --- */
         #main-interface {
             display: none; position: relative; z-index: 10;
             display: flex; gap: 20px; align-items: flex-start;
         }
-
         #profile-card {
-            width: 350px; background: var(--glass); border: 2px solid var(--neon-pink);
+            width: 360px; background: var(--glass); border: 2px solid var(--neon-pink);
             border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow);
             text-align: center; backdrop-filter: blur(10px);
         }
-
         #side-panel {
             width: 0; overflow: hidden; background: var(--glass);
-            border-radius: 20px; transition: 0.5s ease-in-out;
-            opacity: 0; backdrop-filter: blur(10px);
+            border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0;
+            backdrop-filter: blur(10px);
         }
-
         #side-panel.open {
-            width: 450px; border: 2px solid var(--neon-pink);
+            width: 480px; border: 2px solid var(--neon-pink);
             box-shadow: var(--neon-glow); padding: 20px; opacity: 1;
         }
 
-        /* --- Botões e Estilo --- */
+        /* --- Menu e Estilo --- */
         .profile-img {
             width: 140px; height: 140px; border-radius: 50%;
             border: 3px solid var(--neon-pink); margin-bottom: 15px;
             box-shadow: var(--neon-glow); object-fit: cover;
         }
-
         .menu-btn {
             display: block; width: 100%; padding: 12px; margin: 8px 0;
             background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink);
             color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
-            text-transform: uppercase; transition: 0.3s;
+            text-transform: uppercase; transition: 0.2s;
         }
+        .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
-        .menu-btn:hover, .menu-btn.active {
-            background: var(--neon-pink); box-shadow: var(--neon-glow);
-        }
+        /* --- Seções de Conteúdo --- */
+        .content-box { display: none; max-height: 50vh; overflow-y: auto; padding-right: 5px; }
+        .content-box::-webkit-scrollbar { width: 4px; }
+        .content-box::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; }
 
-        /* --- Galeria de Fotos --- */
-        .photo-grid {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-        }
+        /* Grade de Cores (200 cores) */
+        #color-list { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+        .c-box { width: 100%; aspect-ratio: 1; border-radius: 3px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
 
-        .photo-grid img {
-            width: 100%; aspect-ratio: 1; object-fit: cover;
-            border-radius: 8px; cursor: pointer; transition: 0.3s;
-            border: 2px solid transparent;
-        }
+        /* Galeria */
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .photo-grid img:hover { border-color: white; transform: scale(1.05); }
 
-        .photo-grid img:hover {
-            border-color: white; transform: scale(1.05); box-shadow: var(--neon-glow);
-        }
-
-        /* Zoom da Foto */
-        #zoom-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center;
-        }
+        /* Zoom e Alertas */
+        #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
         #zoom-overlay img { max-width: 85%; max-height: 85%; border: 3px solid white; border-radius: 10px; }
-
-        /* Outras Seções */
-        .content-box { display: none; animation: fadeIn 0.5s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* Alertas */
-        #alert-box {
-            display: none; position: fixed; top: 20px; background: red;
-            padding: 10px 20px; border-radius: 5px; z-index: 2000;
-        }
+        #alert-box { display: none; position: fixed; top: 20px; background: red; color: white; padding: 10px 20px; border-radius: 5px; z-index: 2000; font-weight: bold; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
-<div id="alert-box">🔒 Acesso Protegido 🔒</div>
-
+<div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
 <div id="stars-bg"><div class="stars"></div></div>
 
 <div id="entry-page">
@@ -142,40 +114,43 @@
     <button class="btn-enter" onclick="start()">Entrar</button>
 </div>
 
-<div id="main-interface" style="display: none;">
+<div id="main-interface">
     
     <div id="profile-card">
-        <h1 style="margin: 0 0 10px 0; color: var(--neon-pink);">Mnna</h1>
+        <h1 style="margin: 0 0 10px 0; color: var(--neon-pink); text-transform: uppercase;">Mnna</h1>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
         <button class="menu-btn" onclick="resetAll()">Home</button>
         <button class="menu-btn" id="btn-sobre" onclick="showContent('sobre')">Sobre Mim</button>
         <button class="menu-btn" id="btn-fotos" onclick="togglePhotos()">Fotos</button>
         <button class="menu-btn" id="btn-xat" onclick="showContent('xat')">Xat Comunidade</button>
-        <button class="menu-btn" id="btn-cores" onclick="showContent('cores')">Cores</button>
+        <button class="menu-btn" id="btn-cores" onclick="showContent('cores')">Tabela de Cores</button>
 
         <div id="sobre" class="content-box">
-            <p style="font-size: 0.9rem; font-style: italic; border-top: 1px solid #333; padding-top: 10px;">
-                "Ela sabe o que quer, ela sabe quem ela é..."
+            <p style="font-size: 0.95rem; font-style: italic; line-height: 1.6; border-top: 1px dashed var(--neon-pink); padding-top: 15px;">
+                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida. Ela aprendeu a seguir em frente, sozinha ou acompanhada. E ela leva a vida assim, sendo quem ela é."
             </p>
         </div>
 
         <div id="xat" class="content-box">
+            <h3 style="color:var(--neon-pink)">Nossos Chats</h3>
             <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none">Xat Tuga</a>
+            <a href="https://xat.com/butecopremium" target="_blank" class="menu-btn" style="text-decoration:none">Buteco Premium</a>
             <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none">Xat Trade</a>
         </div>
 
         <div id="cores" class="content-box">
-            <div id="color-list" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top:10px;"></div>
+            <p style="font-size: 0.8rem; margin-bottom: 5px;">Clique para copiar o código HEX</p>
+            <div id="color-list"></div>
         </div>
 
-        <div style="margin-top: 20px; font-family: monospace; color: var(--neon-pink);">
+        <div style="margin-top: 20px; font-family: monospace; color: var(--neon-pink); font-size: 0.9rem;">
             VISITAS: <span id="v-count">00000</span>
         </div>
     </div>
 
     <div id="side-panel">
-        <h2 style="text-align:center; color: var(--neon-pink);">Galeria</h2>
+        <h2 style="text-align:center; color: var(--neon-pink); margin-top: 0;">Galeria</h2>
         <div class="photo-grid">
             <img src="https://imgur.com/0h6IQIZ.png" onclick="zoom(this)">
             <img src="https://imgur.com/YDKnxJi.png" onclick="zoom(this)">
@@ -184,7 +159,7 @@
             <img src="https://imgur.com/HCn75BA.png" onclick="zoom(this)">
             <img src="https://imgur.com/QvXRzEF.png" onclick="zoom(this)">
         </div>
-        <button class="menu-btn" style="margin-top: 20px;" onclick="togglePhotos()">Fechar</button>
+        <button class="menu-btn" style="margin-top: 20px;" onclick="togglePhotos()">Fechar Galeria</button>
     </div>
 
 </div>
@@ -192,7 +167,6 @@
 <div id="zoom-overlay" onclick="this.style.display='none'"><img src="" id="img-large"></div>
 
 <script>
-    // Iniciar Interface
     function start() {
         document.getElementById('entry-page').style.opacity = '0';
         setTimeout(() => {
@@ -200,16 +174,15 @@
             document.getElementById('main-interface').style.display = 'flex';
         }, 500);
         updateCounter();
+        generate200Colors();
     }
 
-    // Reset/Home
     function resetAll() {
         document.querySelectorAll('.content-box').forEach(b => b.style.display = 'none');
         document.getElementById('side-panel').classList.remove('open');
         document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
     }
 
-    // Alternar Fotos Lateral
     function togglePhotos() {
         const panel = document.getElementById('side-panel');
         const btn = document.getElementById('btn-fotos');
@@ -223,20 +196,17 @@
         }
     }
 
-    // Mostrar Conteúdo Interno
     function showContent(id) {
         resetAll();
         document.getElementById(id).style.display = 'block';
         document.getElementById('btn-' + id).classList.add('active');
     }
 
-    // Zoom
     function zoom(img) {
         document.getElementById('img-large').src = img.src;
         document.getElementById('zoom-overlay').style.display = 'flex';
     }
 
-    // Contador
     function updateCounter() {
         let c = localStorage.getItem('mnna_v') || 0;
         c++;
@@ -244,22 +214,42 @@
         document.getElementById('v-count').innerText = c.toString().padStart(5, '0');
     }
 
-    // Cores
-    const colors = ['#FF007F', '#FFFFFF', '#00FF00', '#FFFF00', '#00FFFF', '#FF0000', '#FFA500', '#800080', '#0000FF', '#C0C0C0', '#808080', '#000000'];
-    const grid = document.getElementById('color-list');
-    colors.forEach(clr => {
-        let d = document.createElement('div');
-        d.style.width = '30px'; d.style.height = '30px'; d.style.background = clr;
-        d.style.cursor = 'pointer'; d.style.borderRadius = '4px';
-        d.onclick = () => { navigator.clipboard.writeText(clr); alert('Copiado: ' + clr); };
-        grid.appendChild(d);
-    });
+    function generate200Colors() {
+        const grid = document.getElementById('color-list');
+        grid.innerHTML = '';
+        for (let i = 0; i < 200; i++) {
+            const h = Math.floor((i / 200) * 360);
+            const s = 70 + Math.random() * 30;
+            const l = 40 + Math.random() * 40;
+            const hex = hslToHex(h, s, l);
+            let d = document.createElement('div');
+            d.className = 'c-box';
+            d.style.background = hex;
+            d.title = hex;
+            d.onclick = () => { 
+                navigator.clipboard.writeText(hex);
+                alert('Cor ' + hex + ' copiada!');
+            };
+            grid.appendChild(d);
+        }
+    }
 
-    // Bloqueios
+    function hslToHex(h, s, l) {
+        l /= 100;
+        const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+    }
+
     document.addEventListener('keydown', e => {
-        if(e.ctrlKey && (e.key === 'u' || e.key === 'i') || e.key === 'F12') {
-            document.getElementById('alert-box').style.display = 'block';
-            setTimeout(() => document.getElementById('alert-box').style.display = 'none', 2000);
+        if((e.ctrlKey && (e.key === 'u' || e.key === 'i')) || e.key === 'F12') {
+            const ab = document.getElementById('alert-box');
+            ab.style.display = 'block';
+            setTimeout(() => ab.style.display = 'none', 2000);
             e.preventDefault();
         }
     });
