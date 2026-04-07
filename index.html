@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xatSpace - Mnna</title>
+    <title>xatSpace - Miel</title>
     <style>
         /* --- Configurações Globais --- */
         :root {
@@ -47,20 +47,27 @@
             to { background-position: 1000px 1000px; }
         }
 
-        /* --- Efeito de Corações e Gatinhos Voando --- */
-        .floating-element {
+        /* --- Efeito de CORAÇÕES NEON GLITTER --- */
+        .floating-heart {
             position: fixed; z-index: 1; pointer-events: none;
-            font-size: 22px; animation: flyUp 7s linear infinite; opacity: 0;
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-pink), 0 0 15px var(--neon-pink), 0 0 20px var(--neon-pink);
+            animation: flyUpHeart 7s linear infinite, heartPulse 1.5s ease-in-out infinite alternate;
+            opacity: 0;
         }
 
-        @keyframes flyUp {
+        @keyframes flyUpHeart {
             0% { transform: translateY(110vh) translateX(0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.8; }
-            90% { opacity: 0.8; }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
             100% { transform: translateY(-15vh) translateX(50px) rotate(360deg); opacity: 0; }
         }
 
-        /* --- Efeito Gradiente Animado --- */
+        @keyframes heartPulse {
+            from { transform: scale(1); text-shadow: 0 0 5px #fff, 0 0 10px var(--neon-pink); opacity: 0.8; }
+            to { transform: scale(1.1); text-shadow: 0 0 10px #fff, 0 0 25px var(--neon-pink); opacity: 1; }
+        }
+
         .animated-gradient {
             background: linear-gradient(270deg, #ffffff, #ff007f, #ffffff, #ff007f);
             background-size: 400% 400%;
@@ -76,7 +83,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Estilos da Interface --- */
+        /* --- Interface --- */
         #main-wrapper {
             position: relative; z-index: 5; display: flex;
             justify-content: center; align-items: center; width: 100%; height: 100%;
@@ -91,20 +98,16 @@
         /* --- Página de Entrada --- */
         #entry-page {
             position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #5e0b32, #1a020d);
+            background: transparent;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             z-index: 20; transition: opacity 0.8s ease;
         }
 
-        .welcome-title {
-            font-size: 3rem; margin-bottom: 30px; text-transform: uppercase;
-            filter: drop-shadow(0 0 10px var(--neon-pink));
-        }
-
         .btn-enter {
-            padding: 15px 40px; font-size: 1.2rem; color: white; background: transparent;
+            padding: 15px 40px; font-size: 1.2rem; color: white; background: rgba(43, 3, 20, 0.6);
             border: 2px solid var(--neon-pink); border-radius: 50px; cursor: pointer;
             text-transform: uppercase; font-weight: bold; animation: pulse-glow 1.5s infinite alternate;
+            backdrop-filter: blur(5px);
         }
 
         @keyframes pulse-glow {
@@ -112,9 +115,51 @@
             to { box-shadow: 0 0 30px var(--neon-pink), 0 0 10px #fff; }
         }
 
-        .profile-img {
-            width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--neon-pink);
-            object-fit: cover; margin-bottom: 20px; box-shadow: var(--neon-glow);
+        /* --- Fotos Ajustadas --- */
+        #fotos {
+            position: absolute;
+            left: 400px; /* Posiciona ao lado direito do container principal */
+            width: 300px;
+            text-align: center;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            padding: 10px;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid transparent;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .photo-grid img:hover {
+            border-color: var(--neon-pink);
+            box-shadow: var(--neon-glow);
+            transform: scale(1.05);
+        }
+
+        /* Efeito de Zoom no Clique */
+        .photo-grid img:active {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            z-index: 1000;
+            object-fit: contain;
+            width: auto;
+            height: auto;
+            max-width: 90vw;
+            max-height: 90vh;
+            border: none;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         .btn {
@@ -126,12 +171,8 @@
 
         .btn:hover { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
-        .content-section { display: none; max-height: 55vh; overflow-y: auto; padding-right: 5px; }
-        .content-section::-webkit-scrollbar { width: 4px; }
-        .content-section::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; }
-
-        .photo-grid img { width: 100%; border-radius: 10px; margin-bottom: 10px; border: 1px solid var(--neon-pink); }
-
+        .content-section { display: none; max-height: 60vh; overflow-y: auto; }
+        
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
 
         #custom-alert {
@@ -150,14 +191,11 @@
             visibility: hidden; min-width: 150px; background-color: var(--neon-pink);
             color: #fff; text-align: center; border-radius: 20px; padding: 8px;
             position: fixed; z-index: 3000; left: 50%; bottom: 30px;
-            transform: translateX(-50%); font-weight: bold; box-shadow: 0 0 10px #000;
+            transform: translateX(-50%); font-weight: bold;
         }
         #copy-toast.show { visibility: visible; animation: fadeInOut 1.5s; }
 
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            20%, 80% { opacity: 1; }
-        }
+        @keyframes fadeInOut { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
     </style>
 </head>
 <body oncontextmenu="showAlert(event)">
@@ -170,7 +208,7 @@
 </div>
 
 <div id="entry-page">
-    <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <div class="welcome-title animated-gradient" style="font-size: 3rem; margin-bottom: 30px;">Bienvenidos</div>
     <button class="btn-enter" onclick="enterSpace()">Entrar</button>
 </div>
 
@@ -178,7 +216,7 @@
     <div id="main-container">
         <div id="home">
             <div class="animated-gradient" style="font-size: 2.5rem; margin-bottom: 10px;">Mnna</div>
-            <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
+            <img src="https://imgur.com/0h6IQIZ.png" style="width: 150px; height: 150px; border-radius: 50%; border: 3px solid var(--neon-pink); object-fit: cover; margin-bottom: 20px; box-shadow: var(--neon-glow);">
             
             <button class="btn" onclick="showSection('sobre')">Sobre Mim</button>
             <button class="btn" onclick="showSection('fotos')">Fotos</button>
@@ -193,12 +231,12 @@
         <div id="sobre" class="content-section">
             <button class="btn" onclick="showSection('home')">Voltar</button>
             <h2 class="animated-gradient">Sobre Mim</h2>
-            <p style="font-style: italic;">"Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida. Ela aprendeu a seguir em frente, sozinha ou acompanhada. E ela leva a vida assim, sendo quem ela é."</p>
+            <p style="font-style: italic;">"Ela sabe o que quer, ela sabe quem ela é..."</p>
         </div>
 
         <div id="fotos" class="content-section">
-            <button class="btn" onclick="showSection('home')">Voltar</button>
-            <h2 class="animated-gradient">Fotos</h2>
+            <button class="btn" onclick="showSection('home')">Fechar Fotos</button>
+            <h2 class="animated-gradient">Galeria</h2>
             <div class="photo-grid">
                 <img src="https://imgur.com/0h6IQIZ.png">
                 <img src="https://imgur.com/YDKnxJi.png">
@@ -214,13 +252,12 @@
             <h2 class="animated-gradient">Comunidade</h2>
             <a href="https://xat.com/tuga" target="_blank" class="btn">Xat Tuga</a>
             <a href="https://xat.com/butecopremium" target="_blank" class="btn">Xat ButecoPremium</a>
-            <a href="https://xat.com/trade" target="_blank" class="btn">Xat Trade</a>
         </div>
 
         <div id="cores" class="content-section">
             <button class="btn" onclick="showSection('home')">Voltar</button>
             <h2 class="animated-gradient">Cores</h2>
-            <div id="color-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; padding: 5px;"></div>
+            <div id="color-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px;"></div>
         </div>
 
         <div class="player-container">
@@ -231,77 +268,54 @@
                 <button class="btn" style="width: 60px;" onclick="togglePlay()" id="play-btn">▶</button>
                 <button class="btn" style="width: 40px;" onclick="nextTrack()">⏭</button>
             </div>
-            <input type="range" style="width: 100%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
         </div>
     </div>
 </div>
 
 <script>
-    // Contador
     let count = localStorage.getItem('visit_count_mnna') || 0;
     count++;
     localStorage.setItem('visit_count_mnna', count);
     document.getElementById('count').innerText = count.toString().padStart(5, '0');
 
-    // Efeitos Visuais
     const container = document.getElementById('stars-container');
-    const floaters = ['🐱', '💖', '✨', '💕', '🐾'];
+    const heartTypes = ['💖', '💗', '💓', '💝', '💕'];
 
     function createEffects() {
-        // Glitter
         for (let i = 0; i < 40; i++) {
             const g = document.createElement('div');
             g.className = 'glitter';
             g.style.left = Math.random() * 100 + 'vw';
             g.style.top = Math.random() * 100 + 'vh';
-            g.style.animationDelay = Math.random() * 5 + 's';
             container.appendChild(g);
         }
-        
-        // Elementos Voando
         setInterval(() => {
-            const el = document.createElement('div');
-            el.className = 'floating-element';
-            el.innerText = floaters[Math.floor(Math.random() * floaters.length)];
-            el.style.left = Math.random() * 100 + 'vw';
-            el.style.fontSize = (Math.random() * 10 + 15) + 'px';
-            container.appendChild(el);
-            setTimeout(() => el.remove(), 7000);
-        }, 500);
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 12 + 18) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 5) + 's, 1.5s';
+            container.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
+        }, 600);
     }
 
-    // Tabela de 200 Cores
     function generate200Colors() {
         const grid = document.getElementById('color-grid');
         for (let i = 0; i < 200; i++) {
-            const h = Math.floor((i / 200) * 360);
-            const s = 70 + Math.random() * 30;
-            const l = 40 + Math.random() * 40;
-            const hex = hslToHex(h, s, l);
-            
+            const hex = "#" + Math.floor(Math.random()*16777215).toString(16).toUpperCase();
             const b = document.createElement('div');
             b.className = 'color-box';
             b.style.background = hex;
-            b.title = hex;
             b.onclick = () => {
                 navigator.clipboard.writeText(hex);
                 const toast = document.getElementById('copy-toast');
                 toast.className = "show";
-                setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 1500);
+                setTimeout(() => { toast.className = ""; }, 1500);
             };
             grid.appendChild(b);
         }
-    }
-
-    function hslToHex(h, s, l) {
-        l /= 100;
-        const a = s * Math.min(l, 1 - l) / 100;
-        const f = n => {
-            const k = (n + h / 30) % 12;
-            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-            return Math.round(255 * color).toString(16).padStart(2, '0');
-        };
-        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
     }
 
     function enterSpace() {
@@ -310,12 +324,13 @@
             document.getElementById('entry-page').style.display = 'none';
             document.getElementById('main-container').style.display = 'block';
         }, 800);
-        player.play();
     }
 
     function showSection(id) {
-        document.querySelectorAll('#main-container > div:not(.player-container)').forEach(div => div.style.display = 'none');
+        document.querySelectorAll('.content-section, #home').forEach(div => div.style.display = 'none');
         document.getElementById(id).style.display = 'block';
+        if(id !== 'home') document.getElementById('home').style.display = 'none';
+        else document.getElementById('home').style.display = 'block';
     }
 
     function showAlert(e) {
@@ -325,35 +340,13 @@
         setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
-    document.onkeydown = function(e) {
-        if ((e.ctrlKey && e.keyCode === 85) || e.keyCode === 123) { showAlert(e); return false; }
-    };
-
-    // Playlist
     const playlist = [
-        { name: "Bon Jovi", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" },
-        { name: "Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=nkupjbm3&dl=1" },
-        { name: "Eminem", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=ptuu1xs8&dl=1" },
-        { name: "Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=7q6evvv9&dl=1" }
+        { name: "Bon Jovi", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" }
     ];
-
     let currentTrack = 0;
     const player = document.getElementById('audio-player');
-    const playBtn = document.getElementById('play-btn');
-
-    function loadTrack(index) {
-        player.src = playlist[index].url;
-        document.getElementById('track-name').innerText = "Música: " + playlist[index].name;
-    }
-
-    function togglePlay() {
-        if (player.paused) { player.play(); playBtn.innerText = "⏸"; }
-        else { player.pause(); playBtn.innerText = "▶"; }
-    }
-
-    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
-    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
-    function updateVolume(val) { player.volume = val; }
+    function loadTrack(i) { player.src = playlist[i].url; document.getElementById('track-name').innerText = "Música: " + playlist[i].name; }
+    function togglePlay() { if (player.paused) player.play(); else player.pause(); }
 
     createEffects();
     generate200Colors();
