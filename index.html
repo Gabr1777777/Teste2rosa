@@ -54,7 +54,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Notificação de Cópia (Nova) --- */
+        /* --- Notificação de Cópia --- */
         #copy-toast {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
             background: var(--neon-pink); color: white; padding: 15px 30px;
@@ -102,14 +102,22 @@
             box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
         }
 
-        /* --- Botões e Estilos --- */
         .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; box-shadow: var(--neon-glow); object-fit: cover; }
         .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
         .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
         .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
-        #color-list { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-        .c-box { width: 100%; aspect-ratio: 1; border-radius: 3px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* --- Tabela de Cores Otimizada --- */
+        #color-list { 
+            display: grid; 
+            grid-template-columns: repeat(10, 1fr); 
+            gap: 2px; 
+            padding: 5px;
+        }
+        .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
+        .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
+
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
 
@@ -119,7 +127,6 @@
         .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
         .player-btn:hover { background: var(--neon-pink); }
 
-        /* --- Alerta de Copyright --- */
         #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
     </style>
 </head>
@@ -188,7 +195,7 @@
         </div>
 
         <div id="cores-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Tabela de Cores</h2>
+            <h2 class="animated-gradient" style="text-align:center;">Tabela Completa</h2>
             <div id="color-list"></div>
         </div>
 
@@ -205,18 +212,16 @@
     const player = document.getElementById('audio-player');
 
     function start() {
-        const ep = document.getElementById('entry-page');
-        const mi = document.getElementById('main-interface');
-        ep.style.opacity = '0';
+        document.getElementById('entry-page').style.opacity = '0';
         setTimeout(() => {
-            ep.style.visibility = 'hidden';
-            mi.style.visibility = 'visible';
-            mi.style.opacity = '1';
+            document.getElementById('entry-page').style.visibility = 'hidden';
+            document.getElementById('main-interface').style.visibility = 'visible';
+            document.getElementById('main-interface').style.opacity = '1';
         }, 800);
         loadTrack(0);
         player.play();
         updateCounter();
-        generate200Colors();
+        generateAllColors();
         createTwinklingStars();
     }
 
@@ -241,20 +246,27 @@
         setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
-    function generate200Colors() {
+    /* --- Gerador de Espectro Completo --- */
+    function generateAllColors() {
         const grid = document.getElementById('color-list');
-        for (let i = 0; i < 200; i++) {
-            const h = Math.floor((i / 200) * 360);
-            const hex = hslToHex(h, 70, 50);
-            let d = document.createElement('div');
-            d.className = 'c-box'; d.style.background = hex;
-            d.onclick = () => { 
-                navigator.clipboard.writeText(hex);
-                const toast = document.getElementById('copy-toast');
-                toast.style.display = 'block';
-                setTimeout(() => { toast.style.display = 'none'; }, 1200);
-            };
-            grid.appendChild(d);
+        grid.innerHTML = '';
+        
+        // Loop de matizes (0 a 360) e níveis de brilho/saturação para cobrir tudo
+        for (let h = 0; h <= 360; h += 8) {
+            for (let l = 20; l <= 80; l += 15) {
+                const hex = hslToHex(h, 85, l);
+                let d = document.createElement('div');
+                d.className = 'c-box';
+                d.style.background = hex;
+                d.title = hex;
+                d.onclick = () => { 
+                    navigator.clipboard.writeText(hex);
+                    const toast = document.getElementById('copy-toast');
+                    toast.style.display = 'block';
+                    setTimeout(() => { toast.style.display = 'none'; }, 1200);
+                };
+                grid.appendChild(d);
+            }
         }
     }
 
@@ -265,9 +277,8 @@
     }
 
     function openPanel(contentId) {
-        const panel = document.getElementById('side-panel');
         resetInterface();
-        panel.classList.add('open');
+        document.getElementById('side-panel').classList.add('open');
         document.getElementById(contentId).style.display = 'block';
         document.getElementById('btn-' + contentId.replace('-content', '')).classList.add('active');
     }
