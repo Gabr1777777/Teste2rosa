@@ -112,25 +112,34 @@
         .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
         .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
 
-        /* ESTILO DAS FOTOS COM NEON E ZOOM */
+        /* --- ESTILO DAS FOTOS --- */
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .photo-grid img { 
             width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
             cursor: pointer; border: 2px solid transparent; transition: 0.4s ease; 
         }
+
+        /* Efeito neon ao passar o mouse */
         .photo-grid img:hover { 
             border-color: var(--soft-pink); 
-            box-shadow: 0 0 15px var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
             transform: scale(1.05);
         }
-        /* Classe ativada no clique para aumentar */
-        .photo-grid img.zoom {
-            grid-column: span 3;
+
+        /* Efeito ao clicar: Aumenta fora da lista (Overlay) */
+        .photo-grid img:active, .photo-grid img.expanded {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3.5);
+            z-index: 9999;
+            width: auto;
+            max-width: 80vw;
+            max-height: 80vh;
+            border: 2px solid white;
+            box-shadow: 0 0 50px rgba(255, 0, 127, 0.8);
+            object-fit: contain;
             aspect-ratio: auto;
-            transform: scale(1);
-            box-shadow: var(--neon-glow);
-            border-color: white;
-            z-index: 20;
         }
 
         /* --- Rádio --- */
@@ -191,12 +200,12 @@
         <div id="fotos-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
             <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png" onclick="amplify(this)">
-                <img src="https://imgur.com/YDKnxJi.png" onclick="amplify(this)">
-                <img src="https://imgur.com/LSZOs8Q.png" onclick="amplify(this)">
-                <img src="https://imgur.com/BGULIuI.png" onclick="amplify(this)">
-                <img src="https://imgur.com/HCn75BA.png" onclick="amplify(this)">
-                <img src="https://imgur.com/QvXRzEF.png" onclick="amplify(this)">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="toggleZoom(this)">
             </div>
         </div>
 
@@ -286,8 +295,7 @@
         document.getElementById('side-panel').classList.remove('open');
         document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
         document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-        // Remove zoom de todas as fotos ao fechar
-        document.querySelectorAll('.photo-grid img').forEach(img => img.classList.remove('zoom'));
+        document.querySelectorAll('.photo-grid img').forEach(img => img.classList.remove('expanded'));
     }
 
     function openPanel(id) {
@@ -302,11 +310,9 @@
         if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
     }
 
-    /* FUNÇÃO PARA AUMENTAR A FOTO */
-    function amplify(img) {
-        const isZoomed = img.classList.contains('zoom');
-        document.querySelectorAll('.photo-grid img').forEach(i => i.classList.remove('zoom'));
-        if (!isZoomed) img.classList.add('zoom');
+    /* FUNÇÃO DE ZOOM */
+    function toggleZoom(img) {
+        img.classList.toggle('expanded');
     }
 
     function createTwinklingStars() {
