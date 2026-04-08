@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xatSpace - Name</title>
+    <title>xatSpace - WRS</title>
     <style>
         :root {
             --neon-pink: #ff007f;
@@ -22,40 +22,26 @@
             user-select: none;
         }
 
-        /* --- Efeito de Rastro de Cauda do Mouse (Comet Trail) --- */
+        /* --- Efeito de Rastro de Cauda do Mouse --- */
         .cursor-trail {
             position: fixed;
             top: 0; left: 0;
-            width: 12px;  /* Tamanho inicial da ponta */
+            width: 12px;
             height: 12px;
-            background: white; /* Cor da ponta */
+            background: white;
             box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
             border-radius: 50%;
             pointer-events: none;
             z-index: 99999;
-            transform: translate(-50%, -50%); /* Centraliza no ponteiro */
+            transform: translate(-50%, -50%);
             opacity: 1;
             transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
         }
 
         /* --- Custom Scrollbar Neon --- */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 0, 127, 0.05);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--neon-pink);
-            border-radius: 10px;
-            box-shadow: 0 0 10px var(--neon-pink);
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--soft-pink);
-            box-shadow: 0 0 15px var(--soft-pink);
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 0, 127, 0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; box-shadow: 0 0 10px var(--neon-pink); }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -64,24 +50,11 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado (Global) --- */
-        #stars-bg {
-            position: fixed; width: 100%; height: 100%; z-index: 1;
-            background: radial-gradient(circle at center, #2a0314, #000000);
-        }
-        .stars {
-            position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px);
-            background-size: 200px 200px; animation: moveStars 100s linear infinite;
-        }
-        .twinkle {
-            position: absolute; width: 2px; height: 2px; background: white;
-            border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out;
-        }
-        @keyframes flash {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; }
-        }
+        /* --- Fundo Estrelado --- */
+        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #2a0314, #000000); }
+        .stars { position: absolute; width: 100%; height: 100%; background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px); background-size: 200px 200px; animation: moveStars 100s linear infinite; }
+        .twinkle { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out; }
+        @keyframes flash { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; } }
         @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
         /* --- Efeito Gradiente Animado --- */
@@ -92,11 +65,7 @@
             -webkit-text-fill-color: transparent;
             animation: gradientMove 5s ease infinite;
         }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         #copy-toast {
             display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
@@ -109,118 +78,75 @@
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; 
-            background-color: var(--bg-entry);
+            z-index: 100; background-color: var(--bg-entry);
             transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .welcome-title {
-            font-size: 5rem; font-weight: bold; margin-bottom: 25px;
-            font-family: 'Brush Script MT', cursive, sans-serif;
-            text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
-            position: relative; z-index: 101;
-        }
-        
-        .btn-enter {
-            padding: 15px 60px; font-size: 1.5rem; 
-            color: white; 
-            background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%);
-            background-size: 200% auto;
-            border: 2px solid var(--white-pink); border-radius: 50px; cursor: pointer;
-            text-transform: uppercase; 
-            box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white;
-            font-weight: bold; letter-spacing: 2px;
-            position: relative; z-index: 101;
-            animation: gradientMoveButton 2s linear infinite;
-            transition: transform 0.3s;
-        }
-
-        .btn-enter:active { transform: scale(0.95); }
-
-        @keyframes gradientMoveButton {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 200% 50%; }
-        }
+        .welcome-title { font-size: 5rem; font-weight: bold; margin-bottom: 25px; font-family: 'Brush Script MT', cursive, sans-serif; text-shadow: 0 0 20px rgba(255, 102, 178, 0.4); }
+        .btn-enter { padding: 15px 60px; font-size: 1.5rem; color: white; background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%); background-size: 200% auto; border: 2px solid var(--white-pink); border-radius: 50px; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white; font-weight: bold; letter-spacing: 2px; animation: gradientMoveButton 2s linear infinite; transition: transform 0.3s; }
+        @keyframes gradientMoveButton { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
 
         /* --- Interface Principal --- */
-        #main-interface {
-            visibility: hidden; opacity: 0; position: relative; z-index: 10;
-            display: flex; gap: 20px; align-items: flex-start;
-            transition: opacity 1s ease;
-        }
-        #profile-card {
-            width: 360px; background: var(--glass); border: 2px solid var(--neon-pink);
-            border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow);
-            text-align: center; backdrop-filter: blur(10px);
-        }
-        #side-panel {
-            width: 0; overflow: hidden; background: var(--glass);
-            border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0;
-            backdrop-filter: blur(10px);
-        }
-        #side-panel.open {
-            width: 480px; border: 2px solid var(--neon-pink);
-            box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
-        }
+        #main-interface { visibility: hidden; opacity: 0; position: relative; z-index: 10; display: flex; gap: 20px; align-items: flex-start; transition: opacity 1s ease; }
+        #profile-card { width: 360px; background: var(--glass); border: 2px solid var(--neon-pink); border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow); text-align: center; backdrop-filter: blur(10px); }
+        #side-panel { width: 0; overflow: hidden; background: var(--glass); border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0; backdrop-filter: blur(10px); }
+        #side-panel.open { width: 480px; border: 2px solid var(--neon-pink); box-shadow: var(--neon-glow); padding: 25px; opacity: 1; }
 
         .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; box-shadow: var(--neon-glow); object-fit: cover; }
         .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
         .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
         .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
-        
-        #color-list { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; padding: 5px; }
-        .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
-        .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
-
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .photo-grid img { 
-            width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
-            cursor: pointer; border: 2px solid transparent; transition: 0.3s; 
-        }
-        .photo-grid img:hover { 
-            border-color: var(--neon-pink); 
-            box-shadow: 0 0 15px var(--neon-pink);
-            transform: scale(1.05);
-        }
-
-        #photo-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9); z-index: 1000;
-            justify-content: center; align-items: center; cursor: pointer;
-        }
-        #photo-modal img {
-            max-width: 85%; max-height: 85%; border: 3px solid var(--neon-pink);
-            border-radius: 15px; box-shadow: var(--neon-glow);
-            cursor: default;
-        }
+        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .photo-grid img:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.05); }
 
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
         .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .player-btn:hover { background: var(--neon-pink); }
+        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 
         #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
+
+        /* --- Estilo do Novo Contador (Canto Inferior Esquerdo) --- */
+        #visit-counter {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100001;
+            background: rgba(10, 1, 5, 0.9);
+            border: 1px solid var(--neon-pink);
+            padding: 8px 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--neon-glow);
+            backdrop-filter: blur(5px);
+        }
+        #visit-counter .label { color: var(--neon-pink); font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2px; }
+        #count-number { color: #fff; font-size: 20px; font-family: 'Courier New', monospace; text-shadow: 0 0 5px var(--neon-pink); }
     </style>
 </head>
 <body oncontextmenu="handleRightClick(event)">
 
 <div id="copy-toast">CÓDIGO COPIADO</div>
-<div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
+<div id="alert-box">🔒 Copyright - WRS 🔒</div>
 
 <div id="stars-bg"><div class="stars"></div></div>
 
-<div id="photo-modal" onclick="this.style.display='none'">
-    <img id="modal-img" src="" onclick="event.stopPropagation()">
+<div id="visit-counter">
+    <span class="label">Visitas</span>
+    <span id="count-number">00000</span>
 </div>
 
 <div id="entry-page">
-    <div id="entry-stars" class="stars"></div> <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <div id="entry-stars" class="stars"></div> 
+    <div class="welcome-title animated-gradient">Bienvenidos</div>
     <button class="btn-enter" onclick="start()">Entrar</button>
 </div>
 
 <div id="main-interface">
     <div id="profile-card">
-        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Name</h1>
+        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">WRS</h1>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
         <button class="menu-btn" onclick="resetInterface()">Home</button>
@@ -230,7 +156,7 @@
         <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
 
         <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Name Player</div>
+            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Carregando...</div>
             <audio id="audio-player"></audio>
             <div class="player-controls">
                 <button class="player-btn" onclick="prevTrack()">⏮</button>
@@ -239,107 +165,55 @@
             </div>
             <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
         </div>
-
-        <div style="margin-top: 15px; font-family: monospace; color: var(--neon-pink); font-size: 0.8rem;">
-            VISITAS: <span id="v-count">00000</span>
-        </div>
     </div>
 
     <div id="side-panel">
         <div id="sobre-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
             <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
-                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida."
+                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha."
             </p>
         </div>
-
         <div id="fotos-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
             <div class="photo-grid">
                 <img src="https://imgur.com/0h6IQIZ.png" onclick="openPhoto(this.src)">
                 <img src="https://imgur.com/YDKnxJi.png" onclick="openPhoto(this.src)">
-                <img src="https://imgur.com/LSZOs8Q.png" onclick="openPhoto(this.src)">
-                <img src="https://imgur.com/BGULIuI.png" onclick="openPhoto(this.src)">
-                <img src="https://imgur.com/HCn75BA.png" onclick="openPhoto(this.src)">
-                <img src="https://imgur.com/QvXRzEF.png" onclick="openPhoto(this.src)">
             </div>
         </div>
-
         <div id="xat-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
-            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Tuga</a>
-            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Trade</a>
-            <a href="https://xat.com/ajuda" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Ajuda</a>
+             <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
+             <a href="https://xat.com/tuga" target="_blank" class="menu-btn">Xat Tuga</a>
         </div>
-
         <div id="cores-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Tabela Completa</h2>
-            <div id="color-list"></div>
+            <h2 class="animated-gradient" style="text-align:center;">Tabela</h2>
+            <div id="color-list" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px;"></div>
         </div>
-
         <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
     </div>
 </div>
 
 <script>
-      const playlist = [
-            { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
-            { name: "The Sound of Silence – Rising to the Night", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" },
-            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=0yenl8sh&raw=1" }
-        ];
+    const playlist = [
+        { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
+        { name: "The Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" }
+    ];
     let currentTrack = 0;
     const player = document.getElementById('audio-player');
 
-    // Inicializa estrelas na interface principal e na tela de entrada
-    createTwinklingStars('stars-bg');
-    createTwinklingStars('entry-stars');
+    // Lógica do Contador API (Chave alterada para zerar)
+    const ID_VISITAS = "galeria_wrs_v2_2026"; 
 
-    /* --- LÓGICA DO RASTRO DE CAUDA (COMET TRAIL) --- */
-    const trailSegments = [];
-    const maxSegments = 20; // Tamanho da cauda
-
-    document.addEventListener('mousemove', (e) => {
-        // Cria a ponta
-        const segment = document.createElement('div');
-        segment.className = 'cursor-trail';
-        segment.style.left = e.clientX + 'px';
-        segment.style.top = e.clientY + 'px';
-        document.body.appendChild(segment);
-        trailSegments.push(segment);
-
-        // Remove segmentos antigos
-        while (trailSegments.length > maxSegments) {
-            trailSegments.shift().remove();
+    async function carregarContadores() {
+        try {
+            const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
+            const dataV = await resV.json();
+            const valor = dataV.count || dataV.value || 0;
+            document.getElementById('count-number').innerText = valor.toString().padStart(5, '0');
+        } catch(e) {
+            document.getElementById('count-number').innerText = "00001";
         }
-
-        // Atualiza segmentos existentes para criar o rastro
-        for (let i = 0; i < trailSegments.length; i++) {
-            const seg = trailSegments[i];
-            const ratio = i / trailSegments.length; // 0 (antigo) a 1 (novo)
-            
-            // Decalque de tamanho e opacidade
-            const size = 12 * ratio; 
-            seg.style.width = size + 'px';
-            seg.style.height = size + 'px';
-            seg.style.opacity = ratio;
-
-            // Decalque de cor (Branco na ponta -> Rosa na cauda)
-            if (ratio < 0.3) {
-                seg.style.background = 'white';
-            } else if (ratio < 0.6) {
-                seg.style.background = 'var(--white-pink)';
-            } else {
-                seg.style.background = 'var(--neon-pink)';
-            }
-        }
-    });
-
-    // Remove rastro quando o mouse sai da janela
-    document.addEventListener('mouseout', () => {
-        while (trailSegments.length > 0) {
-            trailSegments.shift().remove();
-        }
-    });
+    }
 
     function start() {
         document.getElementById('entry-page').style.opacity = '0';
@@ -350,107 +224,64 @@
         }, 800);
         loadTrack(0);
         player.play();
-        updateCounter();
+        carregarContadores();
         generateMasterTable();
     }
 
-    function loadTrack(i) {
-        player.src = playlist[i].url;
-        document.getElementById('track-name').innerText = "Música: " + playlist[i].name;
-    }
+    // --- Rastro do Mouse ---
+    const trailSegments = [];
+    document.addEventListener('mousemove', (e) => {
+        const segment = document.createElement('div');
+        segment.className = 'cursor-trail';
+        segment.style.left = e.clientX + 'px';
+        segment.style.top = e.clientY + 'px';
+        document.body.appendChild(segment);
+        trailSegments.push(segment);
+        if (trailSegments.length > 20) trailSegments.shift().remove();
+        trailSegments.forEach((seg, i) => {
+            const ratio = i / trailSegments.length;
+            seg.style.width = (12 * ratio) + 'px';
+            seg.style.height = (12 * ratio) + 'px';
+            seg.style.opacity = ratio;
+        });
+    });
 
-    function togglePlay() {
-        if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; }
-        else { player.pause(); document.getElementById('play-btn').innerText = "▶"; }
-    }
-
+    // --- Funções Auxiliares ---
+    function loadTrack(i) { player.src = playlist[i].url; document.getElementById('track-name').innerText = "Música: " + playlist[i].name; }
+    function togglePlay() { if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; } else { player.pause(); document.getElementById('play-btn').innerText = "▶"; } }
     function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
     function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
     function updateVolume(val) { player.volume = val; }
+    function handleRightClick(e) { e.preventDefault(); const box = document.getElementById('alert-box'); box.style.display = 'block'; setTimeout(() => box.style.display='none', 2000); }
+    function resetInterface() { document.getElementById('side-panel').classList.remove('open'); document.querySelectorAll('.panel-content').forEach(p => p.style.display = 'none'); }
+    function openPanel(id) { resetInterface(); document.getElementById('side-panel').classList.add('open'); document.getElementById(id).style.display = 'block'; }
+    
+    createTwinklingStars('stars-bg');
+    createTwinklingStars('entry-stars');
 
-    function handleRightClick(e) {
-        e.preventDefault();
-        const alertBox = document.getElementById('alert-box');
-        alertBox.style.display = 'block';
-        setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
+    function createTwinklingStars(id) {
+        const bg = document.getElementById(id);
+        for (let i = 0; i < 50; i++) {
+            let s = document.createElement('div');
+            s.className = 'twinkle';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.animationDelay = Math.random() * 5 + 's';
+            bg.appendChild(s);
+        }
     }
 
     function generateMasterTable() {
         const grid = document.getElementById('color-list');
-        grid.innerHTML = '';
-        for (let l = 100; l >= 0; l -= 10) addColorBox(0, 0, l, grid);
-        for (let h = 0; h <= 360; h += 12) {
-            for (let l = 30; l <= 70; l += 20) addColorBox(h, 90, l, grid);
+        for (let h = 0; h <= 360; h += 20) {
+            let d = document.createElement('div');
+            d.style.width = '100%';
+            d.style.aspectRatio = '1';
+            d.style.background = `hsl(${h}, 100%, 50%)`;
+            d.style.cursor = 'pointer';
+            d.onclick = () => { navigator.clipboard.writeText(d.style.backgroundColor); document.getElementById('copy-toast').style.display='block'; setTimeout(()=>document.getElementById('copy-toast').style.display='none', 1000); };
+            grid.appendChild(d);
         }
-    }
-
-    function addColorBox(h, s, l, container) {
-        const hex = hslToHex(h, s, l);
-        let d = document.createElement('div');
-        d.className = 'c-box';
-        d.style.background = hex;
-        d.onclick = () => { 
-            navigator.clipboard.writeText(hex);
-            const toast = document.getElementById('copy-toast');
-            toast.style.display = 'block';
-            setTimeout(() => { toast.style.display = 'none'; }, 1200);
-        };
-        container.appendChild(d);
-    }
-
-    function resetInterface() {
-        document.getElementById('side-panel').classList.remove('open');
-        document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
-        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-    }
-
-    function openPanel(id) {
-        const panel = document.getElementById('side-panel');
-        if (panel.classList.contains('open') && document.getElementById(id).style.display === 'block') {
-            resetInterface(); return;
-        }
-        resetInterface();
-        panel.classList.add('open');
-        document.getElementById(id).style.display = 'block';
-        const btnId = 'btn-' + id.replace('-content', '');
-        if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
-    }
-
-    function openPhoto(src) {
-        const modal = document.getElementById('photo-modal');
-        const img = document.getElementById('modal-img');
-        img.src = src;
-        modal.style.display = 'flex';
-    }
-
-    function createTwinklingStars(containerId) {
-        const bg = document.getElementById(containerId);
-        if (!bg) return;
-        for (let i = 0; i < 60; i++) {
-            let star = document.createElement('div');
-            star.className = 'twinkle';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDelay = Math.random() * 5 + 's';
-            bg.appendChild(star);
-        }
-    }
-
-    function updateCounter() {
-        let c = localStorage.getItem('Name_v') || 0;
-        c++; localStorage.setItem('Name_v', c);
-        const vCountEl = document.getElementById('v-count');
-        if (vCountEl) vCountEl.innerText = c.toString().padStart(5, '0');
-    }
-
-    function hslToHex(h, s, l) {
-        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
-        const f = n => {
-            const k = (n + h / 30) % 12;
-            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-            return Math.round(255 * color).toString(16).padStart(2, '0');
-        };
-        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
     }
 </script>
 </body>
