@@ -71,10 +71,842 @@
 
 <script>
     // 1. COLA O CONTEÚDO DO PERFIL 1 (GABRIEL) ABAIXO:
-    const codHomem = `COLE_AQUI_O_TEXTO_PERFIL_1`;
+    const codHomem = `<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>XatSpace - Gabriel Leandro</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;500&display=swap');
+
+        /* Lógica das cores aplicada sobre o seu estilo original */
+        :root {
+            --main-color: #00f2ff;
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background-color: #000;
+            font-family: 'Orbitron', sans-serif; color: #fff;
+            cursor: default;
+        }
+
+        /* --- SISTEMA DE SEGURANÇA (ESTILO) --- */
+        #copyright-alert {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.95); border: 2px solid var(--main-color);
+            color: var(--main-color); padding: 25px 50px; border-radius: 15px;
+            font-weight: bold; z-index: 999999; display: none;
+            box-shadow: 0 0 30px var(--main-color);
+            text-transform: uppercase; letter-spacing: 2px;
+            pointer-events: none; backdrop-filter: blur(10px);
+        }
+
+        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+
+        /* --- TELA DE ENTRADA --- */
+        #login-screen {
+            position: fixed; z-index: 100; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 1s ease;
+        }
+        .login-box {
+            background: rgba(10, 10, 20, 0.8); padding: 40px; border-radius: 20px;
+            border: 2px solid var(--main-color); text-align: center;
+            backdrop-filter: blur(15px); box-shadow: 0 0 40px rgba(0, 242, 255, 0.2);
+        }
+        input[type="password"] {
+            padding: 12px; border-radius: 8px; border: 1px solid var(--main-color);
+            outline: none; background: rgba(0, 0, 0, 0.8); color: var(--main-color);
+            margin-bottom: 20px; text-align: center; font-size: 1.1rem;
+        }
+
+        .btn-enter {
+            padding: 12px 40px; background: var(--main-color); color: #000;
+            border: none; border-radius: 8px; cursor: pointer;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            box-shadow: 0 0 20px var(--main-color);
+            animation: neonPulse 1.5s infinite alternate;
+            transition: 0.3s;
+            backface-visibility: hidden;
+        }
+
+        @keyframes neonPulse {
+            from { box-shadow: 0 0 10px var(--main-color), 0 0 20px var(--main-color); filter: brightness(1); }
+            to { box-shadow: 0 0 30px var(--main-color), 0 0 50px var(--main-color); filter: brightness(1.4); }
+        }
+
+        .btn-enter:hover { animation: none; background: #fff; box-shadow: 0 0 60px var(--main-color); transform: scale(1.05); }
+
+        /* --- LAYOUT PRINCIPAL --- */
+        #main-profile {
+            display: none; opacity: 0; z-index: 50; position: relative;
+            display: flex; height: 100vh; padding: 40px; box-sizing: border-box;
+            gap: 40px; transition: opacity 1.5s;
+        }
+
+        .sidebar {
+            width: 320px; background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--main-color); border-radius: 25px;
+            padding: 25px; text-align: center; backdrop-filter: blur(10px);
+            height: fit-content; position: relative; z-index: 70;
+        }
+        .profile-pic {
+            width: 180px; height: 180px; border-radius: 20px;
+            border: 3px solid var(--main-color); box-shadow: 0 0 25px var(--main-color);
+            object-fit: cover; margin-bottom: 20px;
+        }
+
+        .animated-gradient-text {
+            background: linear-gradient(to right, var(--main-color), #ffffff, var(--main-color));
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: gradientShift 3s linear infinite;
+            text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+            display: inline-block;
+        }
+
+        @keyframes gradientShift { 0% { background-position: 0% center; } 100% { background-position: 200% center; } }
+
+        .menu-btn {
+            width: 100%; padding: 15px; margin: 10px 0; background: transparent;
+            border: 2px solid var(--main-color); color: var(--main-color); cursor: pointer;
+            border-radius: 10px; font-family: 'Orbitron', sans-serif;
+            transition: 0.3s ease; font-size: 0.85rem;
+        }
+        .menu-btn:hover { background: rgba(0, 242, 255, 0.2); box-shadow: 0 0 20px var(--main-color); transform: scale(1.05); }
+
+        #ui-tools {
+            position: fixed; bottom: 20px; right: 20px; z-index: 1000001;
+            display: none; gap: 10px; align-items: flex-end;
+        }
+
+        #visit-counter {
+            background: rgba(0, 0, 0, 0.9); border: 1px solid var(--main-color);
+            padding: 6px 12px; border-radius: 4px; display: flex;
+            flex-direction: column; align-items: center;
+        }
+
+        .color-btn {
+            background: rgba(0, 0, 0, 0.9); border: 1px solid var(--main-color);
+            color: var(--main-color); padding: 8px 12px; border-radius: 4px;
+            cursor: pointer; font-family: 'Orbitron', sans-serif; font-size: 10px;
+            font-weight: bold; transition: 0.3s;
+        }
+        .color-btn:hover { background: var(--main-color); color: #000; }
+
+        .slider-container {
+            flex: 1; display: flex; flex-direction: column; 
+            justify-content: center; align-items: center; position: relative;
+        }
+        .slideshow {
+            width: 100%; height: 400px; position: relative;
+            perspective: 1000px; display: flex; justify-content: center; align-items: center;
+        }
+        .slide-img {
+            position: absolute; width: 280px; height: 380px;
+            object-fit: cover; border-radius: 15px; border: 2px solid var(--main-color);
+            box-shadow: 0 0 30px var(--main-color);
+            transition: all 0.8s ease-in-out; opacity: 0;
+        }
+        .slide-img.active { opacity: 1; transform: translateZ(100px); z-index: 5; }
+        .slide-img.prev { opacity: 0.4; transform: translateX(-250px) rotateY(25deg) scale(0.8); z-index: 2; }
+        .slide-img.next { opacity: 0.4; transform: translateX(250px) rotateY(-25deg) scale(0.8); z-index: 2; }
+
+        .player-card { margin-top: 30px; background: rgba(5, 5, 15, 0.9); padding: 15px; border-radius: 15px; border: 1px solid var(--main-color); }
+        .track-info { font-size: 0.65rem; color: var(--main-color); margin-bottom: 10px; text-transform: uppercase; }
+        .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-bottom: 15px; cursor: pointer; }
+        .progress-bar { width: 0%; height: 100%; background: var(--main-color); box-shadow: 0 0 8px var(--main-color); }
+        .volume-slider { -webkit-appearance: none; width: 60%; height: 3px; background: rgba(0, 242, 255, 0.3); outline: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 10px; height: 10px; background: var(--main-color); border-radius: 50%; cursor: pointer; }
+
+        #content-right {
+            flex: 1; background: rgba(0, 0, 0, 0.85);
+            border: 1px solid var(--main-color); border-radius: 25px;
+            padding: 30px; display: none; overflow-y: auto;
+            backdrop-filter: blur(10px); animation: fadeIn 0.5s ease;
+            position: absolute; right: 40px; top: 40px; bottom: 40px; left: 400px; z-index: 60;
+        }
+
+        .header-right { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 20px; }
+        .galeria-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+        .galeria-grid img { width: 100%; border: 1px solid var(--main-color); border-radius: 8px; transition: 0.4s ease; cursor: zoom-in; }
+        .galeria-grid img:hover { border-color: #fff; transform: scale(1.08); box-shadow: 0 0 15px var(--main-color); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body onload="init()">
+
+    <div id="copyright-alert">Copyright - Acesso Proibido</div>
+
+    <canvas id="star-canvas"></canvas>
+
+    <div id="lightbox" onclick="this.style.display='none'" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:15000; justify-content:center; align-items:center;">
+        <img id="lightbox-img" src="" style="max-width:90%; max-height:90%; border:2px solid var(--main-color); border-radius:10px;">
+    </div>
+
+    <div id="login-screen">
+        <div class="login-box">
+            <h2 style="color: var(--main-color);">LOGIN</h2>
+            <input type="password" id="passInput" placeholder="SENHA">
+            <br>
+            <button class="btn-enter" onclick="checkPass()">Entrar</button>
+        </div>
+    </div>
+
+    <div id="ui-tools">
+        <button class="color-btn" onclick="changeTheme()">🎨 COR</button>
+        <div id="visit-counter">
+            <span style="color: var(--main-color); font-size: 8px; letter-spacing: 1px;">VISITAS</span>
+            <span id="count-number" style="color: #fff; font-size: 18px; font-family: monospace;">...</span>
+        </div>
+    </div>
+
+    <div id="main-profile">
+        <div class="sidebar">
+            <img src="https://i.imgur.com/Ip2Bdxv.png" class="profile-pic">
+            <h2 class="animated-gradient-text" style="font-size: 1.2rem;">Gabriel Leandro</h2>
+            
+            <button class="menu-btn" onclick="openRight('sobre')">SOBRE MIM</button>
+            <button class="menu-btn" onclick="openRight('amigos')">AMIGOS</button>
+            <button class="menu-btn" onclick="openRight('fotos')">FOTOS</button>
+
+            <div class="player-card">
+                <div class="track-info" id="trackName">Carregando...</div>
+                <div class="progress-container" onclick="seek(event)">
+                    <div class="progress-bar" id="progBar"></div>
+                </div>
+                <div style="display:flex; justify-content:space-around; margin-bottom:10px;">
+                    <button class="btn-enter" style="padding:5px 10px; animation: none;" onclick="prevTrack()">⏮</button>
+                    <button class="btn-enter" style="padding:5px 10px; animation: none;" id="playBtn" onclick="togglePlay()">⏸</button>
+                    <button class="btn-enter" style="padding:5px 10px; animation: none;" onclick="nextTrack()">⏭</button>
+                </div>
+                <input type="range" class="volume-slider" min="0" max="1" step="0.1" value="0.5" oninput="setVolume(this.value)">
+                <audio id="bgMusic" loop ontimeupdate="updateProgress()"></audio>
+            </div>
+        </div>
+
+        <div class="slider-container" id="center-slider">
+            <h3 class="animated-gradient-text" style="margin-bottom: 30px; letter-spacing: 5px;">PROJETOS & DESTAQUES</h3>
+            <div class="slideshow" id="slide-wrap"></div>
+        </div>
+
+        <div id="content-right">
+            <div class="header-right">
+                <button class="btn-enter" style="padding:8px 15px; animation: none;" onclick="closeRight()">← VOLTAR</button>
+                <h2 id="right-title" class="animated-gradient-text" style="padding-bottom: 10px; width: 100%; margin-top: 20px;"></h2>
+            </div>
+            <div id="right-body"></div>
+        </div>
+    </div>
+
+    <script>
+        // --- SISTEMA DE SEGURANÇA (JS) ---
+        function mostrarAviso() {
+            const aviso = document.getElementById('copyright-alert');
+            aviso.style.display = 'block';
+            setTimeout(() => { aviso.style.display = 'none'; }, 2000);
+        }
+        document.addEventListener('contextmenu', (e) => { e.preventDefault(); mostrarAviso(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 'c' || e.key === 'C' || e.key === 's' || e.key === 'S' || e.key === 'i' || e.key === 'I')) {
+                e.preventDefault(); mostrarAviso();
+            }
+        });
+
+        const ID_VISITAS = "perfil_gabriel_2026_unique"; 
+        const cores = ["#00f2ff", "#ff0000", "#ffff00", "#00ff00", "#ff00ff", "#ff8800", "#ffffff"];
+        let corIndex = 0;
+
+        function changeTheme() {
+            corIndex = (corIndex + 1) % cores.length;
+            document.documentElement.style.setProperty('--main-color', cores[corIndex]);
+        }
+
+        let stars = [];
+        const fotosGaleria = [
+            "https://i.imgur.com/Ip2Bdxv.png", "https://i.imgur.com/7rKeKT8.png", 
+            "https://i.imgur.com/Bx7jSbA.png", "https://i.imgur.com/HhypJpx.png", 
+            "https://i.imgur.com/sc5uVGA.png", "https://i.imgur.com/ipooBns.png", 
+            "https://i.imgur.com/pTlq477.png"
+        ];
+        const playlist = [
+            { name: "Bon Jovi - Livin on a Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=cfea76fj&dl=1" },
+            { name: "Desireless - Voyage Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=b5bj4smr&dl=1" },
+            { name: "Eminem - You Dont Know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=tawfqj0e&dl=1" },
+            { name: "Disturbed - Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=hbwtvdvf&dl=1" }
+        ];
+        let currentTrack = 0;
+        const audio = document.getElementById('bgMusic');
+
+        function init() { 
+            startStars(); 
+            setupSlider();
+            audio.src = playlist[currentTrack].url;
+            document.getElementById('trackName').innerText = playlist[currentTrack].name;
+        }
+
+        async function carregarContadores() {
+            try {
+                const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
+                const dataV = await resV.json();
+                document.getElementById('count-number').innerText = dataV.count || dataV.value;
+            } catch(e) { document.getElementById('count-number').innerText = "1"; }
+        }
+
+        function setupSlider() {
+            const wrap = document.getElementById('slide-wrap');
+            fotosGaleria.forEach((src) => {
+                const img = document.createElement('img');
+                img.src = src; img.className = 'slide-img';
+                wrap.appendChild(img);
+            });
+            let idx = 0;
+            const slides = document.querySelectorAll('.slide-img');
+            function updateSlider() {
+                slides.forEach(s => s.className = 'slide-img');
+                if(slides[idx]) {
+                    const prev = (idx - 1 + slides.length) % slides.length;
+                    const next = (idx + 1) % slides.length;
+                    slides[idx].classList.add('active');
+                    slides[prev].classList.add('prev');
+                    slides[next].classList.add('next');
+                    idx = (idx + 1) % slides.length;
+                }
+            }
+            updateSlider(); setInterval(updateSlider, 3000);
+        }
+
+        function togglePlay() {
+            if (audio.paused) { audio.play(); document.getElementById('playBtn').innerText = "⏸"; }
+            else { audio.pause(); document.getElementById('playBtn').innerText = "▶"; }
+        }
+        function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(); }
+        function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(); }
+        function loadTrack() {
+            audio.src = playlist[currentTrack].url;
+            document.getElementById('trackName').innerText = playlist[currentTrack].name;
+            audio.play(); document.getElementById('playBtn').innerText = "⏸";
+        }
+        function updateProgress() { document.getElementById('progBar').style.width = (audio.currentTime / audio.duration) * 100 + "%"; }
+        function seek(e) { audio.currentTime = (e.offsetX / e.currentTarget.offsetWidth) * audio.duration; }
+        function setVolume(v) { audio.volume = v; }
+
+        function openRight(mode) {
+            const rightTitle = document.getElementById('right-title');
+            const body = document.getElementById('right-body');
+            document.getElementById('content-right').style.display = "block";
+            document.getElementById('center-slider').style.visibility = "hidden";
+            if(mode === 'sobre') {
+                rightTitle.innerText = "SOBRE MIM";
+                body.innerHTML = `<div style="color:var(--main-color); line-height:1.8;">Vendo Gifs, Pcback, Pstyle e Fundos para XAT, DJ nas horas vagas - <br>Married Mnna (1013) ❤️</div>`;
+            } else if(mode === 'fotos') {
+                rightTitle.innerText = "MINHAS FOTOS";
+                let gridHTML = `<div class="galeria-grid">`;
+                fotosGaleria.forEach(src => { gridHTML += `<img src="${src}" onclick="zoom(this.src)">`; });
+                gridHTML += `</div>`;
+                body.innerHTML = gridHTML;
+            } else {
+                rightTitle.innerText = "LISTA DE AMIGOS";
+                body.innerHTML = `<div style="color:var(--main-color);">• Marbella<br>• Gold<br>• Venon<br>• Gothica<br>• Armando</div>`;
+            }
+        }
+        function closeRight() { 
+            document.getElementById('content-right').style.display='none'; 
+            document.getElementById('center-slider').style.visibility = "visible";
+        }
+        function zoom(src) { document.getElementById('lightbox-img').src=src; document.getElementById('lightbox').style.display='flex'; }
+
+        function startStars() {
+            const canvas = document.getElementById('star-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            for(let i=0; i<150; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5, speed:Math.random()*0.2});
+            function anim() {
+                ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#fff";
+                stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x,s.y,s.size,0,Math.PI*2); ctx.fill(); s.y-=s.speed; if(s.y<0) s.y=canvas.height; });
+                requestAnimationFrame(anim);
+            } anim();
+        }
+
+        function checkPass() {
+            if(document.getElementById('passInput').value === "1009") {
+                document.getElementById('login-screen').style.opacity='0';
+                setTimeout(() => {
+                    document.getElementById('login-screen').style.display='none';
+                    document.getElementById('main-profile').style.display='flex';
+                    document.getElementById('ui-tools').style.display='flex';
+                    carregarContadores();
+                    setTimeout(() => { document.getElementById('main-profile').style.opacity='1'; audio.play(); }, 50);
+                }, 1000);
+            } else { alert("Senha incorreta!"); }
+        }
+    </script>
+</body>
+</html>`;
 
     // 2. COLA O CONTEÚDO DO PERFIL 2 (ROSA) ABAIXO:
-    const codMulher = `COLE_AQUI_O_TEXTO_PERFIL_2`;
+    const codMulher = `<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xatSpace - Name</title>
+    <style>
+        :root {
+            --neon-pink: #ff007f;
+            --soft-pink: #ff66b2;
+            --white-pink: #ffe6f2;
+            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+            --bg-dark: #0a0105;
+            --bg-entry: #1a020d;
+            --glass: rgba(43, 3, 20, 0.95);
+        }
+
+        /* --- Global Anti-Seleção --- */
+        * {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* --- Efeito de Rastro de Cauda do Mouse (Comet Trail) --- */
+        .cursor-trail {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px;  /* Tamanho inicial da ponta */
+            height: 12px;
+            background: white; /* Cor da ponta */
+            box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%); /* Centraliza no ponteiro */
+            opacity: 1;
+            transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
+        }
+
+        /* --- Custom Scrollbar Neon --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 0, 127, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-pink);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--soft-pink);
+            box-shadow: 0 0 15px var(--soft-pink);
+        }
+
+        body, html {
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg-dark); color: white;
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        /* --- Fundo Estrelado (Global) --- */
+        #stars-bg {
+            position: fixed; width: 100%; height: 100%; z-index: 1;
+            background: radial-gradient(circle at center, #2a0314, #000000);
+        }
+        .stars {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px);
+            background-size: 200px 200px; animation: moveStars 100s linear infinite;
+        }
+        .twinkle {
+            position: absolute; width: 2px; height: 2px; background: white;
+            border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out;
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; }
+        }
+        @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
+
+        /* --- Efeito Gradiente Animado --- */
+        .animated-gradient {
+            background: linear-gradient(270deg, #ffffff, var(--neon-pink), #ffffff, var(--soft-pink));
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        #copy-toast {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--neon-pink); color: white; padding: 15px 30px;
+            border-radius: 50px; z-index: 10000; font-weight: bold; border: 2px solid white;
+            box-shadow: 0 0 25px var(--neon-pink); text-transform: uppercase;
+        }
+
+        /* --- Tela de Entrada --- */
+        #entry-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; 
+            background-color: var(--bg-entry);
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .welcome-title {
+            font-size: 5rem; font-weight: bold; margin-bottom: 25px;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
+            position: relative; z-index: 101;
+        }
+        
+        .btn-enter {
+            padding: 15px 60px; font-size: 1.5rem; 
+            color: white; 
+            background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%);
+            background-size: 200% auto;
+            border: 2px solid var(--white-pink); border-radius: 50px; cursor: pointer;
+            text-transform: uppercase; 
+            box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white;
+            font-weight: bold; letter-spacing: 2px;
+            position: relative; z-index: 101;
+            animation: gradientMoveButton 2s linear infinite;
+            transition: transform 0.3s;
+        }
+
+        .btn-enter:active { transform: scale(0.95); }
+
+        @keyframes gradientMoveButton {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* --- Interface Principal --- */
+        #main-interface {
+            visibility: hidden; opacity: 0; position: relative; z-index: 10;
+            display: flex; gap: 20px; align-items: flex-start;
+            transition: opacity 1s ease;
+        }
+        #profile-card {
+            width: 360px; background: var(--glass); border: 2px solid var(--neon-pink);
+            border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow);
+            text-align: center; backdrop-filter: blur(10px);
+        }
+        #side-panel {
+            width: 0; overflow: hidden; background: var(--glass);
+            border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0;
+            backdrop-filter: blur(10px);
+        }
+        #side-panel.open {
+            width: 480px; border: 2px solid var(--neon-pink);
+            box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
+        }
+
+        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; box-shadow: var(--neon-glow); object-fit: cover; }
+        .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
+        .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
+
+        .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
+        
+        #color-list { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; padding: 5px; }
+        .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
+        .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
+
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .photo-grid img { 
+            width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
+            cursor: pointer; border: 2px solid transparent; transition: 0.3s; 
+        }
+        .photo-grid img:hover { 
+            border-color: var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink);
+            transform: scale(1.05);
+        }
+
+        #photo-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000;
+            justify-content: center; align-items: center; cursor: pointer;
+        }
+        #photo-modal img {
+            max-width: 85%; max-height: 85%; border: 3px solid var(--neon-pink);
+            border-radius: 15px; box-shadow: var(--neon-glow);
+            cursor: default;
+        }
+
+        .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
+        .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .player-btn:hover { background: var(--neon-pink); }
+
+        #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
+    </style>
+</head>
+<body oncontextmenu="handleRightClick(event)">
+
+<div id="copy-toast">CÓDIGO COPIADO</div>
+<div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
+
+<div id="stars-bg"><div class="stars"></div></div>
+
+<div id="photo-modal" onclick="this.style.display='none'">
+    <img id="modal-img" src="" onclick="event.stopPropagation()">
+</div>
+
+<div id="entry-page">
+    <div id="entry-stars" class="stars"></div> <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <button class="btn-enter" onclick="start()">Entrar</button>
+</div>
+
+<div id="main-interface">
+    <div id="profile-card">
+        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Name</h1>
+        <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
+        
+        <button class="menu-btn" onclick="resetInterface()">Home</button>
+        <button class="menu-btn" id="btn-sobre" onclick="openPanel('sobre-content')">Sobre Mim</button>
+        <button class="menu-btn" id="btn-fotos" onclick="openPanel('fotos-content')">Fotos</button>
+        <button class="menu-btn" id="btn-xat" onclick="openPanel('xat-content')">Xat Comunidade</button>
+        <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
+
+        <div class="player-container">
+            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Name Player</div>
+            <audio id="audio-player"></audio>
+            <div class="player-controls">
+                <button class="player-btn" onclick="prevTrack()">⏮</button>
+                <button class="player-btn" style="width: 45px; height: 45px;" onclick="togglePlay()" id="play-btn">▶</button>
+                <button class="player-btn" onclick="nextTrack()">⏭</button>
+            </div>
+            <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
+        </div>
+
+        <div style="margin-top: 15px; font-family: monospace; color: var(--neon-pink); font-size: 0.8rem;">
+            VISITAS: <span id="v-count">00000</span>
+        </div>
+    </div>
+
+    <div id="side-panel">
+        <div id="sobre-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
+            <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
+                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida."
+            </p>
+        </div>
+
+        <div id="fotos-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
+            <div class="photo-grid">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="openPhoto(this.src)">
+            </div>
+        </div>
+
+        <div id="xat-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
+            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Tuga</a>
+            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Trade</a>
+            <a href="https://xat.com/ajuda" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Ajuda</a>
+        </div>
+
+        <div id="cores-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Tabela Completa</h2>
+            <div id="color-list"></div>
+        </div>
+
+        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
+    </div>
+</div>
+
+<script>
+    const playlist = [
+        { name: "Bon Jovi - Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" },
+        { name: "Desireless - Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=nkupjbm3&dl=1" }
+    ];
+    let currentTrack = 0;
+    const player = document.getElementById('audio-player');
+
+    // Inicializa estrelas na interface principal e na tela de entrada
+    createTwinklingStars('stars-bg');
+    createTwinklingStars('entry-stars');
+
+    /* --- LÓGICA DO RASTRO DE CAUDA (COMET TRAIL) --- */
+    const trailSegments = [];
+    const maxSegments = 20; // Tamanho da cauda
+
+    document.addEventListener('mousemove', (e) => {
+        // Cria a ponta
+        const segment = document.createElement('div');
+        segment.className = 'cursor-trail';
+        segment.style.left = e.clientX + 'px';
+        segment.style.top = e.clientY + 'px';
+        document.body.appendChild(segment);
+        trailSegments.push(segment);
+
+        // Remove segmentos antigos
+        while (trailSegments.length > maxSegments) {
+            trailSegments.shift().remove();
+        }
+
+        // Atualiza segmentos existentes para criar o rastro
+        for (let i = 0; i < trailSegments.length; i++) {
+            const seg = trailSegments[i];
+            const ratio = i / trailSegments.length; // 0 (antigo) a 1 (novo)
+            
+            // Decalque de tamanho e opacidade
+            const size = 12 * ratio; 
+            seg.style.width = size + 'px';
+            seg.style.height = size + 'px';
+            seg.style.opacity = ratio;
+
+            // Decalque de cor (Branco na ponta -> Rosa na cauda)
+            if (ratio < 0.3) {
+                seg.style.background = 'white';
+            } else if (ratio < 0.6) {
+                seg.style.background = 'var(--white-pink)';
+            } else {
+                seg.style.background = 'var(--neon-pink)';
+            }
+        }
+    });
+
+    // Remove rastro quando o mouse sai da janela
+    document.addEventListener('mouseout', () => {
+        while (trailSegments.length > 0) {
+            trailSegments.shift().remove();
+        }
+    });
+
+    function start() {
+        document.getElementById('entry-page').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('entry-page').style.visibility = 'hidden';
+            document.getElementById('main-interface').style.visibility = 'visible';
+            document.getElementById('main-interface').style.opacity = '1';
+        }, 800);
+        loadTrack(0);
+        player.play();
+        updateCounter();
+        generateMasterTable();
+    }
+
+    function loadTrack(i) {
+        player.src = playlist[i].url;
+        document.getElementById('track-name').innerText = "Música: " + playlist[i].name;
+    }
+
+    function togglePlay() {
+        if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; }
+        else { player.pause(); document.getElementById('play-btn').innerText = "▶"; }
+    }
+
+    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function updateVolume(val) { player.volume = val; }
+
+    function handleRightClick(e) {
+        e.preventDefault();
+        const alertBox = document.getElementById('alert-box');
+        alertBox.style.display = 'block';
+        setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
+    }
+
+    function generateMasterTable() {
+        const grid = document.getElementById('color-list');
+        grid.innerHTML = '';
+        for (let l = 100; l >= 0; l -= 10) addColorBox(0, 0, l, grid);
+        for (let h = 0; h <= 360; h += 12) {
+            for (let l = 30; l <= 70; l += 20) addColorBox(h, 90, l, grid);
+        }
+    }
+
+    function addColorBox(h, s, l, container) {
+        const hex = hslToHex(h, s, l);
+        let d = document.createElement('div');
+        d.className = 'c-box';
+        d.style.background = hex;
+        d.onclick = () => { 
+            navigator.clipboard.writeText(hex);
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 1200);
+        };
+        container.appendChild(d);
+    }
+
+    function resetInterface() {
+        document.getElementById('side-panel').classList.remove('open');
+        document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
+        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    function openPanel(id) {
+        const panel = document.getElementById('side-panel');
+        if (panel.classList.contains('open') && document.getElementById(id).style.display === 'block') {
+            resetInterface(); return;
+        }
+        resetInterface();
+        panel.classList.add('open');
+        document.getElementById(id).style.display = 'block';
+        const btnId = 'btn-' + id.replace('-content', '');
+        if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
+    }
+
+    function openPhoto(src) {
+        const modal = document.getElementById('photo-modal');
+        const img = document.getElementById('modal-img');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+
+    function createTwinklingStars(containerId) {
+        const bg = document.getElementById(containerId);
+        if (!bg) return;
+        for (let i = 0; i < 60; i++) {
+            let star = document.createElement('div');
+            star.className = 'twinkle';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            bg.appendChild(star);
+        }
+    }
+
+    function updateCounter() {
+        let c = localStorage.getItem('Name_v') || 0;
+        c++; localStorage.setItem('Name_v', c);
+        const vCountEl = document.getElementById('v-count');
+        if (vCountEl) vCountEl.innerText = c.toString().padStart(5, '0');
+    }
+
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+    }
+</script>
+</body>
+</html>`;
 
     function carregar() {
         // Carregar Homem
