@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Xatspace - Home</title>
+    <title>Xatspace - Galeria</title>
     <style>
         :root {
             --neon-pink: #ff007f;
@@ -21,30 +21,49 @@
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; box-shadow: 0 0 10px white; } }
 
-        /* Container Principal */
+        /* Card Principal */
         .main-card {
             position: relative; z-index: 10;
             text-align: center; background: rgba(255, 255, 255, 0.05);
-            padding: 50px; border-radius: 30px;
+            padding: 40px; border-radius: 25px;
             border: 2px solid var(--neon-pink);
             box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
-            backdrop-filter: blur(10px);
-            width: 400px;
+            backdrop-filter: blur(12px);
+            width: 350px;
         }
 
-        h1 { font-size: 3rem; margin-bottom: 30px; text-shadow: 0 0 15px var(--neon-pink); letter-spacing: 3px; }
+        h1 { font-size: 2.5rem; margin-bottom: 25px; text-shadow: 0 0 15px var(--neon-pink); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* Botões */
-        .btn {
-            display: block; width: 100%; padding: 15px; margin: 15px 0;
-            background: transparent; border: 2px solid var(--neon-pink);
-            color: white; text-decoration: none; font-weight: bold;
-            border-radius: 50px; text-transform: uppercase;
+        /* Botão Principal */
+        .btn-main {
+            display: block; width: 100%; padding: 18px;
+            background: var(--neon-pink); border: none;
+            color: white; font-size: 1.1rem; font-weight: bold;
+            border-radius: 12px; text-transform: uppercase;
             transition: 0.3s; cursor: pointer;
+            box-shadow: 0 0 15px var(--neon-pink);
         }
-        .btn:hover { background: var(--neon-pink); box-shadow: 0 0 20px var(--neon-pink); transform: scale(1.05); }
+        .btn-main:hover { transform: scale(1.03); filter: brightness(1.2); }
 
-        .submenu { display: none; margin-top: 20px; border-top: 1px dashed #444; padding-top: 20px; }
+        /* Lista Oculta */
+        .lista-links {
+            display: none; /* Começa escondido */
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 0, 127, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .btn-link {
+            display: block; width: 100%; padding: 12px; margin: 10px 0;
+            background: transparent; border: 1px solid white;
+            color: white; text-decoration: none; font-size: 0.9rem;
+            border-radius: 8px; font-weight: 500;
+            transition: 0.2s; cursor: pointer;
+        }
+        .btn-link:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--neon-pink); color: var(--neon-pink); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* Visualizador de Iframe */
         #viewer {
@@ -55,8 +74,8 @@
         .back-btn {
             position: fixed; top: 20px; left: 20px; z-index: 110;
             padding: 10px 20px; background: var(--neon-pink);
-            border: 2px solid white; color: white; border-radius: 5px;
-            cursor: pointer; font-weight: bold;
+            border: 1px solid white; color: white; border-radius: 5px;
+            cursor: pointer; font-weight: bold; text-transform: uppercase;
         }
     </style>
 </head>
@@ -67,21 +86,21 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
-    <button class="btn" onclick="toggleGaleria()">Galeria de Xatspace</button>
+    <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
-    <div id="submenu" class="submenu">
-        <button class="btn" onclick="abrir('https://tinyurl.com/galeria-gif')">Xatspace - Galeria Gifs</button>
-        <button class="btn" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil - SENHA: 1009</button>
+    <div id="listaLinks" class="lista-links">
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/galeria-gif')">Xatspace - Galeria Gifs</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil (SENHA: 1009)</button>
     </div>
 </div>
 
 <div id="viewer">
-    <button class="back-btn" onclick="fechar()">← VOLTAR</button>
+    <button class="back-btn" onclick="fechar()">← Voltar</button>
     <iframe id="frame"></iframe>
 </div>
 
 <script>
-    // Criar Estrelas
+    // Criar Estrelas dinâmicas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -93,9 +112,14 @@
         bg.appendChild(s);
     }
 
-    function toggleGaleria() {
-        const sub = document.getElementById('submenu');
-        sub.style.display = (sub.style.display === 'block') ? 'none' : 'block';
+    function abrirLista() {
+        const lista = document.getElementById('listaLinks');
+        // Alterna entre mostrar e esconder
+        if (lista.style.display === 'block') {
+            lista.style.display = 'none';
+        } else {
+            lista.style.display = 'block';
+        }
     }
 
     function abrir(url) {
