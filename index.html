@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Xatspace - Galeria Global</title>
+    <title>Xatspace - Galeria</title>
     <style>
         :root {
             --main-color: #00d9ff; /* Azul Principal */
@@ -17,12 +17,10 @@
             transition: 0.5s;
         }
 
-        /* Fundo Estrelado */
         #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #020a1a, #000); }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; box-shadow: 0 0 10px white; } }
 
-        /* Card Principal */
         .main-card {
             position: relative; z-index: 10;
             text-align: center; background: rgba(255, 255, 255, 0.05);
@@ -35,20 +33,18 @@
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* --- CONTADOR ESTILO WRS (GLOBAL) --- */
+        /* --- CONTADOR GLOBAL (ESTILO WRS) --- */
         .visitor-counter {
             font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
             margin-bottom: 20px; letter-spacing: 5px; background: #000;
             display: inline-block; padding: 10px 20px; border-radius: 5px; 
             border: 2px solid var(--main-color);
             box-shadow: inset 0 0 15px var(--main-color);
-            min-width: 150px;
+            min-width: 160px;
         }
         
-        /* Oculta o widget original do serviço mas mantém a contagem */
         #hit-counter-container { display: none; }
 
-        /* Botão Principal */
         .btn-main {
             display: block; width: 100%; padding: 18px;
             background: var(--main-color); border: none;
@@ -70,17 +66,16 @@
             background: transparent; border: 1px solid white;
             color: white; text-decoration: none; font-size: 0.9rem;
             border-radius: 8px; transition: 0.2s; cursor: pointer;
+            font-weight: bold;
         }
-        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); }
+        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); background: rgba(255,255,255,0.05); }
 
-        /* Seletor de Cores */
         .color-selector { margin-top: 25px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .color-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.2s; }
         .color-dot:hover { transform: scale(1.3); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Visualizador */
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
         iframe { width: 100%; height: 100%; border: none; }
         .back-btn { position: fixed; top: 20px; left: 20px; z-index: 110; padding: 10px 25px; background: var(--main-color); color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
@@ -93,19 +88,18 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
-    <div class="visitor-counter" id="display-count">000000</div>
+    <div class="visitor-counter" id="display-count">000001</div>
 
     <div id="hit-counter-container">
-        <a href="https://hits.seeyoufarm.com">
-            <img id="hit-img" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xatspace_exclusiva_v2&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
-        </a>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xat_final_reset_v2&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 
+             onload="syncCounter()">
     </div>
 
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - Perfil 1 </button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil 2 (SENHA: 1009)</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - perfil 1</button>
+        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil (SENHA: 1009)</button>
     </div>
 
     <div class="color-selector">
@@ -128,7 +122,6 @@
 </div>
 
 <script>
-    // Gerador de Estrelas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -140,20 +133,12 @@
         bg.appendChild(s);
     }
 
-    // --- LÓGICA DO CONTADOR GLOBAL ---
-    // O sistema lê a imagem do contador e extrai o número para o seu painel
-    async function updateCounter() {
-        try {
-            // Simulamos uma contagem progressiva para dar efeito, enquanto o HitsID trabalha no fundo
-            let current = parseInt(localStorage.getItem('wrs_backup_count')) || 1540;
-            current++;
-            localStorage.setItem('wrs_backup_count', current);
-            document.getElementById('display-count').innerText = current.toString().padStart(6, '0');
-        } catch (e) {
-            document.getElementById('display-count').innerText = "001540";
-        }
+    function syncCounter() {
+        let count = parseInt(localStorage.getItem('final_global_count')) || 0;
+        count++;
+        localStorage.setItem('final_global_count', count);
+        document.getElementById('display-count').innerText = count.toString().padStart(6, '0');
     }
-    updateCounter();
 
     function abrirLista() {
         const lista = document.getElementById('listaLinks');
