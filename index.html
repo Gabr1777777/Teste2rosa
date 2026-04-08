@@ -2,136 +2,112 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GALERIA XATSPACE</title>
     <style>
         :root {
             --neon-pink: #ff007f;
-            --soft-pink: #ff66b2;
-            --white-pink: #ffe6f2;
-            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+            --neon-blue: #00f2ff;
             --bg-dark: #0a0105;
-            --glass: rgba(43, 3, 20, 0.95);
         }
-
-        * { -webkit-user-select: none; user-select: none; cursor: default; }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
-            overflow: hidden; font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg-dark); color: white;
+            font-family: 'Segoe UI', sans-serif; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
         }
 
         /* --- Fundo Estrelado --- */
-        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #2a0314, #000000); }
-        .stars { position: absolute; width: 100%; height: 100%; background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px); background-size: 200px 200px; animation: moveStars 100s linear infinite; }
-        .twinkle { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out; }
-        @keyframes flash { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; } }
-        @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
+        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #1a020d, #000); }
+        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
+        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; box-shadow: 0 0 10px white; } }
 
-        /* --- Rastro do Mouse --- */
-        .cursor-trail { position: fixed; width: 12px; height: 12px; background: white; border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, opacity 0.3s; }
+        /* --- Container Principal --- */
+        .container { position: relative; z-index: 10; text-align: center; width: 90%; max-width: 600px; }
+        
+        .title { 
+            font-size: 3rem; font-weight: bold; margin-bottom: 40px;
+            text-transform: uppercase; letter-spacing: 5px;
+            color: #fff; text-shadow: 0 0 20px var(--neon-pink);
+        }
 
-        /* --- Interface Principal --- */
-        #main-container { position: relative; z-index: 10; text-align: center; }
-        .galeria-title { font-size: 4rem; font-weight: bold; margin-bottom: 30px; text-transform: uppercase; background: linear-gradient(to right, #fff, var(--neon-pink), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradientMove 5s infinite; filter: drop-shadow(0 0 10px var(--neon-pink)); }
-        @keyframes gradientMove { 0% { background-position: 0%; } 100% { background-position: 400%; } }
+        .gallery-box {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px; border-radius: 20px;
+            border: 1px solid var(--neon-pink);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.2);
+        }
 
-        .btn-main { padding: 20px 80px; font-size: 1.8rem; color: white; background: transparent; border: 2px solid var(--neon-pink); border-radius: 50px; cursor: pointer; text-transform: uppercase; font-weight: bold; box-shadow: var(--neon-glow); transition: 0.3s; }
-        .btn-main:hover { background: var(--neon-pink); transform: scale(1.05); }
+        .btn-option {
+            display: block; width: 100%; padding: 20px; margin: 15px 0;
+            background: transparent; border: 2px solid white;
+            color: white; font-size: 1.2rem; font-weight: bold;
+            text-transform: uppercase; cursor: pointer; border-radius: 10px;
+            transition: 0.3s;
+        }
 
-        /* --- Painel da Galeria --- */
-        #side-gallery { position: fixed; right: -500px; top: 0; width: 400px; height: 100%; background: var(--glass); border-left: 2px solid var(--neon-pink); box-shadow: -10px 0 30px rgba(0,0,0,0.5); transition: 0.5s; z-index: 100; padding: 40px 20px; display: flex; flex-direction: column; gap: 20px; backdrop-filter: blur(15px); }
-        #side-gallery.open { right: 0; }
-        .close-btn { position: absolute; top: 10px; left: 10px; background: none; border: none; color: var(--neon-pink); font-size: 2rem; cursor: pointer; }
+        /* Cores Específicas */
+        .btn-homem { border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+        .btn-homem:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+        
+        .btn-mulher { border-color: var(--neon-pink); box-shadow: 0 0 10px var(--neon-pink); }
+        .btn-mulher:hover { background: var(--neon-pink); color: #000; box-shadow: 0 0 30px var(--neon-pink); }
 
-        .profile-card { background: rgba(255,255,255,0.05); border: 1px solid var(--soft-pink); padding: 15px; border-radius: 15px; text-align: center; transition: 0.3s; }
-        .profile-card:hover { border-color: white; box-shadow: 0 0 15px var(--soft-pink); }
-        .profile-card h3 { margin: 0 0 10px 0; font-size: 1.2rem; color: var(--white-pink); }
-        .btn-view { width: 100%; padding: 10px; background: var(--neon-pink); border: none; color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
-
-        /* --- Viewer de Perfil (Iframe) --- */
-        #profile-viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 200; }
-        #profile-viewer iframe { width: 100%; height: 100%; border: none; }
-        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 201; padding: 10px 20px; background: var(--neon-pink); color: white; border: 2px solid white; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        /* Modal para exibir o código */
+        #code-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 100; justify-content: center; align-items: center;
+        }
+        .modal-content { width: 80%; max-width: 800px; text-align: center; }
+        textarea { width: 100%; height: 400px; background: #111; color: #00f2ff; border: 1px solid #333; padding: 15px; font-family: monospace; border-radius: 10px; margin-bottom: 20px; }
+        .btn-close { padding: 10px 30px; background: red; color: white; border: none; cursor: pointer; border-radius: 5px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div id="stars-bg"><div class="stars"></div></div>
+<div id="stars-bg"></div>
 
-<div id="main-container">
-    <h1 class="galeria-title">GALERIA XATSPACE</h1>
-    <button class="btn-main" onclick="toggleGallery()">XatSpace</button>
-</div>
-
-<div id="side-gallery">
-    <button class="close-btn" onclick="toggleGallery()">×</button>
-    <h2 style="text-align: center; color: var(--neon-pink);">ESCOLHA UM PERFIL</h2>
+<div class="container">
+    <h1 class="title">GALERIA XATSPACE</h1>
     
-    <div class="profile-card">
-        <h3>Xatspace - Homem</h3>
-        <button class="btn-view" onclick="openProfile('homem')">Abrir Perfil</button>
-    </div>
-
-    <div class="profile-card">
-        <h3>Xatspace - Mulher</h3>
-        <button class="btn-view" onclick="openProfile('mulher')">Abrir Perfil</button>
+    <div class="gallery-box">
+        <button class="btn-option btn-homem" onclick="showCode('homem')">Xatspace - Homem</button>
+        <button class="btn-option btn-mulher" onclick="showCode('mulher')">Xatspace - Mulher</button>
     </div>
 </div>
 
-<div id="profile-viewer">
-    <button class="back-btn" onclick="closeProfile()">← SAIR DA GALERIA</button>
-    <iframe id="iframe-content"></iframe>
+<div id="code-modal">
+    <div class="modal-content">
+        <h2 id="modal-title" style="color: white; margin-bottom: 10px;"></h2>
+        <p style="color: #aaa;">Copie o código abaixo e cole no seu xatSpace:</p>
+        <textarea id="code-area" readonly></textarea>
+        <br>
+        <button class="btn-close" onclick="closeModal()">FECHAR</button>
+    </div>
 </div>
 
 <script>
-    // --- Lógica de Estrelas ---
-    function createStars() {
-        const bg = document.getElementById('stars-bg');
-        for (let i = 0; i < 80; i++) {
-            let star = document.createElement('div');
-            star.className = 'twinkle';
-            star.style.left = Math.random() * 100 + 'vw';
-            star.style.top = Math.random() * 100 + 'vh';
-            star.style.animationDelay = Math.random() * 5 + 's';
-            bg.appendChild(star);
-        }
-    }
-    createStars();
-
-    // --- Rastro do Mouse ---
-    const trailSegments = [];
-    document.addEventListener('mousemove', (e) => {
-        const seg = document.createElement('div');
-        seg.className = 'cursor-trail';
-        seg.style.left = e.clientX + 'px';
-        seg.style.top = e.clientY + 'px';
-        seg.style.boxShadow = `0 0 10px white, 0 0 20px var(--neon-pink)`;
-        document.body.appendChild(seg);
-        trailSegments.push(seg);
-        if (trailSegments.length > 15) trailSegments.shift().remove();
-        trailSegments.forEach((s, i) => {
-            s.style.opacity = i / trailSegments.length;
-            s.style.transform = `translate(-50%, -50%) scale(${i / trailSegments.length})`;
-        });
-    });
-
-    // --- Controle da Galeria ---
-    function toggleGallery() {
-        document.getElementById('side-gallery').classList.toggle('open');
+    // Gerar estrelas
+    const bg = document.getElementById('stars-bg');
+    for(let i=0; i<100; i++) {
+        let s = document.createElement('div');
+        s.className = 'star';
+        s.style.left = Math.random() * 100 + 'vw';
+        s.style.top = Math.random() * 100 + 'vh';
+        s.style.width = s.style.height = Math.random() * 3 + 'px';
+        s.style.animationDelay = Math.random() * 5 + 's';
+        bg.appendChild(s);
     }
 
-    function openProfile(tipo) {
-        const viewer = document.getElementById('profile-viewer');
-        const iframe = document.getElementById('iframe-content');
-        
-        // Aqui você coloca o link real onde os códigos estarão hospedados
-        // Se você for usar o código puro, precisará salvar os dois textos que me mandou
-        // como arquivos .html e colocar o link deles aqui embaixo:
-        if(tipo === 'homem') {
-            iframe.srcdoc = `<!DOCTYPE html>
+    // Conteúdo dos códigos [cite: 1, 118]
+    const codigos = {
+        homem: `\n` + document.documentElement.outerHTML.split('homem:')[0], // Placeholder para o Perfil 1 [cite: 1]
+        mulher: `\n` + document.documentElement.outerHTML.split('mulher:')[0] // Placeholder para o Perfil 2 [cite: 118]
+    };
+
+    // Aqui você deve colar o texto real dos arquivos dentro das crases (`) abaixo:
+    const perfil_homem = `<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -508,9 +484,8 @@
         }
     </script>
 </body>
-</html>`;
-        } else {
-            iframe.srcdoc = `<!DOCTYPE html>
+</html>`; [cite: 1]
+    const perfil_mulher = `<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -965,15 +940,26 @@
     }
 </script>
 </body>
-</html>`;
+</html>`; [cite: 118]
+
+    function showCode(perfil) {
+        const modal = document.getElementById('code-modal');
+        const area = document.getElementById('code-area');
+        const title = document.getElementById('modal-title');
+        
+        if(perfil === 'homem') {
+            title.innerText = 'PERFIL HOMEM (GABRIEL)';
+            area.value = perfil_homem; // [cite: 1]
+        } else {
+            title.innerText = 'PERFIL MULHER (NAME)';
+            area.value = perfil_mulher; // [cite: 118]
         }
         
-        viewer.style.display = 'block';
+        modal.style.display = 'flex';
     }
 
-    function closeProfile() {
-        document.getElementById('profile-viewer').style.display = 'none';
-        document.getElementById('iframe-content').srcdoc = '';
+    function closeModal() {
+        document.getElementById('code-modal').style.display = 'none';
     }
 </script>
 
