@@ -112,18 +112,25 @@
         .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
         .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
 
+        /* ESTILO DAS FOTOS COM NEON E ZOOM */
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .photo-grid img { 
             width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
-            cursor: pointer; border: 2px solid transparent; transition: 0.4s; 
+            cursor: pointer; border: 2px solid transparent; transition: 0.4s ease; 
         }
-        
-        /* EFEITO NEON AO PASSAR O MOUSE E AMPLIAR */
         .photo-grid img:hover { 
             border-color: var(--soft-pink); 
-            transform: scale(1.1); 
-            box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
-            z-index: 10;
+            box-shadow: 0 0 15px var(--neon-pink); 
+            transform: scale(1.05);
+        }
+        /* Classe ativada no clique para aumentar */
+        .photo-grid img.zoom {
+            grid-column: span 3;
+            aspect-ratio: auto;
+            transform: scale(1);
+            box-shadow: var(--neon-glow);
+            border-color: white;
+            z-index: 20;
         }
 
         /* --- Rádio --- */
@@ -184,12 +191,12 @@
         <div id="fotos-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
             <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png" onclick="window.open(this.src)">
-                <img src="https://imgur.com/YDKnxJi.png" onclick="window.open(this.src)">
-                <img src="https://imgur.com/LSZOs8Q.png" onclick="window.open(this.src)">
-                <img src="https://imgur.com/BGULIuI.png" onclick="window.open(this.src)">
-                <img src="https://imgur.com/HCn75BA.png" onclick="window.open(this.src)">
-                <img src="https://imgur.com/QvXRzEF.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="amplify(this)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="amplify(this)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="amplify(this)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="amplify(this)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="amplify(this)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="amplify(this)">
             </div>
         </div>
 
@@ -279,6 +286,8 @@
         document.getElementById('side-panel').classList.remove('open');
         document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
         document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+        // Remove zoom de todas as fotos ao fechar
+        document.querySelectorAll('.photo-grid img').forEach(img => img.classList.remove('zoom'));
     }
 
     function openPanel(id) {
@@ -291,6 +300,13 @@
         document.getElementById(id).style.display = 'block';
         const btnId = 'btn-' + id.replace('-content', '');
         if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
+    }
+
+    /* FUNÇÃO PARA AUMENTAR A FOTO */
+    function amplify(img) {
+        const isZoomed = img.classList.contains('zoom');
+        document.querySelectorAll('.photo-grid img').forEach(i => i.classList.remove('zoom'));
+        if (!isZoomed) img.classList.add('zoom');
     }
 
     function createTwinklingStars() {
