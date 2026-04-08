@@ -113,8 +113,18 @@
         .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
 
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
-        .photo-grid img:hover { border-color: var(--neon-pink); transform: scale(1.02); }
+        .photo-grid img { 
+            width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
+            cursor: pointer; border: 2px solid transparent; transition: 0.4s; 
+        }
+        
+        /* EFEITO NEON AO PASSAR O MOUSE E AMPLIAR */
+        .photo-grid img:hover { 
+            border-color: var(--soft-pink); 
+            transform: scale(1.1); 
+            box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink);
+            z-index: 10;
+        }
 
         /* --- Rádio --- */
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
