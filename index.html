@@ -8,9 +8,18 @@
         :root {
             --neon-pink: #ff007f;
             --soft-pink: #ff66b2;
+            --white-pink: #ffe6f2; /* Rosa bem claro para efeitos */
             --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
             --bg-dark: #0a0105;
+            --bg-entry: #1a020d; /* Fundo rosa bem escuro e suave para a entrada */
             --glass: rgba(43, 3, 20, 0.95);
+        }
+
+        /* --- Global Anti-Seleção --- */
+        * {
+            -webkit-user-select: none;  /* Safari */
+            -ms-user-select: none;      /* IE 10+ and Edge */
+            user-select: none;          /* Standard syntax */
         }
 
         /* --- Custom Scrollbar Neon --- */
@@ -39,9 +48,10 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado --- */
+        /* --- Fundo Estrelado (Global) --- */
         #stars-bg {
             position: fixed; width: 100%; height: 100%; z-index: 1;
+            /* Gradiente suave de rosa escuro para preto ao centro */
             background: radial-gradient(circle at center, #2a0314, #000000);
         }
         .stars {
@@ -85,19 +95,42 @@
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; background-color: #050002;
+            z-index: 100; 
+            /* Fundo rosa claro escuro para a entrada, estrelas são visíveis através do z-index */
+            background-color: var(--bg-entry);
             transition: opacity 0.8s ease, visibility 0.8s;
         }
         .welcome-title {
             font-size: 5rem; font-weight: bold; margin-bottom: 25px;
             font-family: 'Brush Script MT', cursive, sans-serif;
             text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
+            position: relative; z-index: 101; /* Acima das estrelas */
         }
         .btn-enter {
-            padding: 15px 60px; font-size: 1.5rem; color: white; background: transparent;
+            padding: 15px 60px; font-size: 1.5rem; 
+            color: var(--soft-pink); /* Cor inicial do texto */
+            background: transparent;
             border: 2px solid var(--soft-pink); border-radius: 50px; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 15px var(--soft-pink);
+            text-transform: uppercase; transition: 0.4s; 
+            box-shadow: 0 0 15px rgba(255, 102, 178, 0.3);
             font-weight: bold; letter-spacing: 2px;
+            position: relative; z-index: 101; /* Acima das estrelas */
+            overflow: hidden; /* Para o efeito de preenchimento */
+        }
+        
+        /* Efeito de hover no botão Entrar - Gradiente Rosa e Branco */
+        .btn-enter:hover {
+            color: white; /* Cor do texto no hover */
+            border-color: var(--white-pink);
+            box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white;
+            background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%);
+            background-size: 200% auto;
+            animation: gradientMoveButton 1.5s linear infinite;
+        }
+
+        @keyframes gradientMoveButton {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
         /* --- Interface Principal --- */
@@ -168,6 +201,7 @@
 
 <div id="copy-toast">CÓDIGO COPIADO</div>
 <div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
+
 <div id="stars-bg"><div class="stars"></div></div>
 
 <div id="photo-modal" onclick="this.style.display='none'">
@@ -238,7 +272,7 @@
             <div id="color-list"></div>
         </div>
 
-        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">Voltar</button>
+        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
     </div>
 </div>
 
@@ -249,6 +283,9 @@
     ];
     let currentTrack = 0;
     const player = document.getElementById('audio-player');
+
+    // Executa imediatamente para gerar as estrelas na entrada
+    createTwinklingStars();
 
     function start() {
         document.getElementById('entry-page').style.opacity = '0';
@@ -261,7 +298,7 @@
         player.play();
         updateCounter();
         generateMasterTable();
-        createTwinklingStars();
+        // createTwinklingStars(); // Removido daqui, movido para o escopo global
     }
 
     function loadTrack(i) {
@@ -335,6 +372,7 @@
 
     function createTwinklingStars() {
         const bg = document.getElementById('stars-bg');
+        if (!bg) return; // Garante que o elemento existe
         for (let i = 0; i < 60; i++) {
             let star = document.createElement('div');
             star.className = 'twinkle';
@@ -348,7 +386,8 @@
     function updateCounter() {
         let c = localStorage.getItem('Name_v') || 0;
         c++; localStorage.setItem('Name_v', c);
-        document.getElementById('v-count').innerText = c.toString().padStart(5, '0');
+        const vCountEl = document.getElementById('v-count');
+        if (vCountEl) vCountEl.innerText = c.toString().padStart(5, '0');
     }
 
     function hslToHex(h, s, l) {
