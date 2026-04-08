@@ -112,34 +112,28 @@
         .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
         .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
 
-        /* --- ESTILO DAS FOTOS --- */
+        /* --- GALERIA E EFEITO FOTO --- */
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .photo-grid img { 
             width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
-            cursor: pointer; border: 2px solid transparent; transition: 0.4s ease; 
+            cursor: pointer; border: 2px solid transparent; transition: 0.3s; 
         }
-
-        /* Efeito neon ao passar o mouse */
         .photo-grid img:hover { 
-            border-color: var(--soft-pink); 
-            box-shadow: 0 0 15px var(--neon-pink), 0 0 25px var(--neon-pink);
+            border-color: var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink);
             transform: scale(1.05);
         }
 
-        /* Efeito ao clicar: Aumenta fora da lista (Overlay) */
-        .photo-grid img:active, .photo-grid img.expanded {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(3.5);
-            z-index: 9999;
-            width: auto;
-            max-width: 80vw;
-            max-height: 80vh;
-            border: 2px solid white;
-            box-shadow: 0 0 50px rgba(255, 0, 127, 0.8);
-            object-fit: contain;
-            aspect-ratio: auto;
+        /* Modal da Foto Aumentada */
+        #photo-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000;
+            justify-content: center; align-items: center; cursor: pointer;
+        }
+        #photo-modal img {
+            max-width: 85%; max-height: 85%; border: 3px solid var(--neon-pink);
+            border-radius: 15px; box-shadow: var(--neon-glow);
+            cursor: default;
         }
 
         /* --- Rádio --- */
@@ -156,6 +150,10 @@
 <div id="copy-toast">CÓDIGO COPIADO</div>
 <div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
 <div id="stars-bg"><div class="stars"></div></div>
+
+<div id="photo-modal" onclick="this.style.display='none'">
+    <img id="modal-img" src="" onclick="event.stopPropagation()">
+</div>
 
 <div id="entry-page">
     <div class="welcome-title animated-gradient">Bienvenidos</div>
@@ -200,12 +198,12 @@
         <div id="fotos-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
             <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png" onclick="toggleZoom(this)">
-                <img src="https://imgur.com/YDKnxJi.png" onclick="toggleZoom(this)">
-                <img src="https://imgur.com/LSZOs8Q.png" onclick="toggleZoom(this)">
-                <img src="https://imgur.com/BGULIuI.png" onclick="toggleZoom(this)">
-                <img src="https://imgur.com/HCn75BA.png" onclick="toggleZoom(this)">
-                <img src="https://imgur.com/QvXRzEF.png" onclick="toggleZoom(this)">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="openPhoto(this.src)">
             </div>
         </div>
 
@@ -295,7 +293,6 @@
         document.getElementById('side-panel').classList.remove('open');
         document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
         document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.photo-grid img').forEach(img => img.classList.remove('expanded'));
     }
 
     function openPanel(id) {
@@ -310,9 +307,12 @@
         if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
     }
 
-    /* FUNÇÃO DE ZOOM */
-    function toggleZoom(img) {
-        img.classList.toggle('expanded');
+    /* FUNÇÃO PARA ABRIR FOTO EM MODAL */
+    function openPhoto(src) {
+        const modal = document.getElementById('photo-modal');
+        const img = document.getElementById('modal-img');
+        img.src = src;
+        modal.style.display = 'flex';
     }
 
     function createTwinklingStars() {
