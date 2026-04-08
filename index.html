@@ -15,33 +15,12 @@
             --glass: rgba(43, 3, 20, 0.95);
         }
 
-        /* --- Global Anti-Seleção --- */
         * {
             -webkit-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            box-sizing: border-box;
         }
-
-        /* --- Efeito de Rastro de Cauda do Mouse --- */
-        .cursor-trail {
-            position: fixed;
-            top: 0; left: 0;
-            width: 12px;
-            height: 12px;
-            background: white;
-            box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 99999;
-            transform: translate(-50%, -50%);
-            opacity: 1;
-            transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
-        }
-
-        /* --- Custom Scrollbar Neon --- */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(255, 0, 127, 0.05); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; box-shadow: 0 0 10px var(--neon-pink); }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
@@ -50,169 +29,139 @@
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado --- */
+        /* --- Fundo --- */
         #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #2a0314, #000000); }
         .stars { position: absolute; width: 100%; height: 100%; background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px); background-size: 200px 200px; animation: moveStars 100s linear infinite; }
         .twinkle { position: absolute; width: 2px; height: 2px; background: white; border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out; }
         @keyframes flash { 0%, 100% { opacity: 0; transform: scale(0.5); } 50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; } }
         @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
-        /* --- Efeito Gradiente Animado --- */
-        .animated-gradient {
-            background: linear-gradient(270deg, #ffffff, var(--neon-pink), #ffffff, var(--soft-pink));
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 5s ease infinite;
-        }
-        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
-
-        #copy-toast {
-            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: var(--neon-pink); color: white; padding: 15px 30px;
-            border-radius: 50px; z-index: 10000; font-weight: bold; border: 2px solid white;
-            box-shadow: 0 0 25px var(--neon-pink); text-transform: uppercase;
+        /* --- Rastro do Mouse --- */
+        .cursor-trail {
+            position: fixed; top: 0; left: 0; width: 12px; height: 12px;
+            background: white; box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink);
+            border-radius: 50%; pointer-events: none; z-index: 999999;
+            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, opacity 0.2s;
         }
 
         /* --- Tela de Entrada --- */
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; background-color: var(--bg-entry);
+            z-index: 2000; background-color: var(--bg-entry);
             transition: opacity 0.8s ease, visibility 0.8s;
         }
-        .welcome-title { font-size: 5rem; font-weight: bold; margin-bottom: 25px; font-family: 'Brush Script MT', cursive, sans-serif; text-shadow: 0 0 20px rgba(255, 102, 178, 0.4); }
-        .btn-enter { padding: 15px 60px; font-size: 1.5rem; color: white; background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%); background-size: 200% auto; border: 2px solid var(--white-pink); border-radius: 50px; cursor: pointer; text-transform: uppercase; box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white; font-weight: bold; letter-spacing: 2px; animation: gradientMoveButton 2s linear infinite; transition: transform 0.3s; }
-        @keyframes gradientMoveButton { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
-
-        /* --- Interface Principal --- */
-        #main-interface { visibility: hidden; opacity: 0; position: relative; z-index: 10; display: flex; gap: 20px; align-items: flex-start; transition: opacity 1s ease; }
-        #profile-card { width: 360px; background: var(--glass); border: 2px solid var(--neon-pink); border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow); text-align: center; backdrop-filter: blur(10px); }
-        #side-panel { width: 0; overflow: hidden; background: var(--glass); border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0; backdrop-filter: blur(10px); }
-        #side-panel.open { width: 480px; border: 2px solid var(--neon-pink); box-shadow: var(--neon-glow); padding: 25px; opacity: 1; }
-
-        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; box-shadow: var(--neon-glow); object-fit: cover; }
-        .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
-        .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
-
-        .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
-        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
-        .photo-grid img:hover { border-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink); transform: scale(1.05); }
-
-        .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
-        .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
-
-        #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
-
-        /* --- Estilo do Novo Contador (Canto Inferior Esquerdo) --- */
-        #visit-counter {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 100001;
-            background: rgba(10, 1, 5, 0.9);
-            border: 1px solid var(--neon-pink);
-            padding: 8px 15px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: var(--neon-glow);
-            backdrop-filter: blur(5px);
+        .welcome-title { font-size: 5rem; font-family: 'Brush Script MT', cursive; margin-bottom: 25px; }
+        .btn-enter { 
+            padding: 15px 60px; font-size: 1.5rem; color: white; 
+            background: linear-gradient(135deg, var(--neon-pink), white, var(--neon-pink));
+            background-size: 200% auto; border: 2px solid white; border-radius: 50px; 
+            cursor: pointer; box-shadow: var(--neon-glow); font-weight: bold;
+            animation: moveBtn 2s linear infinite;
         }
-        #visit-counter .label { color: var(--neon-pink); font-size: 9px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 2px; }
-        #count-number { color: #fff; font-size: 20px; font-family: 'Courier New', monospace; text-shadow: 0 0 5px var(--neon-pink); }
+        @keyframes moveBtn { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+        /* --- Interface --- */
+        #main-interface { visibility: hidden; opacity: 0; position: relative; z-index: 100; display: flex; gap: 20px; transition: 1s; }
+        #profile-card { width: 360px; background: var(--glass); border: 2px solid var(--neon-pink); border-radius: 20px; padding: 25px; text-align: center; box-shadow: var(--neon-glow); backdrop-filter: blur(10px); }
+        
+        .menu-btn { 
+            display: block; width: 100%; padding: 12px; margin: 8px 0; 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); 
+            color: white; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .menu-btn:hover { background: var(--neon-pink); box-shadow: var(--neon-glow); }
+
+        #side-panel { width: 0; overflow: hidden; background: var(--glass); border-radius: 20px; transition: 0.5s ease; opacity: 0; backdrop-filter: blur(10px); }
+        #side-panel.open { width: 450px; border: 2px solid var(--neon-pink); padding: 25px; opacity: 1; }
+
+        .panel-content { display: none; }
+        .animated-gradient {
+            background: linear-gradient(270deg, #fff, var(--neon-pink), #fff);
+            background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: gMove 3s infinite;
+        }
+        @keyframes gMove { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+        /* --- Contador Ajustado --- */
+        #visit-counter {
+            position: fixed; bottom: 20px; left: 20px; z-index: 500;
+            background: rgba(10, 1, 5, 0.9); border: 1px solid var(--neon-pink);
+            padding: 8px 15px; border-radius: 8px; display: flex; flex-direction: column;
+            align-items: center; box-shadow: var(--neon-glow);
+        }
+        .label-v { color: var(--neon-pink); font-size: 10px; font-weight: bold; text-transform: uppercase; }
+        #count-number { color: #fff; font-size: 20px; font-family: monospace; }
+        
+        #photo-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 5000; justify-content: center; align-items: center; }
+        #photo-modal img { max-width: 80%; border: 2px solid var(--neon-pink); border-radius: 10px; }
     </style>
 </head>
-<body oncontextmenu="handleRightClick(event)">
-
-<div id="copy-toast">CÓDIGO COPIADO</div>
-<div id="alert-box">🔒 Copyright - WRS 🔒</div>
+<body oncontextmenu="event.preventDefault()">
 
 <div id="stars-bg"><div class="stars"></div></div>
 
 <div id="visit-counter">
-    <span class="label">Visitas</span>
+    <span class="label-v">Visitas</span>
     <span id="count-number">00000</span>
 </div>
 
+<div id="photo-modal" onclick="this.style.display='none'"><img id="modal-img" src=""></div>
+
 <div id="entry-page">
-    <div id="entry-stars" class="stars"></div> 
-    <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <div class="welcome-title animated-gradient">WRS 2026</div>
     <button class="btn-enter" onclick="start()">Entrar</button>
 </div>
 
 <div id="main-interface">
     <div id="profile-card">
-        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">WRS</h1>
-        <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
+        <h1 class="animated-gradient">WRS</h1>
+        <img src="https://imgur.com/0h6IQIZ.png" style="width:120px; border-radius:50%; border:2px solid var(--neon-pink); margin-bottom:15px;">
         
         <button class="menu-btn" onclick="resetInterface()">Home</button>
-        <button class="menu-btn" id="btn-sobre" onclick="openPanel('sobre-content')">Sobre Mim</button>
-        <button class="menu-btn" id="btn-fotos" onclick="openPanel('fotos-content')">Fotos</button>
-        <button class="menu-btn" id="btn-xat" onclick="openPanel('xat-content')">Xat Comunidade</button>
-        <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
-
-        <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Carregando...</div>
-            <audio id="audio-player"></audio>
-            <div class="player-controls">
-                <button class="player-btn" onclick="prevTrack()">⏮</button>
-                <button class="player-btn" style="width: 45px; height: 45px;" onclick="togglePlay()" id="play-btn">▶</button>
-                <button class="player-btn" onclick="nextTrack()">⏭</button>
-            </div>
-            <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
+        <button class="menu-btn" onclick="openPanel('sobre')">Sobre Mim</button>
+        <button class="menu-btn" onclick="openPanel('fotos')">Fotos</button>
+        <button class="menu-btn" onclick="openPanel('xat')">Xat</button>
+        
+        <div style="margin-top:20px; border-top:1px dashed var(--neon-pink); padding-top:10px;">
+            <div id="t-name" style="font-size:11px; color:var(--soft-pink); margin-bottom:5px;">Música: Off</div>
+            <audio id="player"></audio>
+            <button class="menu-btn" style="width:50px; display:inline-block;" onclick="togglePlay()">▶</button>
         </div>
     </div>
 
     <div id="side-panel">
-        <div id="sobre-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
-            <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
-                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha."
-            </p>
+        <div id="sobre" class="panel-content">
+            <h2 class="animated-gradient">Sobre Mim</h2>
+            <p>"Ela sabe o que quer, ela sabe quem ela é."</p>
         </div>
-        <div id="fotos-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
-            <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png" onclick="openPhoto(this.src)">
-                <img src="https://imgur.com/YDKnxJi.png" onclick="openPhoto(this.src)">
+        <div id="fotos" class="panel-content">
+            <h2 class="animated-gradient">Galeria</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                <img src="https://imgur.com/0h6IQIZ.png" style="width:100%; cursor:pointer;" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/YDKnxJi.png" style="width:100%; cursor:pointer;" onclick="openPhoto(this.src)">
             </div>
         </div>
-        <div id="xat-content" class="panel-content">
-             <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
-             <a href="https://xat.com/tuga" target="_blank" class="menu-btn">Xat Tuga</a>
+        <div id="xat" class="panel-content">
+            <h2 class="animated-gradient">Comunidade</h2>
+            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none; text-align:center; display:block;">Xat Tuga</a>
         </div>
-        <div id="cores-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Tabela</h2>
-            <div id="color-list" style="display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px;"></div>
-        </div>
-        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
+        <button class="menu-btn" style="margin-top:20px;" onclick="resetInterface()">Voltar</button>
     </div>
 </div>
 
 <script>
     const playlist = [
-        { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" },
-        { name: "The Sound of Silence", url: "https://www.dropbox.com/scl/fi/2y9zhx5zjsdxg3zljc2f9/sound-of-silence.mp3.mp3?rlkey=88zg0td3loy40uxmcm9rnk1jt&st=qty8093e&raw=1" }
+        { name: "Eminem - You dont know", url: "https://www.dropbox.com/scl/fi/4y0lc0fi24e9yavn17psv/Eminem-you-dont-know.mp3.mp3?rlkey=zicb6spgqe3pv0gqnz3xc24zo&st=wy1w0icm&raw=1" }
     ];
-    let currentTrack = 0;
-    const player = document.getElementById('audio-player');
-
-    // Lógica do Contador API (Chave alterada para zerar)
-    const ID_VISITAS = "galeria_wrs_v2_2026"; 
 
     async function carregarContadores() {
+        const ID = "galeria_wrs_reset_v3"; // Novo ID para garantir que comece do zero
         try {
-            const resV = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID_VISITAS}/up`);
-            const dataV = await resV.json();
-            const valor = dataV.count || dataV.value || 0;
-            document.getElementById('count-number').innerText = valor.toString().padStart(5, '0');
-        } catch(e) {
-            document.getElementById('count-number').innerText = "00001";
-        }
+            const res = await fetch(`https://api.counterapi.dev/v1/wrs-galeria/${ID}/up`);
+            const data = await res.json();
+            document.getElementById('count-number').innerText = (data.count || 0).toString().padStart(5, '0');
+        } catch(e) { document.getElementById('count-number').innerText = "00001"; }
     }
 
     function start() {
@@ -222,66 +171,54 @@
             document.getElementById('main-interface').style.visibility = 'visible';
             document.getElementById('main-interface').style.opacity = '1';
         }, 800);
-        loadTrack(0);
-        player.play();
+        document.getElementById('player').src = playlist[0].url;
+        document.getElementById('t-name').innerText = "Música: " + playlist[0].name;
         carregarContadores();
-        generateMasterTable();
     }
 
-    // --- Rastro do Mouse ---
-    const trailSegments = [];
+    function togglePlay() {
+        const p = document.getElementById('player');
+        if(p.paused) { p.play(); } else { p.pause(); }
+    }
+
+    function openPanel(id) {
+        resetInterface();
+        document.getElementById('side-panel').classList.add('open');
+        document.getElementById(id).style.display = 'block';
+    }
+
+    function resetInterface() {
+        document.getElementById('side-panel').classList.remove('open');
+        const contents = document.getElementsByClassName('panel-content');
+        for(let c of contents) { c.style.display = 'none'; }
+    }
+
+    function openPhoto(src) {
+        document.getElementById('modal-img').src = src;
+        document.getElementById('photo-modal').style.display = 'flex';
+    }
+
+    // Rastro do mouse
+    const trails = [];
     document.addEventListener('mousemove', (e) => {
-        const segment = document.createElement('div');
-        segment.className = 'cursor-trail';
-        segment.style.left = e.clientX + 'px';
-        segment.style.top = e.clientY + 'px';
-        document.body.appendChild(segment);
-        trailSegments.push(segment);
-        if (trailSegments.length > 20) trailSegments.shift().remove();
-        trailSegments.forEach((seg, i) => {
-            const ratio = i / trailSegments.length;
-            seg.style.width = (12 * ratio) + 'px';
-            seg.style.height = (12 * ratio) + 'px';
-            seg.style.opacity = ratio;
-        });
+        const t = document.createElement('div');
+        t.className = 'cursor-trail';
+        t.style.left = e.clientX + 'px';
+        t.style.top = e.clientY + 'px';
+        document.body.appendChild(t);
+        trails.push(t);
+        if(trails.length > 15) trails.shift().remove();
     });
 
-    // --- Funções Auxiliares ---
-    function loadTrack(i) { player.src = playlist[i].url; document.getElementById('track-name').innerText = "Música: " + playlist[i].name; }
-    function togglePlay() { if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; } else { player.pause(); document.getElementById('play-btn').innerText = "▶"; } }
-    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
-    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
-    function updateVolume(val) { player.volume = val; }
-    function handleRightClick(e) { e.preventDefault(); const box = document.getElementById('alert-box'); box.style.display = 'block'; setTimeout(() => box.style.display='none', 2000); }
-    function resetInterface() { document.getElementById('side-panel').classList.remove('open'); document.querySelectorAll('.panel-content').forEach(p => p.style.display = 'none'); }
-    function openPanel(id) { resetInterface(); document.getElementById('side-panel').classList.add('open'); document.getElementById(id).style.display = 'block'; }
-    
-    createTwinklingStars('stars-bg');
-    createTwinklingStars('entry-stars');
-
-    function createTwinklingStars(id) {
-        const bg = document.getElementById(id);
-        for (let i = 0; i < 50; i++) {
-            let s = document.createElement('div');
-            s.className = 'twinkle';
-            s.style.left = Math.random() * 100 + 'vw';
-            s.style.top = Math.random() * 100 + 'vh';
-            s.style.animationDelay = Math.random() * 5 + 's';
-            bg.appendChild(s);
-        }
-    }
-
-    function generateMasterTable() {
-        const grid = document.getElementById('color-list');
-        for (let h = 0; h <= 360; h += 20) {
-            let d = document.createElement('div');
-            d.style.width = '100%';
-            d.style.aspectRatio = '1';
-            d.style.background = `hsl(${h}, 100%, 50%)`;
-            d.style.cursor = 'pointer';
-            d.onclick = () => { navigator.clipboard.writeText(d.style.backgroundColor); document.getElementById('copy-toast').style.display='block'; setTimeout(()=>document.getElementById('copy-toast').style.display='none', 1000); };
-            grid.appendChild(d);
-        }
+    // Estrelas
+    const bg = document.getElementById('stars-bg');
+    for(let i=0; i<50; i++) {
+        let s = document.createElement('div');
+        s.className = 'twinkle';
+        s.style.left = Math.random()*100+'vw';
+        s.style.top = Math.random()*100+'vh';
+        s.style.animationDelay = Math.random()*5+'s';
+        bg.appendChild(s);
     }
 </script>
 </body>
