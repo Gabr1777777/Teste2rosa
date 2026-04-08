@@ -13,6 +13,25 @@
             --glass: rgba(43, 3, 20, 0.95);
         }
 
+        /* --- Custom Scrollbar Neon --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 0, 127, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-pink);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--soft-pink);
+            box-shadow: 0 0 15px var(--soft-pink);
+        }
+
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; font-family: 'Segoe UI', sans-serif;
@@ -307,7 +326,6 @@
         if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
     }
 
-    /* FUNÇÃO PARA ABRIR FOTO EM MODAL */
     function openPhoto(src) {
         const modal = document.getElementById('photo-modal');
         const img = document.getElementById('modal-img');
