@@ -8,22 +8,22 @@
         :root {
             --neon-pink: #ff007f;
             --soft-pink: #ff66b2;
-            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
-            --bg-dark: #0a0105;
-            --glass: rgba(43, 3, 20, 0.95);
+            --dark-pink-bg: #120108; /* Tom magenta bem escuro */
+            --neon-glow: 0 0 15px #ff007f;
+            --glass: rgba(25, 1, 12, 0.95);
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-dark); color: white;
+            background-color: var(--dark-pink-bg); color: white;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado --- */
+        /* --- Fundo Estrelado em todas as telas --- */
         #stars-bg {
             position: fixed; width: 100%; height: 100%; z-index: 1;
-            background: radial-gradient(circle at center, #2a0314, #000000);
+            background: radial-gradient(circle at center, #2a0314, #120108, #000000);
         }
         .stars {
             position: absolute; width: 100%; height: 100%;
@@ -36,42 +36,38 @@
         }
         @keyframes flash {
             0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; }
+            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px var(--soft-pink); }
         }
         @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
-        /* --- Efeito Gradiente Animado --- */
-        .animated-gradient {
-            background: linear-gradient(270deg, #ffffff, var(--neon-pink), #ffffff, var(--soft-pink));
-            background-size: 400% 400%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientMove 5s ease infinite;
+        /* --- Notificação de Cópia --- */
+        #copy-alert {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--neon-pink); color: white; padding: 20px 40px;
+            border-radius: 15px; z-index: 10000; font-weight: bold; font-size: 1.5rem;
+            box-shadow: 0 0 30px var(--neon-pink); border: 2px solid white;
+            text-transform: uppercase; animation: popIn 0.3s ease-out;
         }
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes popIn { from { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
 
         /* --- Tela de Entrada --- */
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; background-color: #050002;
+            z-index: 100; background-color: var(--dark-pink-bg);
             transition: opacity 0.8s ease, visibility 0.8s;
         }
         .welcome-title {
             font-size: 5rem; font-weight: bold; margin-bottom: 25px;
             font-family: 'Brush Script MT', cursive, sans-serif;
-            text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
+            color: white; text-shadow: 0 0 20px var(--neon-pink);
         }
         .btn-enter {
-            padding: 15px 60px; font-size: 1.5rem; color: white; background: transparent;
-            border: 2px solid var(--soft-pink); border-radius: 50px; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 15px var(--soft-pink);
-            font-weight: bold; letter-spacing: 2px;
+            padding: 12px 50px; font-size: 1.2rem; color: white; background: transparent;
+            border: 2px solid var(--neon-pink); border-radius: 50px; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s; box-shadow: var(--neon-glow);
         }
+        .btn-enter:hover { background: var(--neon-pink); transform: scale(1.05); }
 
         /* --- Interface Principal --- */
         #main-interface {
@@ -94,62 +90,39 @@
             box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
         }
 
-        /* --- Botões e Estilos Internos --- */
-        .profile-img {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 3px solid var(--neon-pink); margin-bottom: 15px;
-            box-shadow: var(--neon-glow); object-fit: cover;
-        }
-        .menu-btn {
-            display: block; width: 100%; padding: 12px; margin: 8px 0;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink);
-            color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
-            text-transform: uppercase; transition: 0.2s;
-        }
+        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; object-fit: cover; }
+        .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
         .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
         .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
-        .panel-content::-webkit-scrollbar { width: 4px; }
-        .panel-content::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; }
-
         #color-list { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
         .c-box { width: 100%; aspect-ratio: 1; border-radius: 3px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
-
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; transition: 0.3s; }
 
-        /* --- Rádio Player --- */
+        /* --- Rádio --- */
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
         .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .player-btn:hover { background: var(--neon-pink); }
+        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; }
 
-        /* --- Alerta de Copyright --- */
-        #alert-box { 
-            display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--neon-pink); color: white; padding: 12px 25px; 
-            border-radius: 50px; z-index: 5000; font-weight: bold;
-            box-shadow: var(--neon-glow); border: 1px solid white;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-
-        #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-        #zoom-overlay img { max-width: 85%; max-height: 85%; border: 3px solid white; border-radius: 10px; }
+        /* --- Alerta Copyright --- */
+        #copy-alert-top { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
     </style>
 </head>
 <body oncontextmenu="handleRightClick(event)">
 
-<div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
+<div id="copy-alert">CÓDIGO COPIADO</div>
+<div id="copy-alert-top">🔒 Copyright - Acesso Proibido 🔒</div>
 <div id="stars-bg"><div class="stars"></div></div>
 
 <div id="entry-page">
-    <div class="welcome-title animated-gradient">Bem Vindos</div>
+    <div class="welcome-title">Bem Vindos</div>
     <button class="btn-enter" onclick="start()">Entrar</button>
 </div>
 
 <div id="main-interface">
     <div id="profile-card">
-        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Mnna</h1>
+        <h1 style="color: var(--neon-pink); text-transform: uppercase; margin: 0 0 10px 0;">Mnna</h1>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
         <button class="menu-btn" onclick="resetInterface()">Home</button>
@@ -159,58 +132,50 @@
         <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
 
         <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Mnna Player</div>
+            <div id="track-name" style="font-size: 0.7rem; color: var(--soft-pink); margin-bottom: 5px;">Rádio Mnna</div>
             <audio id="audio-player"></audio>
             <div class="player-controls">
                 <button class="player-btn" onclick="prevTrack()">⏮</button>
                 <button class="player-btn" style="width: 45px; height: 45px;" onclick="togglePlay()" id="play-btn">▶</button>
                 <button class="player-btn" onclick="nextTrack()">⏭</button>
             </div>
-            <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
-        </div>
-
-        <div style="margin-top: 15px; font-family: monospace; color: var(--neon-pink); font-size: 0.8rem;">
-            VISITAS: <span id="v-count">00000</span>
         </div>
     </div>
 
     <div id="side-panel">
         <div id="sobre-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
-            <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
-                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida. Ela aprendeu a seguir em frente, sozinha ou acompanhada. E ela leva a vida assim, sendo quem ela é."
+            <h2 style="color: var(--neon-pink); text-align: center;">Sobre Mim</h2>
+            <p style="padding: 10px; font-style: italic; text-align: justify; line-height: 1.6;">
+                "Ela sabe o que quer, ela sabe quem ela é... ela leva a vida assim, sendo quem ela é."
             </p>
         </div>
 
         <div id="fotos-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
+            <h2 style="color: var(--neon-pink); text-align: center;">Fotos</h2>
             <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png" onclick="zoom(this)">
-                <img src="https://imgur.com/YDKnxJi.png" onclick="zoom(this)">
-                <img src="https://imgur.com/LSZOs8Q.png" onclick="zoom(this)">
-                <img src="https://imgur.com/BGULIuI.png" onclick="zoom(this)">
-                <img src="https://imgur.com/HCn75BA.png" onclick="zoom(this)">
-                <img src="https://imgur.com/QvXRzEF.png" onclick="zoom(this)">
+                <img src="https://imgur.com/0h6IQIZ.png">
+                <img src="https://imgur.com/YDKnxJi.png">
+                <img src="https://imgur.com/LSZOs8Q.png">
+                <img src="https://imgur.com/BGULIuI.png">
+                <img src="https://imgur.com/HCn75BA.png">
+                <img src="https://imgur.com/QvXRzEF.png">
             </div>
         </div>
 
-        <div id="xat-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
-            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none">Xat Tuga</a>
-            <a href="https://xat.com/butecopremium" target="_blank" class="menu-btn" style="text-decoration:none">Buteco Premium</a>
-            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none">Xat Trade</a>
-        </div>
-
         <div id="cores-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Tabela de Cores</h2>
+            <h2 style="color: var(--neon-pink); text-align: center;">Tabela de Cores</h2>
             <div id="color-list"></div>
         </div>
 
-        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">Fechar</button>
+        <div id="xat-content" class="panel-content">
+            <h2 style="color: var(--neon-pink); text-align: center;">Xat</h2>
+            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none">Xat Tuga</a>
+            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none">Xat Trade</a>
+        </div>
+
+        <button class="menu-btn" style="margin-top: 20px;" onclick="resetInterface()">Voltar</button>
     </div>
 </div>
-
-<div id="zoom-overlay" onclick="this.style.display='none'"><img src="" id="img-large"></div>
 
 <script>
     const playlist = [
@@ -221,20 +186,16 @@
     const player = document.getElementById('audio-player');
 
     function start() {
-        const ep = document.getElementById('entry-page');
-        const mi = document.getElementById('main-interface');
-        ep.style.opacity = '0';
+        document.getElementById('entry-page').style.opacity = '0';
         setTimeout(() => {
-            ep.style.visibility = 'hidden';
-            mi.style.visibility = 'visible';
-            mi.style.opacity = '1';
+            document.getElementById('entry-page').style.visibility = 'hidden';
+            document.getElementById('main-interface').style.visibility = 'visible';
+            document.getElementById('main-interface').style.opacity = '1';
         }, 800);
-        
         loadTrack(0);
-        player.play(); // Começa ao entrar
-        updateCounter();
-        generate200Colors();
+        player.play();
         createTwinklingStars();
+        generate200Colors();
     }
 
     function loadTrack(i) {
@@ -243,41 +204,44 @@
     }
 
     function togglePlay() {
-        if (player.paused) {
-            player.play();
-            document.getElementById('play-btn').innerText = "⏸";
-        } else {
-            player.pause();
-            document.getElementById('play-btn').innerText = "▶";
+        if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; }
+        else { player.pause(); document.getElementById('play-btn').innerText = "▶"; }
+    }
+
+    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
+
+    function generate200Colors() {
+        const grid = document.getElementById('color-list');
+        for (let i = 0; i < 200; i++) {
+            const h = Math.floor((i / 200) * 360);
+            const hex = hslToHex(h, 80, 50);
+            let d = document.createElement('div');
+            d.className = 'c-box'; d.style.background = hex;
+            d.onclick = () => { 
+                navigator.clipboard.writeText(hex);
+                showCopyAlert();
+            };
+            grid.appendChild(d);
         }
     }
 
-    function nextTrack() {
-        currentTrack = (currentTrack + 1) % playlist.length;
-        loadTrack(currentTrack);
-        player.play();
-        document.getElementById('play-btn').innerText = "⏸";
+    function showCopyAlert() {
+        const alert = document.getElementById('copy-alert');
+        alert.style.display = 'block';
+        setTimeout(() => { alert.style.display = 'none'; }, 1500);
     }
-
-    function prevTrack() {
-        currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-        loadTrack(currentTrack);
-        player.play();
-        document.getElementById('play-btn').innerText = "⏸";
-    }
-
-    function updateVolume(val) { player.volume = val; }
 
     function handleRightClick(e) {
         e.preventDefault();
-        const alertBox = document.getElementById('alert-box');
+        const alertBox = document.getElementById('copy-alert-top');
         alertBox.style.display = 'block';
         setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
     function createTwinklingStars() {
         const bg = document.getElementById('stars-bg');
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 80; i++) {
             let star = document.createElement('div');
             star.className = 'twinkle';
             star.style.left = Math.random() * 100 + 'vw';
@@ -290,54 +254,16 @@
     function resetInterface() {
         document.getElementById('side-panel').classList.remove('open');
         document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
-        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
     }
 
-    function openPanel(contentId) {
-        const panel = document.getElementById('side-panel');
-        if (panel.classList.contains('open') && document.getElementById(contentId).style.display === 'block') {
-            resetInterface();
-            return;
-        }
+    function openPanel(id) {
         resetInterface();
-        panel.classList.add('open');
-        document.getElementById(contentId).style.display = 'block';
-        const btnId = contentId.replace('-content', '');
-        const targetBtn = document.getElementById('btn-' + btnId);
-        if(targetBtn) targetBtn.classList.add('active');
-    }
-
-    function zoom(img) {
-        document.getElementById('img-large').src = img.src;
-        document.getElementById('zoom-overlay').style.display = 'flex';
-    }
-
-    function updateCounter() {
-        let c = localStorage.getItem('mnna_v') || 0;
-        c++;
-        localStorage.setItem('mnna_v', c);
-        document.getElementById('v-count').innerText = c.toString().padStart(5, '0');
-    }
-
-    function generate200Colors() {
-        const grid = document.getElementById('color-list');
-        grid.innerHTML = '';
-        for (let i = 0; i < 200; i++) {
-            const h = Math.floor((i / 200) * 360);
-            const s = 70 + Math.random() * 30;
-            const l = 40 + Math.random() * 40;
-            const hex = hslToHex(h, s, l);
-            let d = document.createElement('div');
-            d.className = 'c-box';
-            d.style.background = hex;
-            d.onclick = () => { navigator.clipboard.writeText(hex); };
-            grid.appendChild(d);
-        }
+        document.getElementById('side-panel').classList.add('open');
+        document.getElementById(id).style.display = 'block';
     }
 
     function hslToHex(h, s, l) {
-        l /= 100;
-        const a = s * Math.min(l, 1 - l) / 100;
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
         const f = n => {
             const k = (n + h / 30) % 12;
             const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
@@ -345,13 +271,6 @@
         };
         return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
     }
-
-    document.onkeydown = function(e) {
-        if((e.ctrlKey && (e.key === 'u' || e.key === 'i')) || e.key === 'F12') {
-            handleRightClick(e);
-            return false;
-        }
-    };
 </script>
 </body>
 </html>
