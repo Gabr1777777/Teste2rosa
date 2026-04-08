@@ -22,18 +22,20 @@
             user-select: none;
         }
 
-        /* --- Efeito de Rastro do Mouse --- */
-        .cursor-particle {
+        /* --- Efeito de Rastro de Cauda do Mouse (Comet Trail) --- */
+        .cursor-trail {
             position: fixed;
             top: 0; left: 0;
-            width: 6px;
-            height: 6px;
-            background: var(--white-pink);
-            box-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
+            width: 12px;  /* Tamanho inicial da ponta */
+            height: 12px;
+            background: white; /* Cor da ponta */
+            box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
             border-radius: 50%;
             pointer-events: none;
             z-index: 99999;
-            transition: transform 0.1s linear, opacity 0.6s ease-out;
+            transform: translate(-50%, -50%); /* Centraliza no ponteiro */
+            opacity: 1;
+            transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
         }
 
         /* --- Custom Scrollbar Neon --- */
@@ -289,30 +291,51 @@
 
     createTwinklingStars();
 
-    /* --- LÓGICA DO RASTRO DO MOUSE --- */
+    /* --- LÓGICA DO RASTRO DE CAUDA (COMET TRAIL) --- */
+    const trailSegments = [];
+    const maxSegments = 20; // Tamanho da cauda
+
     document.addEventListener('mousemove', (e) => {
-        const particle = document.createElement('div');
-        particle.className = 'cursor-particle';
-        particle.style.left = e.clientX + 'px';
-        particle.style.top = e.clientY + 'px';
-        
-        // Tamanho aleatório para efeito mais natural
-        const size = Math.random() * 6 + 2;
-        particle.style.width = size + 'px';
-        particle.style.height = size + 'px';
+        // Cria a ponta
+        const segment = document.createElement('div');
+        segment.className = 'cursor-trail';
+        segment.style.left = e.clientX + 'px';
+        segment.style.top = e.clientY + 'px';
+        document.body.appendChild(segment);
+        trailSegments.push(segment);
 
-        document.body.appendChild(particle);
+        // Remove segmentos antigos
+        while (trailSegments.length > maxSegments) {
+            trailSegments.shift().remove();
+        }
 
-        // Animação de saída
-        setTimeout(() => {
-            particle.style.opacity = '0';
-            particle.style.transform = `translate(${(Math.random()-0.5)*20}px, ${(Math.random()-0.5)*20}px) scale(0)`;
-        }, 10);
+        // Atualiza segmentos existentes para criar o rastro
+        for (let i = 0; i < trailSegments.length; i++) {
+            const seg = trailSegments[i];
+            const ratio = i / trailSegments.length; // 0 (antigo) a 1 (novo)
+            
+            // Decalque de tamanho e opacidade
+            const size = 12 * ratio; 
+            seg.style.width = size + 'px';
+            seg.style.height = size + 'px';
+            seg.style.opacity = ratio;
 
-        // Remove do DOM após sumir
-        setTimeout(() => {
-            particle.remove();
-        }, 600);
+            // Decalque de cor (Branco na ponta -> Rosa na cauda)
+            if (ratio < 0.3) {
+                seg.style.background = 'white';
+            } else if (ratio < 0.6) {
+                seg.style.background = 'var(--white-pink)';
+            } else {
+                seg.style.background = 'var(--neon-pink)';
+            }
+        }
+    });
+
+    // Remove rastro quando o mouse sai da janela
+    document.addEventListener('mouseout', () => {
+        while (trailSegments.length > 0) {
+            trailSegments.shift().remove();
+        }
     });
 
     function start() {
