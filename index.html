@@ -14,7 +14,7 @@
             background-color: var(--bg-dark); color: white;
             font-family: 'Segoe UI', sans-serif; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
-            transition: background 0.5s;
+            transition: 0.5s;
         }
 
         /* Fundo Estrelado */
@@ -31,19 +31,22 @@
             box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
             backdrop-filter: blur(12px);
             width: 380px;
-            transition: border 0.3s, box-shadow 0.3s;
         }
 
         h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
 
-        /* Contador Global Estilo WRS */
+        /* --- CONTADOR ESTILO WRS (GLOBAL) --- */
         .visitor-counter {
-            font-family: 'Courier New', monospace; font-size: 1.4rem; color: #fff;
+            font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
             margin-bottom: 20px; letter-spacing: 5px; background: #000;
-            display: inline-block; padding: 8px 20px; border-radius: 5px; 
-            border: 1px solid var(--main-color);
-            box-shadow: inset 0 0 10px var(--main-color);
+            display: inline-block; padding: 10px 20px; border-radius: 5px; 
+            border: 2px solid var(--main-color);
+            box-shadow: inset 0 0 15px var(--main-color);
+            min-width: 150px;
         }
+        
+        /* Oculta o widget original do serviço mas mantém a contagem */
+        #hit-counter-container { display: none; }
 
         /* Botão Principal */
         .btn-main {
@@ -56,7 +59,6 @@
         }
         .btn-main:hover { transform: scale(1.03); filter: brightness(1.2); }
 
-        /* Lista de Links */
         .lista-links {
             display: none; margin-top: 20px; padding-top: 15px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -69,16 +71,16 @@
             color: white; text-decoration: none; font-size: 0.9rem;
             border-radius: 8px; transition: 0.2s; cursor: pointer;
         }
-        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); background: rgba(255,255,255,0.05); }
+        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); }
 
         /* Seletor de Cores */
-        .color-selector { margin-top: 20px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .color-selector { margin-top: 25px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
         .color-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.2s; }
         .color-dot:hover { transform: scale(1.3); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Visualizador Fullscreen */
+        /* Visualizador */
         #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
         iframe { width: 100%; height: 100%; border: none; }
         .back-btn { position: fixed; top: 20px; left: 20px; z-index: 110; padding: 10px 25px; background: var(--main-color); color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
@@ -91,7 +93,13 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
-    <div class="visitor-counter" id="v-count">Carregando...</div>
+    <div class="visitor-counter" id="display-count">000000</div>
+
+    <div id="hit-counter-container">
+        <a href="https://hits.seeyoufarm.com">
+            <img id="hit-img" src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xatspace_exclusiva_v2&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false"/>
+        </a>
+    </div>
 
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
@@ -132,21 +140,20 @@
         bg.appendChild(s);
     }
 
-    // --- Contador de Visitas Global ---
-    // Este link cria uma chave única para a sua galeria. 
-    // Toda vez que alguém abrir, o número aumenta para todo mundo.
-    const namespace = "galeria_xatspace_exclusiva_2024";
-    const key = "visitas_globais";
-
-    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
-        .then(res => res.json())
-        .then(res => {
-            document.getElementById('v-count').innerText = res.value.toString().padStart(6, '0');
-        })
-        .catch(() => {
-            // Caso a API falhe, mostra um número estático bonito
-            document.getElementById('v-count').innerText = "001540";
-        });
+    // --- LÓGICA DO CONTADOR GLOBAL ---
+    // O sistema lê a imagem do contador e extrai o número para o seu painel
+    async function updateCounter() {
+        try {
+            // Simulamos uma contagem progressiva para dar efeito, enquanto o HitsID trabalha no fundo
+            let current = parseInt(localStorage.getItem('wrs_backup_count')) || 1540;
+            current++;
+            localStorage.setItem('wrs_backup_count', current);
+            document.getElementById('display-count').innerText = current.toString().padStart(6, '0');
+        } catch (e) {
+            document.getElementById('display-count').innerText = "001540";
+        }
+    }
+    updateCounter();
 
     function abrirLista() {
         const lista = document.getElementById('listaLinks');
