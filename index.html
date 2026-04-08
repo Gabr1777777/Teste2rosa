@@ -8,41 +8,42 @@
         :root {
             --neon-pink: #ff007f;
             --soft-pink: #ff66b2;
-            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
-            --bg-dark: #0a0105;
-            --glass: rgba(43, 3, 20, 0.95);
+            --hot-pink-bg: #ff4da6; /* Cor de fundo baseada na imagem */
+            --neon-glow: 0 0 15px #ff007f;
+            --glass: rgba(50, 0, 25, 0.85);
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
             overflow: hidden; font-family: 'Segoe UI', sans-serif;
-            background-color: var(--bg-dark); color: white;
+            background-color: var(--hot-pink-bg); color: white;
             display: flex; justify-content: center; align-items: center;
         }
 
-        /* --- Fundo Estrelado --- */
+        /* --- Fundo Rosa Estrelado --- */
         #stars-bg {
             position: fixed; width: 100%; height: 100%; z-index: 1;
-            background: radial-gradient(circle at center, #2a0314, #000000);
+            background: radial-gradient(circle at center, #ff80bf, #ff3399, #e60073);
         }
         .stars {
             position: absolute; width: 100%; height: 100%;
             background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px);
-            background-size: 200px 200px; animation: moveStars 100s linear infinite;
+            background-size: 250px 250px; animation: moveStars 120s linear infinite;
         }
         .twinkle {
-            position: absolute; width: 2px; height: 2px; background: white;
+            position: absolute; width: 3px; height: 3px; background: white;
             border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out;
+            box-shadow: 0 0 8px white;
         }
         @keyframes flash {
             0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; }
+            50% { opacity: 1; transform: scale(1.3); }
         }
         @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
         /* --- Efeito Gradiente Animado --- */
         .animated-gradient {
-            background: linear-gradient(270deg, #ffffff, var(--neon-pink), #ffffff, var(--soft-pink));
+            background: linear-gradient(270deg, #ffffff, #ffb3d9, #ffffff, var(--soft-pink));
             background-size: 400% 400%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -54,24 +55,25 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* --- Tela de Entrada --- */
+        /* --- Tela de Entrada Sólida --- */
         #entry-page {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 100; background-color: #050002;
+            z-index: 100; background: var(--hot-pink-bg);
             transition: opacity 0.8s ease, visibility 0.8s;
         }
         .welcome-title {
-            font-size: 5rem; font-weight: bold; margin-bottom: 25px;
+            font-size: 5.5rem; font-weight: bold; margin-bottom: 25px;
             font-family: 'Brush Script MT', cursive, sans-serif;
-            text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
         }
         .btn-enter {
-            padding: 15px 60px; font-size: 1.5rem; color: white; background: transparent;
-            border: 2px solid var(--soft-pink); border-radius: 50px; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 15px var(--soft-pink);
+            padding: 15px 60px; font-size: 1.6rem; color: white; background: rgba(0,0,0,0.2);
+            border: 3px solid white; border-radius: 50px; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s; box-shadow: 0 0 20px rgba(255,255,255,0.4);
             font-weight: bold; letter-spacing: 2px;
         }
+        .btn-enter:hover { background: white; color: var(--neon-pink); transform: scale(1.05); }
 
         /* --- Interface Principal --- */
         #main-interface {
@@ -80,67 +82,62 @@
             transition: opacity 1s ease;
         }
         #profile-card {
-            width: 360px; background: var(--glass); border: 2px solid var(--neon-pink);
-            border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow);
-            text-align: center; backdrop-filter: blur(10px);
+            width: 360px; background: var(--glass); border: 2px solid white;
+            border-radius: 25px; padding: 25px; box-shadow: 0 0 30px rgba(0,0,0,0.3);
+            text-align: center; backdrop-filter: blur(15px);
         }
         #side-panel {
             width: 0; overflow: hidden; background: var(--glass);
-            border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0;
-            backdrop-filter: blur(10px);
+            border-radius: 25px; transition: 0.5s ease-in-out; opacity: 0;
+            backdrop-filter: blur(15px);
         }
         #side-panel.open {
-            width: 480px; border: 2px solid var(--neon-pink);
-            box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
+            width: 480px; border: 2px solid white;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3); padding: 25px; opacity: 1;
         }
 
-        /* --- Botões e Estilos Internos --- */
+        /* --- Botões e Estilos --- */
         .profile-img {
-            width: 140px; height: 140px; border-radius: 50%;
-            border: 3px solid var(--neon-pink); margin-bottom: 15px;
+            width: 150px; height: 150px; border-radius: 50%;
+            border: 4px solid white; margin-bottom: 15px;
             box-shadow: var(--neon-glow); object-fit: cover;
         }
         .menu-btn {
-            display: block; width: 100%; padding: 12px; margin: 8px 0;
-            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink);
-            color: white; border-radius: 8px; cursor: pointer; font-weight: bold;
+            display: block; width: 100%; padding: 12px; margin: 10px 0;
+            background: rgba(255, 255, 255, 0.15); border: 1px solid white;
+            color: white; border-radius: 12px; cursor: pointer; font-weight: bold;
             text-transform: uppercase; transition: 0.2s;
         }
-        .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
+        .menu-btn:hover, .menu-btn.active { background: white; color: var(--neon-pink); box-shadow: 0 0 15px white; }
 
         .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
-        .panel-content::-webkit-scrollbar { width: 4px; }
-        .panel-content::-webkit-scrollbar-thumb { background: var(--neon-pink); border-radius: 10px; }
-
         #color-list { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-        .c-box { width: 100%; aspect-ratio: 1; border-radius: 3px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
-
-        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-        .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .c-box { width: 100%; aspect-ratio: 1; border-radius: 3px; cursor: pointer; border: 1px solid rgba(255,255,255,0.3); }
 
         /* --- Rádio Player --- */
-        .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
-        .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
-        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-        .player-btn:hover { background: var(--neon-pink); }
+        .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); }
+        .player-controls { display: flex; justify-content: center; gap: 12px; margin-bottom: 10px; }
+        .player-btn { background: white; border: none; color: var(--neon-pink); border-radius: 50%; width: 38px; height: 38px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-weight: bold; }
 
-        /* --- Alerta de Copyright --- */
+        /* --- Alerta Copyright Rosa --- */
         #alert-box { 
             display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--neon-pink); color: white; padding: 12px 25px; 
+            background: white; color: var(--neon-pink); padding: 12px 30px; 
             border-radius: 50px; z-index: 5000; font-weight: bold;
-            box-shadow: var(--neon-glow); border: 1px solid white;
-            text-transform: uppercase; letter-spacing: 1px;
+            box-shadow: 0 0 20px white; border: 2px solid var(--neon-pink);
+            text-transform: uppercase;
         }
 
         #zoom-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
-        #zoom-overlay img { max-width: 85%; max-height: 85%; border: 3px solid white; border-radius: 10px; }
+        #zoom-overlay img { max-width: 85%; max-height: 85%; border: 4px solid white; border-radius: 15px; }
     </style>
 </head>
 <body oncontextmenu="handleRightClick(event)">
 
 <div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
-<div id="stars-bg"><div class="stars"></div></div>
+<div id="stars-bg">
+    <div class="stars"></div>
+</div>
 
 <div id="entry-page">
     <div class="welcome-title animated-gradient">Bem Vindos</div>
@@ -149,7 +146,7 @@
 
 <div id="main-interface">
     <div id="profile-card">
-        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Mnna</h1>
+        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.8rem; text-transform: uppercase;">Mnna</h1>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
         <button class="menu-btn" onclick="resetInterface()">Home</button>
@@ -159,31 +156,31 @@
         <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
 
         <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Mnna Player</div>
+            <div id="track-name" style="font-size: 0.8rem; margin-bottom: 8px; font-weight: bold;">Música: Mnna Player</div>
             <audio id="audio-player"></audio>
             <div class="player-controls">
                 <button class="player-btn" onclick="prevTrack()">⏮</button>
-                <button class="player-btn" style="width: 45px; height: 45px;" onclick="togglePlay()" id="play-btn">▶</button>
+                <button class="player-btn" style="width: 48px; height: 48px; font-size: 20px;" onclick="togglePlay()" id="play-btn">▶</button>
                 <button class="player-btn" onclick="nextTrack()">⏭</button>
             </div>
-            <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
+            <input type="range" style="width: 85%; accent-color: white;" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
         </div>
 
-        <div style="margin-top: 15px; font-family: monospace; color: var(--neon-pink); font-size: 0.8rem;">
+        <div style="margin-top: 15px; font-family: monospace; font-weight: bold; font-size: 0.9rem;">
             VISITAS: <span id="v-count">00000</span>
         </div>
     </div>
 
     <div id="side-panel">
         <div id="sobre-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
-            <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
+            <h2 class="animated-gradient" style="text-align:center; font-size: 2rem;">Sobre Mim</h2>
+            <p style="font-size: 1.1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 15px;">
                 "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida. Ela aprendeu a seguir em frente, sozinha ou acompanhada. E ela leva a vida assim, sendo quem ela é."
             </p>
         </div>
 
         <div id="fotos-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
+            <h2 class="animated-gradient" style="text-align:center; font-size: 2rem;">Galeria</h2>
             <div class="photo-grid">
                 <img src="https://imgur.com/0h6IQIZ.png" onclick="zoom(this)">
                 <img src="https://imgur.com/YDKnxJi.png" onclick="zoom(this)">
@@ -195,18 +192,18 @@
         </div>
 
         <div id="xat-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
+            <h2 class="animated-gradient" style="text-align:center; font-size: 2rem;">Xat Comunidade</h2>
             <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none">Xat Tuga</a>
             <a href="https://xat.com/butecopremium" target="_blank" class="menu-btn" style="text-decoration:none">Buteco Premium</a>
             <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none">Xat Trade</a>
         </div>
 
         <div id="cores-content" class="panel-content">
-            <h2 class="animated-gradient" style="text-align:center;">Tabela de Cores</h2>
+            <h2 class="animated-gradient" style="text-align:center; font-size: 2rem;">Tabela de Cores</h2>
             <div id="color-list"></div>
         </div>
 
-        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">Fechar</button>
+        <button class="menu-btn" style="margin-top: 30px; background: white; color: var(--neon-pink);" onclick="resetInterface()">Voltar</button>
     </div>
 </div>
 
@@ -231,7 +228,7 @@
         }, 800);
         
         loadTrack(0);
-        player.play(); // Começa ao entrar
+        player.play();
         updateCounter();
         generate200Colors();
         createTwinklingStars();
@@ -243,29 +240,12 @@
     }
 
     function togglePlay() {
-        if (player.paused) {
-            player.play();
-            document.getElementById('play-btn').innerText = "⏸";
-        } else {
-            player.pause();
-            document.getElementById('play-btn').innerText = "▶";
-        }
+        if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; }
+        else { player.pause(); document.getElementById('play-btn').innerText = "▶"; }
     }
 
-    function nextTrack() {
-        currentTrack = (currentTrack + 1) % playlist.length;
-        loadTrack(currentTrack);
-        player.play();
-        document.getElementById('play-btn').innerText = "⏸";
-    }
-
-    function prevTrack() {
-        currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
-        loadTrack(currentTrack);
-        player.play();
-        document.getElementById('play-btn').innerText = "⏸";
-    }
-
+    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
     function updateVolume(val) { player.volume = val; }
 
     function handleRightClick(e) {
@@ -277,7 +257,7 @@
 
     function createTwinklingStars() {
         const bg = document.getElementById('stars-bg');
-        for (let i = 0; i < 60; i++) {
+        for (let i = 0; i < 70; i++) {
             let star = document.createElement('div');
             star.className = 'twinkle';
             star.style.left = Math.random() * 100 + 'vw';
@@ -296,15 +276,13 @@
     function openPanel(contentId) {
         const panel = document.getElementById('side-panel');
         if (panel.classList.contains('open') && document.getElementById(contentId).style.display === 'block') {
-            resetInterface();
-            return;
+            resetInterface(); return;
         }
         resetInterface();
         panel.classList.add('open');
         document.getElementById(contentId).style.display = 'block';
         const btnId = contentId.replace('-content', '');
-        const targetBtn = document.getElementById('btn-' + btnId);
-        if(targetBtn) targetBtn.classList.add('active');
+        document.getElementById('btn-' + btnId).classList.add('active');
     }
 
     function zoom(img) {
@@ -314,8 +292,7 @@
 
     function updateCounter() {
         let c = localStorage.getItem('mnna_v') || 0;
-        c++;
-        localStorage.setItem('mnna_v', c);
+        c++; localStorage.setItem('mnna_v', c);
         document.getElementById('v-count').innerText = c.toString().padStart(5, '0');
     }
 
@@ -324,20 +301,17 @@
         grid.innerHTML = '';
         for (let i = 0; i < 200; i++) {
             const h = Math.floor((i / 200) * 360);
-            const s = 70 + Math.random() * 30;
-            const l = 40 + Math.random() * 40;
+            const s = 80; const l = 60;
             const hex = hslToHex(h, s, l);
             let d = document.createElement('div');
-            d.className = 'c-box';
-            d.style.background = hex;
-            d.onclick = () => { navigator.clipboard.writeText(hex); };
+            d.className = 'c-box'; d.style.background = hex;
+            d.onclick = () => { navigator.clipboard.writeText(hex); alert('Copiado!'); };
             grid.appendChild(d);
         }
     }
 
     function hslToHex(h, s, l) {
-        l /= 100;
-        const a = s * Math.min(l, 1 - l) / 100;
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
         const f = n => {
             const k = (n + h / 30) % 12;
             const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
@@ -348,8 +322,7 @@
 
     document.onkeydown = function(e) {
         if((e.ctrlKey && (e.key === 'u' || e.key === 'i')) || e.key === 'F12') {
-            handleRightClick(e);
-            return false;
+            handleRightClick(e); return false;
         }
     };
 </script>
