@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>xatSpace - Mnna</title>
+    <title>xatSpace - Name</title>
     <style>
         :root {
             --neon-pink: #ff007f;
@@ -108,18 +108,13 @@
 
         .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
         
-        /* --- Tabela de Cores Otimizada --- */
-        #color-list { 
-            display: grid; 
-            grid-template-columns: repeat(10, 1fr); 
-            gap: 2px; 
-            padding: 5px;
-        }
+        #color-list { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; padding: 5px; }
         .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
         .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
 
         .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .photo-grid img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; cursor: pointer; border: 2px solid transparent; transition: 0.3s; }
+        .photo-grid img:hover { border-color: var(--neon-pink); transform: scale(1.02); }
 
         /* --- Rádio --- */
         .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
@@ -143,7 +138,7 @@
 
 <div id="main-interface">
     <div id="profile-card">
-        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Mnna</h1>
+        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Name</h1>
         <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
         
         <button class="menu-btn" onclick="resetInterface()">Home</button>
@@ -153,7 +148,7 @@
         <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
 
         <div class="player-container">
-            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Mnna Player</div>
+            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Name Player</div>
             <audio id="audio-player"></audio>
             <div class="player-controls">
                 <button class="player-btn" onclick="prevTrack()">⏮</button>
@@ -179,19 +174,20 @@
         <div id="fotos-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
             <div class="photo-grid">
-                <img src="https://imgur.com/0h6IQIZ.png">
-                <img src="https://imgur.com/YDKnxJi.png">
-                <img src="https://imgur.com/LSZOs8Q.png">
-                <img src="https://imgur.com/BGULIuI.png">
-                <img src="https://imgur.com/HCn75BA.png">
-                <img src="https://imgur.com/QvXRzEF.png">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="window.open(this.src)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="window.open(this.src)">
             </div>
         </div>
 
         <div id="xat-content" class="panel-content">
             <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
-            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none">Xat Tuga</a>
-            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none">Xat Trade</a>
+            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Tuga</a>
+            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Trade</a>
+            <a href="https://xat.com/ajuda" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Ajuda</a>
         </div>
 
         <div id="cores-content" class="panel-content">
@@ -221,7 +217,7 @@
         loadTrack(0);
         player.play();
         updateCounter();
-        generateAllColors();
+        generateMasterTable();
         createTwinklingStars();
     }
 
@@ -246,28 +242,27 @@
         setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
-    /* --- Gerador de Espectro Completo --- */
-    function generateAllColors() {
+    function generateMasterTable() {
         const grid = document.getElementById('color-list');
         grid.innerHTML = '';
-        
-        // Loop de matizes (0 a 360) e níveis de brilho/saturação para cobrir tudo
-        for (let h = 0; h <= 360; h += 8) {
-            for (let l = 20; l <= 80; l += 15) {
-                const hex = hslToHex(h, 85, l);
-                let d = document.createElement('div');
-                d.className = 'c-box';
-                d.style.background = hex;
-                d.title = hex;
-                d.onclick = () => { 
-                    navigator.clipboard.writeText(hex);
-                    const toast = document.getElementById('copy-toast');
-                    toast.style.display = 'block';
-                    setTimeout(() => { toast.style.display = 'none'; }, 1200);
-                };
-                grid.appendChild(d);
-            }
+        for (let l = 100; l >= 0; l -= 10) addColorBox(0, 0, l, grid); // Escala cinza
+        for (let h = 0; h <= 360; h += 12) {
+            for (let l = 30; l <= 70; l += 20) addColorBox(h, 90, l, grid); // Cores
         }
+    }
+
+    function addColorBox(h, s, l, container) {
+        const hex = hslToHex(h, s, l);
+        let d = document.createElement('div');
+        d.className = 'c-box';
+        d.style.background = hex;
+        d.onclick = () => { 
+            navigator.clipboard.writeText(hex);
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 1200);
+        };
+        container.appendChild(d);
     }
 
     function resetInterface() {
@@ -276,11 +271,16 @@
         document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
     }
 
-    function openPanel(contentId) {
+    function openPanel(id) {
+        const panel = document.getElementById('side-panel');
+        if (panel.classList.contains('open') && document.getElementById(id).style.display === 'block') {
+            resetInterface(); return;
+        }
         resetInterface();
-        document.getElementById('side-panel').classList.add('open');
-        document.getElementById(contentId).style.display = 'block';
-        document.getElementById('btn-' + contentId.replace('-content', '')).classList.add('active');
+        panel.classList.add('open');
+        document.getElementById(id).style.display = 'block';
+        const btnId = 'btn-' + id.replace('-content', '');
+        if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
     }
 
     function createTwinklingStars() {
@@ -296,8 +296,8 @@
     }
 
     function updateCounter() {
-        let c = localStorage.getItem('mnna_v') || 0;
-        c++; localStorage.setItem('mnna_v', c);
+        let c = localStorage.getItem('Name_v') || 0;
+        c++; localStorage.setItem('Name_v', c);
         document.getElementById('v-count').innerText = c.toString().padStart(5, '0');
     }
 
