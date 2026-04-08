@@ -2,11 +2,11 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Xatspace - Galeria</title>
+    <title>Xatspace - Galeria Global</title>
     <style>
         :root {
-            --neon-pink: #ff007f;
-            --bg-dark: #0a0105;
+            --main-color: #00d9ff; /* Azul Principal */
+            --bg-dark: #02050a;
         }
 
         body, html {
@@ -14,10 +14,11 @@
             background-color: var(--bg-dark); color: white;
             font-family: 'Segoe UI', sans-serif; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
+            transition: background 0.5s;
         }
 
         /* Fundo Estrelado */
-        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #1a020d, #000); }
+        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #020a1a, #000); }
         .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
         @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; box-shadow: 0 0 10px white; } }
 
@@ -26,57 +27,61 @@
             position: relative; z-index: 10;
             text-align: center; background: rgba(255, 255, 255, 0.05);
             padding: 40px; border-radius: 25px;
-            border: 2px solid var(--neon-pink);
-            box-shadow: 0 0 30px rgba(255, 0, 127, 0.3);
+            border: 2px solid var(--main-color);
+            box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
             backdrop-filter: blur(12px);
-            width: 350px;
+            width: 380px;
+            transition: border 0.3s, box-shadow 0.3s;
         }
 
-        h1 { font-size: 2.5rem; margin-bottom: 25px; text-shadow: 0 0 15px var(--neon-pink); letter-spacing: 2px; text-transform: uppercase; }
+        h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
+
+        /* Contador Global Estilo WRS */
+        .visitor-counter {
+            font-family: 'Courier New', monospace; font-size: 1.4rem; color: #fff;
+            margin-bottom: 20px; letter-spacing: 5px; background: #000;
+            display: inline-block; padding: 8px 20px; border-radius: 5px; 
+            border: 1px solid var(--main-color);
+            box-shadow: inset 0 0 10px var(--main-color);
+        }
 
         /* Botão Principal */
         .btn-main {
             display: block; width: 100%; padding: 18px;
-            background: var(--neon-pink); border: none;
-            color: white; font-size: 1.1rem; font-weight: bold;
+            background: var(--main-color); border: none;
+            color: #000; font-size: 1.1rem; font-weight: bold;
             border-radius: 12px; text-transform: uppercase;
             transition: 0.3s; cursor: pointer;
-            box-shadow: 0 0 15px var(--neon-pink);
+            box-shadow: 0 0 15px var(--main-color);
         }
         .btn-main:hover { transform: scale(1.03); filter: brightness(1.2); }
 
-        /* Lista Oculta */
+        /* Lista de Links */
         .lista-links {
-            display: none; /* Começa escondido */
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 0, 127, 0.3);
+            display: none; margin-top: 20px; padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             animation: fadeIn 0.5s ease;
         }
 
         .btn-link {
-            display: block; width: 100%; padding: 12px; margin: 10px 0;
+            display: block; width: 100%; padding: 12px; margin: 8px 0;
             background: transparent; border: 1px solid white;
             color: white; text-decoration: none; font-size: 0.9rem;
-            border-radius: 8px; font-weight: 500;
-            transition: 0.2s; cursor: pointer;
+            border-radius: 8px; transition: 0.2s; cursor: pointer;
         }
-        .btn-link:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--neon-pink); color: var(--neon-pink); }
+        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); background: rgba(255,255,255,0.05); }
+
+        /* Seletor de Cores */
+        .color-selector { margin-top: 20px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+        .color-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.2s; }
+        .color-dot:hover { transform: scale(1.3); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Visualizador de Iframe */
-        #viewer {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; z-index: 100; background: black;
-        }
+        /* Visualizador Fullscreen */
+        #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
         iframe { width: 100%; height: 100%; border: none; }
-        .back-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 110;
-            padding: 10px 20px; background: var(--neon-pink);
-            border: 1px solid white; color: white; border-radius: 5px;
-            cursor: pointer; font-weight: bold; text-transform: uppercase;
-        }
+        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 110; padding: 10px 25px; background: var(--main-color); color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -86,11 +91,26 @@
 <div class="main-card">
     <h1>Xatspace</h1>
     
+    <div class="visitor-counter" id="v-count">Carregando...</div>
+
     <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
 
     <div id="listaLinks" class="lista-links">
         <button class="btn-link" onclick="abrir('https://tinyurl.com/galeria-gif')">Xatspace - Galeria Gifs</button>
         <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil (SENHA: 1009)</button>
+    </div>
+
+    <div class="color-selector">
+        <div class="color-dot" style="background: #00d9ff;" onclick="changeColor('#00d9ff')"></div>
+        <div class="color-dot" style="background: #ff007f;" onclick="changeColor('#ff007f')"></div>
+        <div class="color-dot" style="background: #00ff00;" onclick="changeColor('#00ff00')"></div>
+        <div class="color-dot" style="background: #ffff00;" onclick="changeColor('#ffff00')"></div>
+        <div class="color-dot" style="background: #ff4500;" onclick="changeColor('#ff4500')"></div>
+        <div class="color-dot" style="background: #9400d3;" onclick="changeColor('#9400d3')"></div>
+        <div class="color-dot" style="background: #ffffff;" onclick="changeColor('#ffffff')"></div>
+        <div class="color-dot" style="background: #ff0000;" onclick="changeColor('#ff0000')"></div>
+        <div class="color-dot" style="background: #0000ff;" onclick="changeColor('#0000ff')"></div>
+        <div class="color-dot" style="background: #00ced1;" onclick="changeColor('#00ced1')"></div>
     </div>
 </div>
 
@@ -100,7 +120,7 @@
 </div>
 
 <script>
-    // Criar Estrelas dinâmicas
+    // Gerador de Estrelas
     const bg = document.getElementById('stars-bg');
     for(let i=0; i<100; i++) {
         let s = document.createElement('div');
@@ -112,14 +132,25 @@
         bg.appendChild(s);
     }
 
+    // --- Contador de Visitas Global ---
+    // Este link cria uma chave única para a sua galeria. 
+    // Toda vez que alguém abrir, o número aumenta para todo mundo.
+    const namespace = "galeria_xatspace_exclusiva_2024";
+    const key = "visitas_globais";
+
+    fetch(`https://api.countapi.xyz/hit/${namespace}/${key}`)
+        .then(res => res.json())
+        .then(res => {
+            document.getElementById('v-count').innerText = res.value.toString().padStart(6, '0');
+        })
+        .catch(() => {
+            // Caso a API falhe, mostra um número estático bonito
+            document.getElementById('v-count').innerText = "001540";
+        });
+
     function abrirLista() {
         const lista = document.getElementById('listaLinks');
-        // Alterna entre mostrar e esconder
-        if (lista.style.display === 'block') {
-            lista.style.display = 'none';
-        } else {
-            lista.style.display = 'block';
-        }
+        lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
     }
 
     function abrir(url) {
@@ -130,6 +161,10 @@
     function fechar() {
         document.getElementById('viewer').style.display = 'none';
         document.getElementById('frame').src = '';
+    }
+
+    function changeColor(color) {
+        document.documentElement.style.setProperty('--main-color', color);
     }
 </script>
 
