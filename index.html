@@ -214,7 +214,7 @@
 </div>
 
 <div id="entry-page">
-    <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <div id="entry-stars" class="stars"></div> <div class="welcome-title animated-gradient">Bienvenidos</div>
     <button class="btn-enter" onclick="start()">Entrar</button>
 </div>
 
@@ -277,7 +277,7 @@
             <div id="color-list"></div>
         </div>
 
-        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">Fechar</button>
+        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
     </div>
 </div>
 
@@ -289,7 +289,9 @@
     let currentTrack = 0;
     const player = document.getElementById('audio-player');
 
-    createTwinklingStars();
+    // Inicializa estrelas na interface principal e na tela de entrada
+    createTwinklingStars('stars-bg');
+    createTwinklingStars('entry-stars');
 
     /* --- LÓGICA DO RASTRO DE CAUDA (COMET TRAIL) --- */
     const trailSegments = [];
@@ -420,8 +422,8 @@
         modal.style.display = 'flex';
     }
 
-    function createTwinklingStars() {
-        const bg = document.getElementById('stars-bg');
+    function createTwinklingStars(containerId) {
+        const bg = document.getElementById(containerId);
         if (!bg) return;
         for (let i = 0; i < 60; i++) {
             let star = document.createElement('div');
