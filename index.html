@@ -2,163 +2,455 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Xatspace - Galeria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xatSpace - Name</title>
     <style>
         :root {
-            --main-color: #00d9ff; /* Azul Principal */
-            --bg-dark: #02050a;
+            --neon-pink: #ff007f;
+            --soft-pink: #ff66b2;
+            --white-pink: #ffe6f2;
+            --neon-glow: 0 0 10px #ff007f, 0 0 20px #ff007f;
+            --bg-dark: #0a0105;
+            --bg-entry: #1a020d;
+            --glass: rgba(43, 3, 20, 0.95);
+        }
+
+        /* --- Global Anti-Seleção --- */
+        * {
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* --- Efeito de Rastro de Cauda do Mouse (Comet Trail) --- */
+        .cursor-trail {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px;  /* Tamanho inicial da ponta */
+            height: 12px;
+            background: white; /* Cor da ponta */
+            box-shadow: 0 0 10px white, 0 0 20px var(--neon-pink), 0 0 30px var(--neon-pink);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%); /* Centraliza no ponteiro */
+            opacity: 1;
+            transition: width 0.3s ease-out, height 0.3s ease-out, opacity 0.3s ease-out, background 0.3s ease-out;
+        }
+
+        /* --- Custom Scrollbar Neon --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 0, 127, 0.05);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-pink);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--soft-pink);
+            box-shadow: 0 0 15px var(--soft-pink);
         }
 
         body, html {
             margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; font-family: 'Segoe UI', sans-serif;
             background-color: var(--bg-dark); color: white;
-            font-family: 'Segoe UI', sans-serif; overflow: hidden;
             display: flex; justify-content: center; align-items: center;
-            transition: 0.5s;
         }
 
-        #stars-bg { position: fixed; width: 100%; height: 100%; z-index: 1; background: radial-gradient(circle at center, #020a1a, #000); }
-        .star { position: absolute; background: white; border-radius: 50%; opacity: 0; animation: twinkle 3s infinite; }
-        @keyframes twinkle { 0%, 100% { opacity: 0; } 50% { opacity: 1; box-shadow: 0 0 10px white; } }
+        /* --- Fundo Estrelado (Global) --- */
+        #stars-bg {
+            position: fixed; width: 100%; height: 100%; z-index: 1;
+            background: radial-gradient(circle at center, #2a0314, #000000);
+        }
+        .stars {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(white, rgba(255,255,255,.2) 1px, transparent 2px);
+            background-size: 200px 200px; animation: moveStars 100s linear infinite;
+        }
+        .twinkle {
+            position: absolute; width: 2px; height: 2px; background: white;
+            border-radius: 50%; opacity: 0; animation: flash 2s infinite ease-in-out;
+        }
+        @keyframes flash {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1.2); box-shadow: 0 0 10px white; }
+        }
+        @keyframes moveStars { from { background-position: 0 0; } to { background-position: 1000px 1000px; } }
 
-        .main-card {
-            position: relative; z-index: 10;
-            text-align: center; background: rgba(255, 255, 255, 0.05);
-            padding: 40px; border-radius: 25px;
-            border: 2px solid var(--main-color);
-            box-shadow: 0 0 30px rgba(0, 217, 255, 0.2);
-            backdrop-filter: blur(12px);
-            width: 380px;
+        /* --- Efeito Gradiente Animado --- */
+        .animated-gradient {
+            background: linear-gradient(270deg, #ffffff, var(--neon-pink), #ffffff, var(--soft-pink));
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientMove 5s ease infinite;
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        h1 { font-size: 2.5rem; margin-bottom: 15px; text-shadow: 0 0 15px var(--main-color); letter-spacing: 2px; text-transform: uppercase; }
+        #copy-toast {
+            display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: var(--neon-pink); color: white; padding: 15px 30px;
+            border-radius: 50px; z-index: 10000; font-weight: bold; border: 2px solid white;
+            box-shadow: 0 0 25px var(--neon-pink); text-transform: uppercase;
+        }
 
-        /* --- CONTADOR GLOBAL (ESTILO WRS) --- */
-        .visitor-counter {
-            font-family: 'Courier New', monospace; font-size: 1.5rem; color: #fff;
-            margin-bottom: 20px; letter-spacing: 5px; background: #000;
-            display: inline-block; padding: 10px 20px; border-radius: 5px; 
-            border: 2px solid var(--main-color);
-            box-shadow: inset 0 0 15px var(--main-color);
-            min-width: 160px;
+        /* --- Tela de Entrada --- */
+        #entry-page {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 100; 
+            background-color: var(--bg-entry);
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .welcome-title {
+            font-size: 5rem; font-weight: bold; margin-bottom: 25px;
+            font-family: 'Brush Script MT', cursive, sans-serif;
+            text-shadow: 0 0 20px rgba(255, 102, 178, 0.4);
+            position: relative; z-index: 101;
         }
         
-        #hit-counter-container { display: none; }
-
-        .btn-main {
-            display: block; width: 100%; padding: 18px;
-            background: var(--main-color); border: none;
-            color: #000; font-size: 1.1rem; font-weight: bold;
-            border-radius: 12px; text-transform: uppercase;
-            transition: 0.3s; cursor: pointer;
-            box-shadow: 0 0 15px var(--main-color);
-        }
-        .btn-main:hover { transform: scale(1.03); filter: brightness(1.2); }
-
-        .lista-links {
-            display: none; margin-top: 20px; padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeIn 0.5s ease;
+        .btn-enter {
+            padding: 15px 60px; font-size: 1.5rem; 
+            color: white; 
+            background: linear-gradient(135deg, var(--neon-pink) 0%, white 50%, var(--neon-pink) 100%);
+            background-size: 200% auto;
+            border: 2px solid var(--white-pink); border-radius: 50px; cursor: pointer;
+            text-transform: uppercase; 
+            box-shadow: 0 0 25px var(--neon-pink), 0 0 10px white;
+            font-weight: bold; letter-spacing: 2px;
+            position: relative; z-index: 101;
+            animation: gradientMoveButton 2s linear infinite;
+            transition: transform 0.3s;
         }
 
-        .btn-link {
-            display: block; width: 100%; padding: 12px; margin: 8px 0;
-            background: transparent; border: 1px solid white;
-            color: white; text-decoration: none; font-size: 0.9rem;
-            border-radius: 8px; transition: 0.2s; cursor: pointer;
-            font-weight: bold;
+        .btn-enter:active { transform: scale(0.95); }
+
+        @keyframes gradientMoveButton {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
-        .btn-link:hover { border-color: var(--main-color); color: var(--main-color); background: rgba(255,255,255,0.05); }
 
-        .color-selector { margin-top: 25px; display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
-        .color-dot { width: 22px; height: 22px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; transition: 0.2s; }
-        .color-dot:hover { transform: scale(1.3); }
+        /* --- Interface Principal --- */
+        #main-interface {
+            visibility: hidden; opacity: 0; position: relative; z-index: 10;
+            display: flex; gap: 20px; align-items: flex-start;
+            transition: opacity 1s ease;
+        }
+        #profile-card {
+            width: 360px; background: var(--glass); border: 2px solid var(--neon-pink);
+            border-radius: 20px; padding: 25px; box-shadow: var(--neon-glow);
+            text-align: center; backdrop-filter: blur(10px);
+        }
+        #side-panel {
+            width: 0; overflow: hidden; background: var(--glass);
+            border-radius: 20px; transition: 0.5s ease-in-out; opacity: 0;
+            backdrop-filter: blur(10px);
+        }
+        #side-panel.open {
+            width: 480px; border: 2px solid var(--neon-pink);
+            box-shadow: var(--neon-glow); padding: 25px; opacity: 1;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .profile-img { width: 140px; height: 140px; border-radius: 50%; border: 3px solid var(--neon-pink); margin-bottom: 15px; box-shadow: var(--neon-glow); object-fit: cover; }
+        .menu-btn { display: block; width: 100%; padding: 12px; margin: 8px 0; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--neon-pink); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; transition: 0.2s; }
+        .menu-btn:hover, .menu-btn.active { background: var(--neon-pink); box-shadow: var(--neon-glow); }
 
-        #viewer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: black; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .back-btn { position: fixed; top: 20px; left: 20px; z-index: 110; padding: 10px 25px; background: var(--main-color); color: #000; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+        .panel-content { display: none; max-height: 55vh; overflow-y: auto; }
+        
+        #color-list { display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px; padding: 5px; }
+        .c-box { width: 100%; aspect-ratio: 1; border-radius: 2px; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); transition: transform 0.1s; }
+        .c-box:hover { transform: scale(1.2); z-index: 5; border: 1px solid white; }
+
+        .photo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .photo-grid img { 
+            width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; 
+            cursor: pointer; border: 2px solid transparent; transition: 0.3s; 
+        }
+        .photo-grid img:hover { 
+            border-color: var(--neon-pink); 
+            box-shadow: 0 0 15px var(--neon-pink);
+            transform: scale(1.05);
+        }
+
+        #photo-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9); z-index: 1000;
+            justify-content: center; align-items: center; cursor: pointer;
+        }
+        #photo-modal img {
+            max-width: 85%; max-height: 85%; border: 3px solid var(--neon-pink);
+            border-radius: 15px; box-shadow: var(--neon-glow);
+            cursor: default;
+        }
+
+        .player-container { margin-top: 20px; padding-top: 15px; border-top: 1px dashed var(--neon-pink); }
+        .player-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .player-btn { background: transparent; border: 1px solid var(--neon-pink); color: white; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .player-btn:hover { background: var(--neon-pink); }
+
+        #alert-box { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: var(--neon-pink); color: white; padding: 12px 25px; border-radius: 50px; z-index: 5000; font-weight: bold; box-shadow: var(--neon-glow); border: 1px solid white; }
     </style>
 </head>
-<body>
+<body oncontextmenu="handleRightClick(event)">
 
-<div id="stars-bg"></div>
+<div id="copy-toast">CÓDIGO COPIADO</div>
+<div id="alert-box">🔒 Copyright - Acesso Proibido 🔒</div>
 
-<div class="main-card">
-    <h1>Xatspace</h1>
-    
-    <div class="visitor-counter" id="display-count">000001</div>
+<div id="stars-bg"><div class="stars"></div></div>
 
-    <div id="hit-counter-container">
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgaleria_xat_final_reset_v2&count_bg=%23000000&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false" 
-             onload="syncCounter()">
-    </div>
-
-    <button class="btn-main" onclick="abrirLista()">Galeria de Xatspace</button>
-
-    <div id="listaLinks" class="lista-links">
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilrosa')">Xatspace - perfil 1</button>
-        <button class="btn-link" onclick="abrir('https://tinyurl.com/perfilgab')">Xatspace - Perfil (SENHA: 1009)</button>
-    </div>
-
-    <div class="color-selector">
-        <div class="color-dot" style="background: #00d9ff;" onclick="changeColor('#00d9ff')"></div>
-        <div class="color-dot" style="background: #ff007f;" onclick="changeColor('#ff007f')"></div>
-        <div class="color-dot" style="background: #00ff00;" onclick="changeColor('#00ff00')"></div>
-        <div class="color-dot" style="background: #ffff00;" onclick="changeColor('#ffff00')"></div>
-        <div class="color-dot" style="background: #ff4500;" onclick="changeColor('#ff4500')"></div>
-        <div class="color-dot" style="background: #9400d3;" onclick="changeColor('#9400d3')"></div>
-        <div class="color-dot" style="background: #ffffff;" onclick="changeColor('#ffffff')"></div>
-        <div class="color-dot" style="background: #ff0000;" onclick="changeColor('#ff0000')"></div>
-        <div class="color-dot" style="background: #0000ff;" onclick="changeColor('#0000ff')"></div>
-        <div class="color-dot" style="background: #00ced1;" onclick="changeColor('#00ced1')"></div>
-    </div>
+<div id="photo-modal" onclick="this.style.display='none'">
+    <img id="modal-img" src="" onclick="event.stopPropagation()">
 </div>
 
-<div id="viewer">
-    <button class="back-btn" onclick="fechar()">← Voltar</button>
-    <iframe id="frame"></iframe>
+<div id="entry-page">
+    <div id="entry-stars" class="stars"></div> <div class="welcome-title animated-gradient">Bienvenidos</div>
+    <button class="btn-enter" onclick="start()">Entrar</button>
+</div>
+
+<div id="main-interface">
+    <div id="profile-card">
+        <h1 class="animated-gradient" style="margin: 0 0 10px 0; font-size: 2.5rem; text-transform: uppercase;">Name</h1>
+        <img src="https://imgur.com/0h6IQIZ.png" class="profile-img">
+        
+        <button class="menu-btn" onclick="resetInterface()">Home</button>
+        <button class="menu-btn" id="btn-sobre" onclick="openPanel('sobre-content')">Sobre Mim</button>
+        <button class="menu-btn" id="btn-fotos" onclick="openPanel('fotos-content')">Fotos</button>
+        <button class="menu-btn" id="btn-xat" onclick="openPanel('xat-content')">Xat Comunidade</button>
+        <button class="menu-btn" id="btn-cores" onclick="openPanel('cores-content')">Tabela de Cores</button>
+
+        <div class="player-container">
+            <div id="track-name" style="font-size: 0.75rem; margin-bottom: 8px; color: var(--soft-pink);">Música: Name Player</div>
+            <audio id="audio-player"></audio>
+            <div class="player-controls">
+                <button class="player-btn" onclick="prevTrack()">⏮</button>
+                <button class="player-btn" style="width: 45px; height: 45px;" onclick="togglePlay()" id="play-btn">▶</button>
+                <button class="player-btn" onclick="nextTrack()">⏭</button>
+            </div>
+            <input type="range" style="width: 80%; accent-color: var(--neon-pink);" min="0" max="1" step="0.1" value="0.5" onchange="updateVolume(this.value)">
+        </div>
+
+        <div style="margin-top: 15px; font-family: monospace; color: var(--neon-pink); font-size: 0.8rem;">
+            VISITAS: <span id="v-count">00000</span>
+        </div>
+    </div>
+
+    <div id="side-panel">
+        <div id="sobre-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Sobre Mim</h2>
+            <p style="font-size: 1rem; font-style: italic; line-height: 1.8; text-align: justify; padding: 10px;">
+                "Ela sabe o que quer, ela sabe quem ela é, ela sabe ser feliz sozinha, ela tem aquele jeito de menina sapeca do mundo, mas tem também aquele de mulher feita que encara a vida."
+            </p>
+        </div>
+
+        <div id="fotos-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Galeria</h2>
+            <div class="photo-grid">
+                <img src="https://imgur.com/0h6IQIZ.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/YDKnxJi.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/LSZOs8Q.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/BGULIuI.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/HCn75BA.png" onclick="openPhoto(this.src)">
+                <img src="https://imgur.com/QvXRzEF.png" onclick="openPhoto(this.src)">
+            </div>
+        </div>
+
+        <div id="xat-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Xat Comunidade</h2>
+            <a href="https://xat.com/tuga" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Tuga</a>
+            <a href="https://xat.com/trade" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Trade</a>
+            <a href="https://xat.com/ajuda" target="_blank" class="menu-btn" style="text-decoration:none; display: block; text-align: center;">Xat Ajuda</a>
+        </div>
+
+        <div id="cores-content" class="panel-content">
+            <h2 class="animated-gradient" style="text-align:center;">Tabela Completa</h2>
+            <div id="color-list"></div>
+        </div>
+
+        <button class="menu-btn" style="margin-top: 30px;" onclick="resetInterface()">voltar</button>
+    </div>
 </div>
 
 <script>
-    const bg = document.getElementById('stars-bg');
-    for(let i=0; i<100; i++) {
-        let s = document.createElement('div');
-        s.className = 'star';
-        s.style.left = Math.random() * 100 + 'vw';
-        s.style.top = Math.random() * 100 + 'vh';
-        s.style.width = s.style.height = Math.random() * 2 + 'px';
-        s.style.animationDelay = Math.random() * 5 + 's';
-        bg.appendChild(s);
+    const playlist = [
+        { name: "Bon Jovi - Prayer", url: "https://www.dropbox.com/scl/fi/dxueil8ofydhnee9lvrk5/Bon-Jovi-livin-on-a-prayer.mp3.mp3?rlkey=06y21a3rhreta1elo2euhcnlr&st=ockzr4s4&dl=1" },
+        { name: "Desireless - Voyage", url: "https://www.dropbox.com/scl/fi/cqqhzkv1ll1p09z7qgylp/Desireless-voyage-voyage.mp3.mp3?rlkey=hscvkehw7n7vvgi2im4rwhom7&st=nkupjbm3&dl=1" }
+    ];
+    let currentTrack = 0;
+    const player = document.getElementById('audio-player');
+
+    // Inicializa estrelas na interface principal e na tela de entrada
+    createTwinklingStars('stars-bg');
+    createTwinklingStars('entry-stars');
+
+    /* --- LÓGICA DO RASTRO DE CAUDA (COMET TRAIL) --- */
+    const trailSegments = [];
+    const maxSegments = 20; // Tamanho da cauda
+
+    document.addEventListener('mousemove', (e) => {
+        // Cria a ponta
+        const segment = document.createElement('div');
+        segment.className = 'cursor-trail';
+        segment.style.left = e.clientX + 'px';
+        segment.style.top = e.clientY + 'px';
+        document.body.appendChild(segment);
+        trailSegments.push(segment);
+
+        // Remove segmentos antigos
+        while (trailSegments.length > maxSegments) {
+            trailSegments.shift().remove();
+        }
+
+        // Atualiza segmentos existentes para criar o rastro
+        for (let i = 0; i < trailSegments.length; i++) {
+            const seg = trailSegments[i];
+            const ratio = i / trailSegments.length; // 0 (antigo) a 1 (novo)
+            
+            // Decalque de tamanho e opacidade
+            const size = 12 * ratio; 
+            seg.style.width = size + 'px';
+            seg.style.height = size + 'px';
+            seg.style.opacity = ratio;
+
+            // Decalque de cor (Branco na ponta -> Rosa na cauda)
+            if (ratio < 0.3) {
+                seg.style.background = 'white';
+            } else if (ratio < 0.6) {
+                seg.style.background = 'var(--white-pink)';
+            } else {
+                seg.style.background = 'var(--neon-pink)';
+            }
+        }
+    });
+
+    // Remove rastro quando o mouse sai da janela
+    document.addEventListener('mouseout', () => {
+        while (trailSegments.length > 0) {
+            trailSegments.shift().remove();
+        }
+    });
+
+    function start() {
+        document.getElementById('entry-page').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('entry-page').style.visibility = 'hidden';
+            document.getElementById('main-interface').style.visibility = 'visible';
+            document.getElementById('main-interface').style.opacity = '1';
+        }, 800);
+        loadTrack(0);
+        player.play();
+        updateCounter();
+        generateMasterTable();
     }
 
-    function syncCounter() {
-        let count = parseInt(localStorage.getItem('final_global_count')) || 0;
-        count++;
-        localStorage.setItem('final_global_count', count);
-        document.getElementById('display-count').innerText = count.toString().padStart(6, '0');
+    function loadTrack(i) {
+        player.src = playlist[i].url;
+        document.getElementById('track-name').innerText = "Música: " + playlist[i].name;
     }
 
-    function abrirLista() {
-        const lista = document.getElementById('listaLinks');
-        lista.style.display = (lista.style.display === 'block') ? 'none' : 'block';
+    function togglePlay() {
+        if (player.paused) { player.play(); document.getElementById('play-btn').innerText = "⏸"; }
+        else { player.pause(); document.getElementById('play-btn').innerText = "▶"; }
     }
 
-    function abrir(url) {
-        document.getElementById('frame').src = url;
-        document.getElementById('viewer').style.display = 'block';
+    function nextTrack() { currentTrack = (currentTrack + 1) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function prevTrack() { currentTrack = (currentTrack - 1 + playlist.length) % playlist.length; loadTrack(currentTrack); player.play(); }
+    function updateVolume(val) { player.volume = val; }
+
+    function handleRightClick(e) {
+        e.preventDefault();
+        const alertBox = document.getElementById('alert-box');
+        alertBox.style.display = 'block';
+        setTimeout(() => { alertBox.style.display = 'none'; }, 2000);
     }
 
-    function fechar() {
-        document.getElementById('viewer').style.display = 'none';
-        document.getElementById('frame').src = '';
+    function generateMasterTable() {
+        const grid = document.getElementById('color-list');
+        grid.innerHTML = '';
+        for (let l = 100; l >= 0; l -= 10) addColorBox(0, 0, l, grid);
+        for (let h = 0; h <= 360; h += 12) {
+            for (let l = 30; l <= 70; l += 20) addColorBox(h, 90, l, grid);
+        }
     }
 
-    function changeColor(color) {
-        document.documentElement.style.setProperty('--main-color', color);
+    function addColorBox(h, s, l, container) {
+        const hex = hslToHex(h, s, l);
+        let d = document.createElement('div');
+        d.className = 'c-box';
+        d.style.background = hex;
+        d.onclick = () => { 
+            navigator.clipboard.writeText(hex);
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 1200);
+        };
+        container.appendChild(d);
+    }
+
+    function resetInterface() {
+        document.getElementById('side-panel').classList.remove('open');
+        document.querySelectorAll('.panel-content').forEach(pc => pc.style.display = 'none');
+        document.querySelectorAll('.menu-btn').forEach(btn => btn.classList.remove('active'));
+    }
+
+    function openPanel(id) {
+        const panel = document.getElementById('side-panel');
+        if (panel.classList.contains('open') && document.getElementById(id).style.display === 'block') {
+            resetInterface(); return;
+        }
+        resetInterface();
+        panel.classList.add('open');
+        document.getElementById(id).style.display = 'block';
+        const btnId = 'btn-' + id.replace('-content', '');
+        if(document.getElementById(btnId)) document.getElementById(btnId).classList.add('active');
+    }
+
+    function openPhoto(src) {
+        const modal = document.getElementById('photo-modal');
+        const img = document.getElementById('modal-img');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
+
+    function createTwinklingStars(containerId) {
+        const bg = document.getElementById(containerId);
+        if (!bg) return;
+        for (let i = 0; i < 60; i++) {
+            let star = document.createElement('div');
+            star.className = 'twinkle';
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            bg.appendChild(star);
+        }
+    }
+
+    function updateCounter() {
+        let c = localStorage.getItem('Name_v') || 0;
+        c++; localStorage.setItem('Name_v', c);
+        const vCountEl = document.getElementById('v-count');
+        if (vCountEl) vCountEl.innerText = c.toString().padStart(5, '0');
+    }
+
+    function hslToHex(h, s, l) {
+        l /= 100; const a = s * Math.min(l, 1 - l) / 100;
+        const f = n => {
+            const k = (n + h / 30) % 12;
+            const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+            return Math.round(255 * color).toString(16).padStart(2, '0');
+        };
+        return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
     }
 </script>
-
 </body>
 </html>
